@@ -1,4 +1,21 @@
 extends index.layout.030215.1.jade
 
 block content
-	+superheroNameTest1
+	//- +superheroNameTest1
+	
+	nav.selectMenu
+		//- button.characters Characters
+		// we'll want to make use of the Amazon Product Advertising API for these sections
+		button.comics Comics
+		button.books Books
+		button.tvshows TV Shows
+	main
+		section.showcase
+			+characterEntry1
+			+characterEntry1
+			+characterEntry1
+		section.displayDisc
+			// the section.displayDisc will be oval if possible... adjusted using skew
+			+exploreUnit1
+			+exploreUnit1
+			+exploreUnit1

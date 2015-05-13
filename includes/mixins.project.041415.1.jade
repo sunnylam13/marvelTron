@@ -9,11 +9,104 @@ mixin superheroNameTest1
 	////////////////////////////////////////////
 	// 		SUPER HERO NAME TEST 1
 	//////////////////////////////////////////
+	// for use with test.051215.1.js
 	section.nameTest
+		h2 Superhero Name Test
 		ul.nameList
+		p.attribution
 	////////////////////////////////////////////
 	// 		END SUPER HERO NAME TEST 1
 	////////////////////////////////////////////
+
+mixin characterEntry1
+	////////////////////////////////////////////
+	// 		CHARACTER ENTRY CARD
+	//////////////////////////////////////////
 	
+	section.characterEntry
+		form
+			// make sure label for and input name match
+			label(for='hero') Search Hero
+			input(type='text',id='hero',name='hero')
+		article
+			// Javascript will dynamically generate character entries to fill these by default... once user enters hero names into fields these will change from randomly generated to the selected
+			// we'll use some default elements here so we can style things... mostly they'll be replaced later on with JS
+			if block
+				block
+			else
+				img(src='https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg')
+				h2 Hulk
+				p.description
+				a(href='https://marvel.com/universe/Hulk_(Bruce_Banner)') Read More on the Marvel Universe Wiki
+				// when the user clicks on the h3 it animates/opens to reveal the details
+				h3 Character Info
+				// the details are only revealed when the user clicks the h3
+				aside.characterInfo
+					// this can be designed as a modal so that the entry doesn't take up a large amount of space
+					// for the ... use the ::after
+					div
+						div
+							h4 Real Name
+						div
+							p Robert Bruce Banner
+					div
+						div
+							h4 Height
+						div
+							p 5' 9&frac12;" (Banner); 6'6" (gray Hulk); 7' &ndash; 8' (green/savageHulk); 7'6" (green/Professor Hulk)
+					div
+						div
+							h4 Weight
+						div
+							p 128 lbs. (Banner); 900 lbs. (gray Hulk); 1,040 &ndash; 1,400 lbs.(green/savage Hulk); 1,150 lbs. (green/Professor Hulk)
+					div
+						div
+							h4 Powers
+						div
+							td The Hulk possesses an incredible level of superhuman physical ability. His capacity for physical strength is potentially limitless due to the fact that the Hulk's strength increases proportionally with his level of great emotional stress, anger in particular. The Hulk uses his superhumanly
+							a(href='javascript:void(0)') more
+					div
+						div
+							h4 Abilities
+						div
+							p Dr. Bruce Banner is a genius in nuclear physics, possessing a mind so brilliant that it cannot be measured on any known intelligence test. When Banner is the Hulk, Banner's consciousness is buried within the Hulk's, and can influence the Hulk's behavior only to a very limited extent.
+					div
+						div
+							h4 Group Affililations
+						div
+							p Formerly Avengers, Defenders, Fantastic Four, Pantheon, Horsemen of Apocalypse, Warbound
+					div
+						div
+							h4 First Appearance
+						div
+							p Incredible Hulk #1 (1962)
+					div
+						div
+							h4 Origin
+						div
+							p Incredible Hulk #1 (1962)
+
+	////////////////////////////////////////////
+	// 		END CHARACTER ENTRY CARD
+	////////////////////////////////////////////
+	
+mixin exploreUnit1
+	////////////////////////////////////////////
+	// 		EXPLORE UNIT
+	//////////////////////////////////////////
+	// these are the containers used to hold comic covers, movie covers and TV show covers
+	// upon hovering over them they should have a slight modal effect for either Buying or Learn More, which should take the user to either Amazon to buy, IMDB for movies or TV shows or a similar place
+
+	section.exploreUnit
+		// using JS we can change the src= 
+		img(src='https://annihilusssl.sslcs.cdngc.net/c/DIG056738_2.jpg?h=057812441f3b2534b437bf937fb3d24e&width=180')
+		.frame
+			// using JS we will change the name= and the text to reflect either a purchase or a learn more action
+			button(name='buynow') Buy Now
+
+	////////////////////////////////////////////
+	// 		END EXPLORE UNIT
+	////////////////////////////////////////////
+
 
 //- END MIXINS PROJECT 
