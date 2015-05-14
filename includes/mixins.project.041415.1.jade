@@ -18,17 +18,30 @@ mixin superheroNameTest1
 	// 		END SUPER HERO NAME TEST 1
 	///////////////////////////////////////////
 
+mixin superheroComicTest1
+	////////////////////////////////////////////
+	// 		COMIC COVER TEST 1
+	//////////////////////////////////////////
+	// for use with test.051215.1.js
+	section.comicCoverTest1
+		h2 Digital Comics Available
+		ul.nameList
+
+	////////////////////////////////////////////
+	// 		END COMIC COVER TEST 1
+	////////////////////////////////////////////
+
 mixin superHeroProductSearchTest1
 	///////////////////////////////////////////
-	// 		PRODUCT SEARCH
+	// 		PRODUCT SEARCH TEST 1
 	///////////////////////////////////////////
-
+	// for use with test.051215.1.js
 	section.productSearchTest
 		h2 Superhero Products Available
 		ul.productList
 
 	////////////////////////////////////////
-	// 		END PRODUCT SEARCH
+	// 		END PRODUCT SEARCH TEST 1
 	///////////////////////////////////////////
 
 mixin characterEntry1
@@ -112,10 +125,15 @@ mixin exploreUnit1
 
 	section.exploreUnit
 		// using JS we can change the src= 
-		img(src='https://annihilusssl.sslcs.cdngc.net/c/DIG056738_2.jpg?h=057812441f3b2534b437bf937fb3d24e&width=180')
+		.imgFrame
+			img(src='https://annihilusssl.sslcs.cdngc.net/c/DIG056738_2.jpg?h=057812441f3b2534b437bf937fb3d24e&width=180')
 		.frame
 			// using JS we will change the name= and the text to reflect either a purchase or a learn more action
-			button(name='buynow') Buy Now
+			// for accessibility, surround the buttons with a elements so that even if JS isn't working links still work
+			a(href='')
+				button(name='preview', type='button') Preview
+			a(href='')
+				button(name='buynow', type='button') Buy Now
 
 	////////////////////////////////////////////
 	// 		END EXPLORE UNIT
