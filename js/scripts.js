@@ -17,7 +17,7 @@ marTron.categoryURLAdd = [
 ];
 marTron.publicKey = "2c57ad00857c6163fa0417563cd31499";
 marTron.limit = 50;
-marTron.characterDefaultSearch1 = ["Wolverine","Hulk","Thor","Captain America","Silver Surfer", "Thanos"];
+marTron.characterDefaultSearch1 = ["Wolverine","Hulk","Thor","Captain America","Silver Surfer", "Thanos","Iron Man","Vision","Warpath","Silver Sable","daredevil"];
 marTron.characterIDStored = [];
 marTron.comicMode = true;
 marTron.movieMode = false;
@@ -422,11 +422,63 @@ function getRandom (num) {
   return my_num;
 }
 
+marTron.comicTooltips = function () {
+	// Friday, May 15, 2015 3:00 PM:  using jQuery UI is ugly
+	
+	var $targetParent = $('section.characterEntry');
+
+	// go to each section.characterEntry
+	$.each($targetParent, function(index, val) {
+    // if (marTron.comicMode ==  true) {
+    //  // when comic mode is enabled
+    //  // set the title attribute to have text for the jQuery tooltip
+    //  $(this).attr('data-comictooltips1', 'Click to see comics');
+    // } else {
+    //  $(this).attr('data-comictooltips1', '');
+    // }
+
+    if (marTron.comicMode ==  true) {
+      // when comic mode is enabled
+      // set the title attribute to have text for the jQuery tooltip
+      // $(this).attr('title', 'Click the above card to see comics.');
+      $(this).attr('data-comictooltips1', 'Click to see comics');
+    } else {
+      // $(this).attr('title', '');
+      $(this).attr('data-comictooltips1', '');
+    }
+
+    // if (marTron.comicMode ==  true) {
+    //   // when comic mode is enabled
+    //   // set the title attribute to have text for the jQuery tooltip
+    //   // $(this).attr('title', 'Click the above card to see comics.');
+    //   $(this).find('aside.toolip').attr('display', 'flex');
+    // } else {
+    //   // $(this).attr('title', '');
+    //   $(this).find('aside.toolip').attr('display', 'none');
+    // }
+
+    // if (marTron.comicMode ==  true) {
+    //   // when comic mode is enabled
+    //   // set the title attribute to have text for the jQuery tooltip
+    //   // $(this).attr('title', 'Click the above card to see comics.');
+    //   $(this).find('aside.toolip').attr('display', 'flex');
+    // }
+
+    // has attribute activate
+    // $('[data-comictooltips1]').tooltip();
+    // $('[title]').tooltip();
+	});
+
+	// has attribute activate
+	// $('[data-comictooltips1]').tooltip();
+	
+}
+
 marTron.randomCharacters1 = function (array) {
 	// array to use...
 	// marTron.characterDefaultSearch1
 
-	var randNum = 0;
+	var randNum;
 	var randNumPrev = [];
 
 	// store a reference to character entry boxes
@@ -501,6 +553,25 @@ marTron.events = function () {
 
 	});
 
+  // when the user hover over the character entries... display the tool tip
+  $('section.characterEntry').on('mouseover', function(e) {
+    // console.log('Mouse over section.characterEntry works.');
+    e.preventDefault();
+    var $thisItem = $(this);
+    var comicToolTip = $thisItem.attr('data-comictooltips1');
+    // console.log(comicToolTip);
+    // var $p = $('<p>').text(comicToolTip);
+
+    // $thisItem.find('aside.tooltip').empty();
+    // $thisItem.find('aside.tooltip').append($p);
+    $thisItem.find('aside.tooltip').css('display', 'flex');
+  })
+  .on('mouseout', function(e) {
+    // console.log('Mouse out of section.');
+    e.preventDefault();
+    var $thisItem = $(this);
+    $thisItem.find('aside.tooltip').css('display', 'none');
+  });
 
 }
 
@@ -510,7 +581,9 @@ marTron.events = function () {
 // you should not be defining things in here
 marTron.init = function () {
 	marTron.randomCharacters1(marTron.characterDefaultSearch1);
+  marTron.comicTooltips();
 	marTron.events();
+	
 }
 
 //////////////////////////////////////////////////

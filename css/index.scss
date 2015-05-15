@@ -40,6 +40,12 @@ section.characterEntry {
 
 	// add margin, adjust flexbox child
 	margin: 0 2% 0 2%;
+
+	// 3D
+	transform-style: preserve-3d;
+
+	// to allow the tooltip to be positioned relative to this parent
+	position: relative;
 }
 // END Parent ------------------------------------------------
 
@@ -77,6 +83,33 @@ section.characterEntry form {
 	}
 }
 // END Form ------------------------------------------------
+
+
+// TOOL TIP  ------------------------------------------------
+aside.tooltip {
+	position: absolute;
+	width: 5em;
+	height: 5em;
+	background: $marvelRedRGBA1;
+	right: 0;
+	top: 40%;
+
+	padding: 2%;
+
+	// flexbox parent
+	@include flexboxColumn1;
+	justify-content: center;
+
+	// DEFAULT DISPLAY STATUS
+	display: none;
+
+	p {
+		display: inline-block;
+		@include marginPaddingReset1;
+	}
+}
+// END TOOL TIP ------------------------------------------------
+
 
 // Article  ------------------------------------------------
 

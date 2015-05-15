@@ -54,6 +54,8 @@ mixin characterEntry1
 			// make sure label for and input name match
 			label(for='hero') Search
 			input(type='text',id='hero',name='hero')
+		aside.tooltip
+			p Click for this hero's comics.
 		article
 			// Javascript will dynamically generate character entries to fill these by default... once user enters hero names into fields these will change from randomly generated to the selected
 			// we'll use some default elements here so we can style things... mostly they'll be replaced later on with JS
