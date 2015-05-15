@@ -7,24 +7,27 @@
 // 		IMPORTS
 ////////////////////////////////////////////
 
+// you can import web/local fonts here instead of in the links.jade file
+// <link href='http://fonts.googleapis.com/css?family=Marvel:700,400' rel='stylesheet' type='text/css'>
+@import url('http://fonts.googleapis.com/css?family=Marvel:700,400');
 
 ////////////////////////////////////////////
 // 		VARIABLES
 ////////////////////////////////////////////
 
 // FONTS  ------------------------------------------------
-// for headers
-// $montserrat: 'Montserrat', sans-serif;
-// for text
-// $lora: 'Lora', serif;
+$marvelFont: 'Marvel', sans-serif;
+$openSans: 'Open Sans', sans-serif;
 // // END FONTS ------------------------------------------------
 
 // COLOURS  ------------------------------------------------
 // colours must go before the base
 $marvelGrey: #222222;
 $marvelRed: #F0141E;
+$marvelRedRGBA1: rgba(240, 20, 30,0.6);
 $marvelNavyBlue: #0E2430;
 $marvelLightBlue: #122934;
+$marvelLightBlueRGBA1: rgba(18, 41, 52, 0.6);
 $marvelShieldGreen: #002725;
 $marvelDarkGreen: #002221;
 $marvelPurple: #492647;
@@ -35,12 +38,15 @@ $marvelDarkSky: #171C22;
 
 // NOTE:  the font family may have been placed on all elements for the base and header... see style.scss
 
-$basefontfamily:'Open Sans', sans-serif;
-$basefontsize:16px;
+// we want things to be easy to read
+
+$basefontfamily:'Marvel', sans-serif;
+// $basefontsize:16px;
+$basefontsize:20px;
 $baselineheight:16px;
-$baseFontColor: black;
+$baseFontColor: white;
 $baseHoverColor: #ab4d63;
-$basebackcolor: white;
+$basebackcolor: black;
 // // END BASE ------------------------------------------------
 
 
@@ -58,6 +64,37 @@ $basebackcolor: white;
 // I almost always get rid of text decoration so why no just get rid of it by default?
 a {
 	text-decoration: none;
+	// additional defaults
+	color: $baseFontColor;
+	transition: all 0.5s ease-in;
+	&:link {
+		color: $baseFontColor;
+	}
+	&:visited {
+		color: $baseFontColor;
+	}
+	&:hover {
+		color: $baseFontColor;
+		text-decoration: underline;
+	}
+}
+
+// want all buttons to look like this by default
+button {
+	border: 0;
+	font-family: $openSans;
+	text-transform: uppercase;
+	font-weight: bold;
+	background: $marvelRed;
+	color: white;
+	border-radius: 2px;
+	// can't use your mixin because it's called after this file
+	transition: all 0.5s ease-in;
+
+	&:hover {
+		background: white;
+		color: $marvelRed;
+	}
 }
 
 .italicIt {

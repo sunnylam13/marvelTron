@@ -28,17 +28,11 @@
     <!--//////////////////////////////////////////-->
     
     
-    <header>
-      <h1>Marvel Utopia</h1>
-      <h2>Interactive Gaming and Ordering Portal</h2>
+    <header class="wrapper">
+      <h1 class="logo">MarvelTron</h1>
+      <h2>Interactive Portal</h2>
     </header>
-    <nav class="selectMenu">
-      <!-- we'll want to make use of the Amazon Product Advertising API for these sections-->
-      <button class="comics">Comics</button>
-      <button class="books">Books</button>
-      <button class="tvshows">TV Shows</button>
-    </nav>
-    <main>
+    <main class="wrapper">
       <section class="showcase">
             <!--//////////////////////////////////////////-->
             <!-- 		CHARACTER ENTRY CARD-->
@@ -46,85 +40,15 @@
             <section class="characterEntry">
               <form>
                 <!-- make sure label for and input name match-->
-                <label for="hero">Search Hero</label>
+                <label for="hero">Search</label>
                 <input type="text" id="hero" name="hero"/>
               </form>
               <article>
                 <!-- Javascript will dynamically generate character entries to fill these by default... once user enters hero names into fields these will change from randomly generated to the selected-->
-                <!-- we'll use some default elements here so we can style things... mostly they'll be replaced later on with JS--><img src="https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg"/>
+                <!-- we'll use some default elements here so we can style things... mostly they'll be replaced later on with JS-->
+                <div class="imgFrame"><img src="https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg"/></div>
                 <h2>Hulk</h2>
-                <p class="description"></p><a href="https://marvel.com/universe/Hulk_(Bruce_Banner)">Read More on the Marvel Universe Wiki</a>
-                <!-- when the user clicks on the h3 it animates/opens to reveal the details-->
-                <h3>Character Info</h3>
-                <!-- the details are only revealed when the user clicks the h3-->
-                <aside class="characterInfo">
-                  <!-- this can be designed as a modal so that the entry doesn't take up a large amount of space-->
-                  <!-- for the ... use the ::after-->
-                  <div>
-                    <div>
-                      <h4>Real Name</h4>
-                    </div>
-                    <div>
-                      <p>Robert Bruce Banner</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Height</h4>
-                    </div>
-                    <div>
-                      <p>5' 9&frac12;" (Banner); 6'6" (gray Hulk); 7' &ndash; 8' (green/savageHulk); 7'6" (green/Professor Hulk)</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Weight</h4>
-                    </div>
-                    <div>
-                      <p>128 lbs. (Banner); 900 lbs. (gray Hulk); 1,040 &ndash; 1,400 lbs.(green/savage Hulk); 1,150 lbs. (green/Professor Hulk)</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Powers</h4>
-                    </div>
-                    <div>
-                      <td>The Hulk possesses an incredible level of superhuman physical ability. His capacity for physical strength is potentially limitless due to the fact that the Hulk's strength increases proportionally with his level of great emotional stress, anger in particular. The Hulk uses his superhumanly</td><a href="javascript:void(0)">more</a>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Abilities</h4>
-                    </div>
-                    <div>
-                      <p>Dr. Bruce Banner is a genius in nuclear physics, possessing a mind so brilliant that it cannot be measured on any known intelligence test. When Banner is the Hulk, Banner's consciousness is buried within the Hulk's, and can influence the Hulk's behavior only to a very limited extent.</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Group Affililations</h4>
-                    </div>
-                    <div>
-                      <p>Formerly Avengers, Defenders, Fantastic Four, Pantheon, Horsemen of Apocalypse, Warbound</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>First Appearance</h4>
-                    </div>
-                    <div>
-                      <p>Incredible Hulk #1 (1962)</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Origin</h4>
-                    </div>
-                    <div>
-                      <p>Incredible Hulk #1 (1962)</p>
-                    </div>
-                  </div>
-                </aside>
+                <p class="description">Caught in a gamma bomb explosion while trying to save the life of a teenager, Dr. Bruce Banner was transformed into the incredibly powerful creature called the Hulk. An all too often misunderstood hero, the angrier the Hulk gets, the stronger the Hulk gets.</p><a href="https://marvel.com/universe/Hulk_(Bruce_Banner)" class="readMore">Read More on the Marvel Universe Wiki</a>
               </article>
             </section>
             <!--//////////////////////////////////////////-->
@@ -136,85 +60,15 @@
             <section class="characterEntry">
               <form>
                 <!-- make sure label for and input name match-->
-                <label for="hero">Search Hero</label>
+                <label for="hero">Search</label>
                 <input type="text" id="hero" name="hero"/>
               </form>
               <article>
                 <!-- Javascript will dynamically generate character entries to fill these by default... once user enters hero names into fields these will change from randomly generated to the selected-->
-                <!-- we'll use some default elements here so we can style things... mostly they'll be replaced later on with JS--><img src="https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg"/>
+                <!-- we'll use some default elements here so we can style things... mostly they'll be replaced later on with JS-->
+                <div class="imgFrame"><img src="https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg"/></div>
                 <h2>Hulk</h2>
-                <p class="description"></p><a href="https://marvel.com/universe/Hulk_(Bruce_Banner)">Read More on the Marvel Universe Wiki</a>
-                <!-- when the user clicks on the h3 it animates/opens to reveal the details-->
-                <h3>Character Info</h3>
-                <!-- the details are only revealed when the user clicks the h3-->
-                <aside class="characterInfo">
-                  <!-- this can be designed as a modal so that the entry doesn't take up a large amount of space-->
-                  <!-- for the ... use the ::after-->
-                  <div>
-                    <div>
-                      <h4>Real Name</h4>
-                    </div>
-                    <div>
-                      <p>Robert Bruce Banner</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Height</h4>
-                    </div>
-                    <div>
-                      <p>5' 9&frac12;" (Banner); 6'6" (gray Hulk); 7' &ndash; 8' (green/savageHulk); 7'6" (green/Professor Hulk)</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Weight</h4>
-                    </div>
-                    <div>
-                      <p>128 lbs. (Banner); 900 lbs. (gray Hulk); 1,040 &ndash; 1,400 lbs.(green/savage Hulk); 1,150 lbs. (green/Professor Hulk)</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Powers</h4>
-                    </div>
-                    <div>
-                      <td>The Hulk possesses an incredible level of superhuman physical ability. His capacity for physical strength is potentially limitless due to the fact that the Hulk's strength increases proportionally with his level of great emotional stress, anger in particular. The Hulk uses his superhumanly</td><a href="javascript:void(0)">more</a>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Abilities</h4>
-                    </div>
-                    <div>
-                      <p>Dr. Bruce Banner is a genius in nuclear physics, possessing a mind so brilliant that it cannot be measured on any known intelligence test. When Banner is the Hulk, Banner's consciousness is buried within the Hulk's, and can influence the Hulk's behavior only to a very limited extent.</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Group Affililations</h4>
-                    </div>
-                    <div>
-                      <p>Formerly Avengers, Defenders, Fantastic Four, Pantheon, Horsemen of Apocalypse, Warbound</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>First Appearance</h4>
-                    </div>
-                    <div>
-                      <p>Incredible Hulk #1 (1962)</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Origin</h4>
-                    </div>
-                    <div>
-                      <p>Incredible Hulk #1 (1962)</p>
-                    </div>
-                  </div>
-                </aside>
+                <p class="description">Caught in a gamma bomb explosion while trying to save the life of a teenager, Dr. Bruce Banner was transformed into the incredibly powerful creature called the Hulk. An all too often misunderstood hero, the angrier the Hulk gets, the stronger the Hulk gets.</p><a href="https://marvel.com/universe/Hulk_(Bruce_Banner)" class="readMore">Read More on the Marvel Universe Wiki</a>
               </article>
             </section>
             <!--//////////////////////////////////////////-->
@@ -226,85 +80,15 @@
             <section class="characterEntry">
               <form>
                 <!-- make sure label for and input name match-->
-                <label for="hero">Search Hero</label>
+                <label for="hero">Search</label>
                 <input type="text" id="hero" name="hero"/>
               </form>
               <article>
                 <!-- Javascript will dynamically generate character entries to fill these by default... once user enters hero names into fields these will change from randomly generated to the selected-->
-                <!-- we'll use some default elements here so we can style things... mostly they'll be replaced later on with JS--><img src="https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg"/>
+                <!-- we'll use some default elements here so we can style things... mostly they'll be replaced later on with JS-->
+                <div class="imgFrame"><img src="https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg"/></div>
                 <h2>Hulk</h2>
-                <p class="description"></p><a href="https://marvel.com/universe/Hulk_(Bruce_Banner)">Read More on the Marvel Universe Wiki</a>
-                <!-- when the user clicks on the h3 it animates/opens to reveal the details-->
-                <h3>Character Info</h3>
-                <!-- the details are only revealed when the user clicks the h3-->
-                <aside class="characterInfo">
-                  <!-- this can be designed as a modal so that the entry doesn't take up a large amount of space-->
-                  <!-- for the ... use the ::after-->
-                  <div>
-                    <div>
-                      <h4>Real Name</h4>
-                    </div>
-                    <div>
-                      <p>Robert Bruce Banner</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Height</h4>
-                    </div>
-                    <div>
-                      <p>5' 9&frac12;" (Banner); 6'6" (gray Hulk); 7' &ndash; 8' (green/savageHulk); 7'6" (green/Professor Hulk)</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Weight</h4>
-                    </div>
-                    <div>
-                      <p>128 lbs. (Banner); 900 lbs. (gray Hulk); 1,040 &ndash; 1,400 lbs.(green/savage Hulk); 1,150 lbs. (green/Professor Hulk)</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Powers</h4>
-                    </div>
-                    <div>
-                      <td>The Hulk possesses an incredible level of superhuman physical ability. His capacity for physical strength is potentially limitless due to the fact that the Hulk's strength increases proportionally with his level of great emotional stress, anger in particular. The Hulk uses his superhumanly</td><a href="javascript:void(0)">more</a>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Abilities</h4>
-                    </div>
-                    <div>
-                      <p>Dr. Bruce Banner is a genius in nuclear physics, possessing a mind so brilliant that it cannot be measured on any known intelligence test. When Banner is the Hulk, Banner's consciousness is buried within the Hulk's, and can influence the Hulk's behavior only to a very limited extent.</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Group Affililations</h4>
-                    </div>
-                    <div>
-                      <p>Formerly Avengers, Defenders, Fantastic Four, Pantheon, Horsemen of Apocalypse, Warbound</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>First Appearance</h4>
-                    </div>
-                    <div>
-                      <p>Incredible Hulk #1 (1962)</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <h4>Origin</h4>
-                    </div>
-                    <div>
-                      <p>Incredible Hulk #1 (1962)</p>
-                    </div>
-                  </div>
-                </aside>
+                <p class="description">Caught in a gamma bomb explosion while trying to save the life of a teenager, Dr. Bruce Banner was transformed into the incredibly powerful creature called the Hulk. An all too often misunderstood hero, the angrier the Hulk gets, the stronger the Hulk gets.</p><a href="https://marvel.com/universe/Hulk_(Bruce_Banner)" class="readMore">Read More on the Marvel Universe Wiki</a>
               </article>
             </section>
             <!--//////////////////////////////////////////-->

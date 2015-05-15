@@ -13,7 +13,7 @@ mixin superheroNameTest1
 	section.nameTest
 		h2 Superhero Name Test
 		ul.nameList
-		p.attribution
+		//- p.attribution
 	////////////////////////////////////////////
 	// 		END SUPER HERO NAME TEST 1
 	///////////////////////////////////////////
@@ -52,7 +52,7 @@ mixin characterEntry1
 	section.characterEntry
 		form
 			// make sure label for and input name match
-			label(for='hero') Search Hero
+			label(for='hero') Search
 			input(type='text',id='hero',name='hero')
 		article
 			// Javascript will dynamically generate character entries to fill these by default... once user enters hero names into fields these will change from randomly generated to the selected
@@ -60,57 +60,58 @@ mixin characterEntry1
 			if block
 				block
 			else
-				img(src='https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg')
+				.imgFrame
+					img(src='https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg')
 				h2 Hulk
-				p.description
-				a(href='https://marvel.com/universe/Hulk_(Bruce_Banner)') Read More on the Marvel Universe Wiki
-				// when the user clicks on the h3 it animates/opens to reveal the details
-				h3 Character Info
-				// the details are only revealed when the user clicks the h3
-				aside.characterInfo
-					// this can be designed as a modal so that the entry doesn't take up a large amount of space
-					// for the ... use the ::after
-					div
-						div
-							h4 Real Name
-						div
-							p Robert Bruce Banner
-					div
-						div
-							h4 Height
-						div
-							p 5' 9&frac12;" (Banner); 6'6" (gray Hulk); 7' &ndash; 8' (green/savageHulk); 7'6" (green/Professor Hulk)
-					div
-						div
-							h4 Weight
-						div
-							p 128 lbs. (Banner); 900 lbs. (gray Hulk); 1,040 &ndash; 1,400 lbs.(green/savage Hulk); 1,150 lbs. (green/Professor Hulk)
-					div
-						div
-							h4 Powers
-						div
-							td The Hulk possesses an incredible level of superhuman physical ability. His capacity for physical strength is potentially limitless due to the fact that the Hulk's strength increases proportionally with his level of great emotional stress, anger in particular. The Hulk uses his superhumanly
-							a(href='javascript:void(0)') more
-					div
-						div
-							h4 Abilities
-						div
-							p Dr. Bruce Banner is a genius in nuclear physics, possessing a mind so brilliant that it cannot be measured on any known intelligence test. When Banner is the Hulk, Banner's consciousness is buried within the Hulk's, and can influence the Hulk's behavior only to a very limited extent.
-					div
-						div
-							h4 Group Affililations
-						div
-							p Formerly Avengers, Defenders, Fantastic Four, Pantheon, Horsemen of Apocalypse, Warbound
-					div
-						div
-							h4 First Appearance
-						div
-							p Incredible Hulk #1 (1962)
-					div
-						div
-							h4 Origin
-						div
-							p Incredible Hulk #1 (1962)
+				p.description Caught in a gamma bomb explosion while trying to save the life of a teenager, Dr. Bruce Banner was transformed into the incredibly powerful creature called the Hulk. An all too often misunderstood hero, the angrier the Hulk gets, the stronger the Hulk gets.
+				a(href='https://marvel.com/universe/Hulk_(Bruce_Banner)').readMore Read More on the Marvel Universe Wiki
+				//- // when the user clicks on the h3 it animates/opens to reveal the details
+				//- h3 Character Info
+				//- // the details are only revealed when the user clicks the h3... you'll need to set up an event delegation here
+				//- aside.characterInfo
+				//- 	// this can be designed as a modal so that the entry doesn't take up a large amount of space
+				//- 	// for the ... use the ::after
+				//- 	div
+				//- 		div
+				//- 			h4 Real Name
+				//- 		div
+				//- 			p Robert Bruce Banner
+				//- 	div
+				//- 		div
+				//- 			h4 Height
+				//- 		div
+				//- 			p 5' 9&frac12;" (Banner); 6'6" (gray Hulk); 7' &ndash; 8' (green/savageHulk); 7'6" (green/Professor Hulk)
+				//- 	div
+				//- 		div
+				//- 			h4 Weight
+				//- 		div
+				//- 			p 128 lbs. (Banner); 900 lbs. (gray Hulk); 1,040 &ndash; 1,400 lbs.(green/savage Hulk); 1,150 lbs. (green/Professor Hulk)
+				//- 	div
+				//- 		div
+				//- 			h4 Powers
+				//- 		div
+				//- 			td The Hulk possesses an incredible level of superhuman physical ability. His capacity for physical strength is potentially limitless due to the fact that the Hulk's strength increases proportionally with his level of great emotional stress, anger in particular. The Hulk uses his superhumanly
+				//- 			a(href='javascript:void(0)') more
+				//- 	div
+				//- 		div
+				//- 			h4 Abilities
+				//- 		div
+				//- 			p Dr. Bruce Banner is a genius in nuclear physics, possessing a mind so brilliant that it cannot be measured on any known intelligence test. When Banner is the Hulk, Banner's consciousness is buried within the Hulk's, and can influence the Hulk's behavior only to a very limited extent.
+				//- 	div
+				//- 		div
+				//- 			h4 Group Affililations
+				//- 		div
+				//- 			p Formerly Avengers, Defenders, Fantastic Four, Pantheon, Horsemen of Apocalypse, Warbound
+				//- 	div
+				//- 		div
+				//- 			h4 First Appearance
+				//- 		div
+				//- 			p Incredible Hulk #1 (1962)
+				//- 	div
+				//- 		div
+				//- 			h4 Origin
+				//- 		div
+				//- 			p Incredible Hulk #1 (1962)
 
 	////////////////////////////////////////////
 	// 		END CHARACTER ENTRY CARD

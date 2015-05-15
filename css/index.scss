@@ -1,0 +1,234 @@
+////////////////////////////////////////////
+// 		SHOW CASE
+////////////////////////////////////////////
+// this is the section that carries the 3 floating cards that will be filled with the character data
+
+section.showcase {
+	@include sectionPadding041515(2%,2%);
+
+	// flexbox parent
+	@include flexboxRow1;
+	align-items: flex-start;
+
+	position: relative;
+
+	// section.showcase os nth-child(0)
+	section.characterEntry:nth-child(1) {
+		background: $marvelNavyBlue;
+	}
+	section.characterEntry:nth-child(2) {
+		background: $marvelShieldGreen;
+	}
+	section.characterEntry:nth-child(3) {
+		background: $marvelPurple;
+	}
+}
+
+// ----------------------------------------
+// Character Entries  ------------------
+// ----------------------------------------
+
+// Parent  ------------------------------------------------
+section.characterEntry {
+	padding: 1%;
+	border-radius: 5px;
+	border: 3px solid $marvelDarkSky;
+
+	// flexbox child
+	flex: 1 33%;
+	flex: 1 29%;
+
+	// add margin, adjust flexbox child
+	margin: 0 2% 0 2%;
+}
+// END Parent ------------------------------------------------
+
+// Form  ------------------------------------------------
+section.characterEntry form {
+	display: block;
+	width: 100%;
+	@include sectionMargins041515(0,10%);
+
+	//flexbox parent
+	@include flexboxRow1;
+
+	label {
+		display: inline-block;
+		@include marginPaddingReset1;
+		text-align: center;
+
+		//flexbox child
+		flex: 1 25%;
+	}
+
+	input {
+		display: inline-block;
+		@include marginPaddingReset1;
+		// remove default border
+		border: none;
+		border-radius: 5px;
+
+		// text within field
+		padding: 2%;
+		text-align: center;
+
+		//flexbox child
+		flex: 1 75%;
+	}
+}
+// END Form ------------------------------------------------
+
+// Article  ------------------------------------------------
+
+section.characterEntry article {
+	width: 100%;
+
+	.imgFrame {
+		width: 100%;
+	}
+
+	.imgFrame img {
+		max-width: 100%;
+	}
+
+	h2 {
+		font-size: $basefontsize*2;
+		font-weight: bold;
+		@include sectionMargins041515(8%,5%);
+	}
+
+	p.description {
+		font-style: italic;
+		position: relative;
+		display: block;
+		&::before {
+			// position: absolute;
+			// @include blockquoteCodeGrey;
+			@include beforeAfterIconPlace042215a('\f10d');
+			font-size: $basefontsize*0.75;
+			color: $marvelRed;
+		}
+		&::after {
+			@include beforeAfterIconPlace042215a('\f10e');
+			font-size: $basefontsize*0.75;
+			margin:0px 0px 0px 10px;
+			color: $marvelRed;
+		}
+	}
+
+	a.readMore {
+		font-weight: bold;
+		&::after {
+			@include beforeAfterIconPlace042215a('\f101');
+			font-size: $basefontsize*0.75;
+			margin:0px 0px 0px 10px;
+			color: $marvelRed;
+		}
+	}
+}
+
+// END Article ------------------------------------------------
+
+
+// ----------------------------------------
+// END Character Entries  ------------------
+// ----------------------------------------
+
+////////////////////////////////////////////
+// 		END SHOW CASE
+////////////////////////////////////////////
+
+////////////////////////////////////////////
+// 		DISPLAY DISC
+////////////////////////////////////////////
+
+// ----------------------------------------
+// Parent  ------------------
+// ----------------------------------------
+section.displayDisc {
+	// make it round
+	border-radius: 50%;
+	// alter the plane of the circle with perspective or skew
+	
+	@include sectionPadding041515(10%,10%);
+
+	// because I don't know how many exploreUnits will be added by a call we shouldn't set a specific width to anything
+	@include flexboxRow1;
+}
+// ----------------------------------------
+// END Parent  ------------------
+// ----------------------------------------
+
+// ----------------------------------------
+// Explore Unit  ------------------
+// ----------------------------------------
+section.exploreUnit {
+	width: 172px;
+	// height: 278px;
+
+	// for the modal frame
+	position: relative;
+
+	@include transitionEffectAllEaseIn(0.5s);
+
+	.imgFrame {
+		width: auto;
+		height: auto;
+	}
+
+	.imgFrame img {
+		max-width: 100%;
+	}
+}
+
+// when you hover over exploreUnit, the .frame appears 
+section.exploreUnit:hover > .frame {
+	display: flex;
+}
+
+// ----------------------------------------
+// END Explore Unit  ------------------
+// ----------------------------------------
+
+// ----------------------------------------
+// Modal Frame  ------------------
+// ----------------------------------------
+section.exploreUnit .frame {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	// to shift the buttons away from bottom
+	padding: 0 0 5% 0;
+
+	// modal background
+	// background: $marvelRedRGBA1;
+	@include exploreUnitFrameGradient1($marvelLightBlueRGBA1,$marvelRedRGBA1);
+
+	//flexbox parent
+	// display: flex
+	@include flexboxColumn1;
+	justify-content: flex-end;
+	align-content: flex-end;
+
+	@include transitionEffectAllEaseIn(0.5s);
+
+	//default display
+	display: none;
+
+	button {
+		@include sectionMargins041515(10%,2%);
+		font-size: $basefontsize*0.75;
+	}
+}
+// ----------------------------------------
+// END Modal Frame  ------------------
+// ----------------------------------------
+
+
+
+////////////////////////////////////////////
+// 		END DISPLAY DISC
+////////////////////////////////////////////

@@ -1,0 +1,28 @@
+////////////////////////////////////////////
+// 		HEADER
+////////////////////////////////////////////
+
+header.wrapper {
+	text-align: center;
+	@include sectionPadding041515(1%,1%);
+	// craft the logo for the site here
+	h1.logo {
+		display: inline-block;
+		font-size: $basefontsize*4;
+		font-weight: bold;
+		color: white;
+		background: $marvelRed;
+		text-align: center;
+		padding: 0 0.8% 0 0.8%;
+		letter-spacing: -5px;
+	}
+
+	h2 {
+		font-size: $basefontsize*2;
+		@include sectionMargins041515(2%,2%);
+	}
+}
+
+////////////////////////////////////////////
+// 		END HEADER
+////////////////////////////////////////////

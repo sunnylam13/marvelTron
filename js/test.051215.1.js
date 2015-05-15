@@ -214,23 +214,41 @@ mATest1.displayCharacterNames = function (apiObj) {
 
   // build the <li> entry for hero
   var nameHero = targetResults.name;
+  // you have to concatenate the https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9/ + '.' + '.jpg'
   // https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg
   // "http://i.annihil.us/u/prod/marvel/i/mg/5/a0/538615ca33ab0"
   var thumbnail = targetResults.thumbnail.path+"."+targetResults.thumbnail.extension;
   var description = targetResults.description;
 
-  var heroItem = '<li>';
-    heroItem += '<h2>' + nameHero + '</h2>';
-    heroItem += "<img src='" + thumbnail + "'" + ">";
-    heroItem += "" + description + "";
-    heroItem += '</li>';
 
-  // $('section.nameTest img').attr('src', thumbnail);
+  // var heroItem = '<li>';
+  //   heroItem += '<h2>' + nameHero + '</h2>';
+  //   heroItem += "<img src='" + thumbnail + "'" + ">";
+  //   heroItem += "" + description + "";
+  //   heroItem += '</li>';
+
+  // build the <li> entry for the hero
+  var $li = $('<li>');
+  var $imgFrame = $('<div>').addClass('imgFrame');
+  var $img = $('<img>').attr({
+    src: thumbnail
+  });
+  var $charName = $('<h2>');
+  var $description = $('<p>').addClass('description').text(description);
+  var $readMoreLink = $('<a>').attr('href', targetResults.urls[1].url).text('Read More on the Marvel Universe Wiki');
+
+  // var $charInfo = $('<h3>').text('Character Info');
+
+  // put everything together
+  
+  $imgFrame.append($img);
+  $li.append($imgFrame,$charName,$description,$readMoreLink);
 
   // insert the elements into the DOM
-  $('section.nameTest ul.nameList').append(heroItem);
+  // $('section.nameTest ul.nameList').append(heroItem);
+  $('section.nameTest ul.nameList').append($li);
 
-  $('section.nameTest p.attribution').html(item.attributionHTML);
+  // $('section.nameTest p.attribution').html(item.attributionHTML);
 
   // console.log(item.attributionHTML);
 }
@@ -388,13 +406,13 @@ mATest1.displayComicCovers = function (apiObj) {
     // var readerLink = objItem.urls[2];
     // console.log(readerLink);
     var readerLink = mATest1.retrieveURL(objItem.urls, "reader");
-    console.log(readerLink);
+    // console.log(readerLink);
 
     // store a reference to the "purchase" link
     // var purchaseLink = objItem.urls[1];
     // console.log(purchaseLink);
     var purchaseLink = mATest1.retrieveURL(objItem.urls, "purchase");
-    console.log(purchaseLink);
+    // console.log(purchaseLink);
 
     // create the buttons
     // var $button = $('<button>').attr('name', 'buynow').text('Buy Now');
@@ -432,7 +450,8 @@ mATest1.displayComicCovers = function (apiObj) {
 
 mATest1.retrieveURL = function (urlArray,actionType) {
   // where actionType = "reader" or "purchase"
-  console.log('mATest1.retrieveURL is active.');
+  // find and locate the objects that have the type = "reader" or type="purchase"
+  // console.log('mATest1.retrieveURL is active.');
 
   for (var i = 0; i < urlArray.length; i++) {
     switch(actionType) {
