@@ -656,8 +656,8 @@ maProd1.init = function () {
 // EXECUTION CODE
 
 jQuery(document).ready(function($) {
-  mATest1.init();
-  maProd1.init();
+  // mATest1.init();
+  // maProd1.init();
 });  //end doc.onready function
 
 //////////////////////////////////////////////////

@@ -23,7 +23,7 @@ marTron.characterIDStored = [];
 // ----------------------------------------
 // GET CHARACTER REQUEST  ------------------
 // ----------------------------------------
-marTron.getCharacterNames = function () {
+marTron.getCharacter = function (targetParent,userInputString) {
   var targetType = marTron.categoryURLAdd[marTron.categoryURLAdd.indexOf('characters')];
   // console.log('The target category is %s', targetType);
 
@@ -56,7 +56,7 @@ marTron.getCharacterNames = function () {
     type: 'GET',
     dataType: 'html',
     data: {
-      name: 'Hulk',
+      name: userInputString,
       limit: 50,
       apikey: marTron.publicKey,
     },
@@ -68,14 +68,15 @@ marTron.getCharacterNames = function () {
       console.log('The converted data is now an object', convertData);
 
       // display character entry
-      marTron.displayCharacterNames(convertData);
+      // don't forget to pass the targetParent as per the parameter design
+      marTron.displayCharacter(targetParent,convertData);
 
       // for later use with acquiring covers... we need to store the characte name and ID into an array
-      marTron.characterIDStored.push(marTron.getCharacterID(convertData));
-      console.log('Character ID stored is ', marTron.characterIDStored);
+      // marTron.characterIDStored.push(marTron.getCharacterID(convertData));
+      // console.log('Character ID stored is ', marTron.characterIDStored);
 
       // get digital comics for this named character
-      marTron.getDigitalComics(marTron.characterIDStored);
+      // marTron.getDigitalComics(marTron.characterIDStored);
 
     }
   })
@@ -98,44 +99,81 @@ marTron.getCharacterNames = function () {
 // ----------------------------------------
 // DISPLAY CHARACTER  ------------------
 // ----------------------------------------
-marTron.displayCharacterNames = function (apiObj) {
-  var item = apiObj;
-  // this always selects the first character that matches
-  var targetResults = apiObj.data.results[0];
+marTron.displayCharacter = function (targetParent,apiObj) {
 
-  // build the <li> entry for hero
-  var nameHero = targetResults.name;
+	// store reference to retrieved API data object from server
+	var item = apiObj;
+	console.log(item);
 
-  // "http://i.annihil.us/u/prod/marvel/i/mg/5/a0/538615ca33ab0"
-  // https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg
-  // you have to concatenate the https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9/ + '.' + '.jpg'
-  var thumbnail = targetResults.thumbnail.path+"."+targetResults.thumbnail.extension;
-  var description = targetResults.description;
+	// store reference to target destination
+	var $targetParent = targetParent;
+	console.log($targetParent);
 
-  // build the <li> entry for the hero
-  var $li = $('<li>');
-  var $imgFrame = $('<div>').addClass('imgFrame');
-  var $img = $('<img>').attr({
-    src: thumbnail
-  });
-  var $charName = $('<h2>');
-  var $description = $('<p>').addClass('description').text(description);
-  var $readMoreLink = $('<a>').attr('href', targetResults.urls[1].url).text('Read More on the Marvel Universe Wiki');
+	// this always selects the first character that matches
+	var targetResults = apiObj.data.results[0];
+	console.log(targetResults);
 
-  // var $charInfo = $('<h3>').text('Character Info');
 
-  // put everything together
-  
-  $imgFrame.append($img);
-  $li.append($imgFrame,$charName,$description,$readMoreLink);
+	// if the search returns no matches then don't do anything
+	if (targetResults) {
+		// store the reference to the existing <article> entry
+			var $targetAppend = $targetParent.find('article');
 
-  // insert the elements into the DOM
-  // $('section.nameTest ul.nameList').append(heroItem);
-  $('section.nameTest ul.nameList').append($li);
+			// empty out the previous contents of <article>
+			// WARNING:  disable this if using the replace method
+			// $targetAppend.empty();
 
-  // $('section.nameTest p.attribution').html(item.attributionHTML);
 
-  // console.log(item.attributionHTML);
+			// data for the entry
+			var nameHero = targetResults.name;
+			console.log('Character name', nameHero);
+			// "http://i.annihil.us/u/prod/marvel/i/mg/5/a0/538615ca33ab0"
+			// https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg
+			// you have to concatenate the https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9/ + '.' + '.jpg'
+			var thumbnail = targetResults.thumbnail.path+"."+targetResults.thumbnail.extension;
+			console.log('The image thumbnail is', thumbnail);
+			var description = targetResults.description;
+			console.log('The character description is', description);
+			var wikiLink1 = "";
+			// use a loop to find the object with the wiki link and set it
+			$.each(targetResults.urls, function(index, arrayVal) {
+				if (this.type == "wiki") {
+					wikiLink1 = this.url;
+				}
+			});
+
+
+			// BUILD ENTRY VERSION 1  ------------------------------------------------
+			// // build the entry for the hero
+			// // var $li = $('<li>');
+			// var $imgFrame = $('<div>').addClass('imgFrame');
+			// var $img = $('<img>').attr({
+			// src: thumbnail
+			// });
+			// var $charName = $('<h2>');
+			// var $description = $('<p>').addClass('description').text(description);
+			// var $readMoreLink = $('<a>').attr('href', targetResults.urls[1].url).text('Read More on the Marvel Universe Wiki');
+
+			// // put everything together
+			// $imgFrame.append($img);
+
+			// // insert the elements into the DOM
+			// $targetAppend.append($imgFrame,$charName,$description,$readMoreLink);
+			// END BUILD ENTRY VERSION 1 ------------------------------------------------
+
+			// REPLACE EXISTING ENTRY VERSION 1  ------------------------------------------------
+			
+			$targetParent.find('.imgFrame img').attr('src', thumbnail);
+			$targetParent.find('article h2').text(nameHero);
+			$targetParent.find('p.description').text(description);
+			$targetParent.find('a.readMore').attr('href', wikiLink1);
+
+			// END REPLACE EXISTING ENTRY VERSION 1 ------------------------------------------------
+
+	}
+
+	
+	
 }
 // ----------------------------------------
 // END DISPLAY CHARACTER  ------------------
@@ -190,8 +228,8 @@ marTron.getDigitalComics = function (charIDArray) {
 
   console.log('marTron.getDigitalComics is active.');
 
-  // charIDArray is null if marTron.getCharacterNames is run after this function...
-  // this must be placed after marTron.getCharacterNames
+  // charIDArray is null if marTron.getCharacter is run after this function...
+  // this must be placed after marTron.getCharacter
   console.log('The character ID array passed was', charIDArray);
 
   // if it's a certain div then you'd want to associate it with additional targeting data...
@@ -358,13 +396,48 @@ marTron.displayComicCovers = function (apiObj) {
 //////////////////////////////////////////////////
 // FUNCTIONS
 
+marTron.events = function () {
+
+	// when the character entry is clicked, display the comics for that character
+	// $('section.characterEntry').on('click', function(event) {
+	// 	event.preventDefault();
+	// 	marTron.displayComicCovers(convertData);
+	// });
+
+	// when user changes the form field and submits, get the character data
+	$('section.characterEntry form').on('submit', function(event) {
+		event.preventDefault();
+
+		// create a reference to 'this' section...
+		// aim for the parent
+		var $targetParent = $(this).parents('section.characterEntry');
+		console.log($targetParent);
+
+		// grab the value from 'this' input field
+		var inputString = $targetParent.find('input#hero').val();
+		console.log('User input before encoding is %s', inputString);
+
+		// encode the user's input so that it's ready for a URI string
+		// https://stackoverflow.com/questions/332872/encode-url-in-javascript
+		// inputString = encodeURIComponent(inputString);
+
+		console.log('The user searches for: ',inputString);
+
+		// use that input field value to get the character if any (it is the target destination)
+		marTron.getCharacter($targetParent,inputString);
+		
+
+
+	});
+
+}
 
 
 // method to initialize our application
 // all our code will be put inside here
 // you should not be defining things in here
 marTron.init = function () {
-	//
+	marTron.events();
 }
 
 //////////////////////////////////////////////////
