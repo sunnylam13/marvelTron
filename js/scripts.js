@@ -19,6 +19,11 @@ marTron.publicKey = "2c57ad00857c6163fa0417563cd31499";
 marTron.limit = 50;
 marTron.character = "Spider-Man";
 marTron.characterIDStored = [];
+marTron.comicMode = true;
+marTron.movieMode = false;
+marTron.tvMode = false;
+
+marTron.targetClicked
 
 // ----------------------------------------
 // GET CHARACTER REQUEST  ------------------
@@ -26,6 +31,9 @@ marTron.characterIDStored = [];
 marTron.getCharacter = function (targetParent,userInputString) {
   var targetType = marTron.categoryURLAdd[marTron.categoryURLAdd.indexOf('characters')];
   // console.log('The target category is %s', targetType);
+
+  var $targetParent = targetParent;
+  console.log($targetParent);
 
   var baseURL = marTron.baseURL;
       baseURL += targetType;
@@ -71,12 +79,28 @@ marTron.getCharacter = function (targetParent,userInputString) {
       // don't forget to pass the targetParent as per the parameter design
       marTron.displayCharacter(targetParent,convertData);
 
-      // for later use with acquiring covers... we need to store the characte name and ID into an array
-      // marTron.characterIDStored.push(marTron.getCharacterID(convertData));
-      // console.log('Character ID stored is ', marTron.characterIDStored);
+      // if comic mode is enabled from nav menu
+  //     if (marTron.comicMode == true) {
+  //     	// for later use with acquiring covers... we need to store the characte name and ID into an array
+  //     	// get the character ID and store it in an array
+ 
+  //     	marTron.characterIDStored.push(marTron.getCharacterID(convertData));
+  //     	console.log('Character ID stored is ', marTron.characterIDStored);
 
-      // get digital comics for this named character
-      // marTron.getDigitalComics(marTron.characterIDStored);
+  //     	// give the article a data attribute matching the character's id by passing the data object
+  //     	targetParent.find('article').attr('data-martronheroid', marTron.getCharacterID(convertData).id);
+
+		// // get digital comics for this named character
+		// // marTron.getDigitalComics(marTron.characterIDStored);
+  //     }
+
+      // I want the character's ID stored anyway as a data attribute for later access when calling comics upon click
+      marTron.characterIDStored.push(marTron.getCharacterID(convertData));
+      console.log('Character ID stored is ', marTron.characterIDStored);
+
+      // give the article a data attribute matching the character's id by passing the data object
+      targetParent.find('article').attr('data-martronheroid', marTron.getCharacterID(convertData).id);
+
 
     }
   })
@@ -398,12 +422,6 @@ marTron.displayComicCovers = function (apiObj) {
 
 marTron.events = function () {
 
-	// when the character entry is clicked, display the comics for that character
-	// $('section.characterEntry').on('click', function(event) {
-	// 	event.preventDefault();
-	// 	marTron.displayComicCovers(convertData);
-	// });
-
 	// when user changes the form field and submits, get the character data
 	$('section.characterEntry form').on('submit', function(event) {
 		event.preventDefault();
@@ -419,16 +437,36 @@ marTron.events = function () {
 
 		// encode the user's input so that it's ready for a URI string
 		// https://stackoverflow.com/questions/332872/encode-url-in-javascript
+		// not using this seems to work better than using it
 		// inputString = encodeURIComponent(inputString);
 
 		console.log('The user searches for: ',inputString);
 
 		// use that input field value to get the character if any (it is the target destination)
 		marTron.getCharacter($targetParent,inputString);
-		
-
 
 	});
+
+
+	// if comic mode is true (thus enabled), if you click one of the character entries... you reveal its comics
+	
+	$('section.characterEntry').on('click', function(event) {
+		event.preventDefault();
+		
+		// if comic mode is enabled from nav menu
+		if (marTron.comicMode == true) {
+			// grab the data attribute with the character ID
+			var $thisEntry = $(this);
+			var heroID = $thisEntry.find('article').attr('data-martronheroid');
+
+			// use that data ID to find the correct comics
+			// get digital comics for this named character
+			// previous version used a character array, you have to change the GET to use a string
+			marTron.getDigitalComics(marTron.characterIDStored);
+		}
+
+	});
+
 
 }
 
