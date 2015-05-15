@@ -17,7 +17,7 @@ marTron.categoryURLAdd = [
 ];
 marTron.publicKey = "2c57ad00857c6163fa0417563cd31499";
 marTron.limit = 50;
-marTron.character = "Spider-Man";
+marTron.characterDefaultSearch1 = ["Wolverine","Hulk","Thor","Captain America","Silver Surfer", "Thanos"];
 marTron.characterIDStored = [];
 marTron.comicMode = true;
 marTron.movieMode = false;
@@ -248,59 +248,47 @@ marTron.getCharacterID = function (apiObj) {
 // GET COMICS  ------------------
 // ----------------------------------------
 // for everything linked to comic covers, prices and more
-marTron.getDigitalComics = function (charIDArray) {
+marTron.getDigitalComics = function (idString) {
 
   console.log('marTron.getDigitalComics is active.');
 
-  // charIDArray is null if marTron.getCharacter is run after this function...
-  // this must be placed after marTron.getCharacter
-  console.log('The character ID array passed was', charIDArray);
+  // get the comics
+  $.ajax({
+    // don't forget to add + "comics" because the baseURL/endpoint doesn't include that
+    url: marTron.baseURL + "comics",
+    type: 'GET',
+    dataType: 'html',
+    data: {
+      // format: 'digital%20comic',
+      format: 'comic',
+      formatType: 'comic',
+      hasDigitalIssue: 'false',
+      characters: idString,
+      // characters: "1009351",
+      apikey: marTron.publicKey
+    },
+    success: function (res,status,jqXHR) {
+      console.log('Get Digital Comics action is a success.');
+      // console.log('The returned object for comics for this character is...');
+      // console.log(res);
 
-  // if it's a certain div then you'd want to associate it with additional targeting data...
+      // the server returns the data in JSONP format, which must be converted to Javascript with JSON.parse(ARRAY)
+      var convertData = JSON.parse(res);
+      console.log('The converted data is now an object', convertData);
 
-  // for each ID stored in the marTron.characterIDStored array, get the available digital comic editions for that character
-
-  $.each(charIDArray, function(index, objItem) {
-
-    console.log(index,objItem);
-
-    // get the comics
-    $.ajax({
-      // don't forget to add + "comics" because the baseURL/endpoint doesn't include that
-      url: marTron.baseURL + "comics",
-      type: 'GET',
-      dataType: 'html',
-      data: {
-        // format: 'digital%20comic',
-        format: 'comic',
-        formatType: 'comic',
-        hasDigitalIssue: 'false',
-        characters: objItem.id,
-        // characters: "1009351",
-        apikey: marTron.publicKey
-      },
-      success: function (res,status,jqXHR) {
-        console.log('Get Digital Comics action is a success.');
-        // console.log('The returned object for comics for this character is...');
-        // console.log(res);
-
-        // the server returns the data in JSONP format, which must be converted to Javascript with JSON.parse(ARRAY)
-        var convertData = JSON.parse(res);
-        console.log('The converted data is now an object', convertData);
-
-        marTron.displayComicCovers(convertData);
-      }
-    })
-    .done(function() {
-      console.log("success");
-    })
-    .fail(function() {
-      console.log("error");
-    })
-    .always(function() {
-      console.log("complete");
-    });
+      marTron.displayComicCovers(convertData);
+    }
+  })
+  .done(function() {
+    console.log("success");
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    console.log("complete");
   });
+
 }
 // ----------------------------------------
 // END GET COMICS  ------------------
@@ -349,8 +337,17 @@ marTron.displayComicCovers = function (apiObj) {
   var targetResultsArray = apiObj.data.results;
   console.log(targetResultsArray);
 
+  // empty the $('section.displayDisc')
+  $('section.displayDisc').empty();
+
+  // set the $('section.displayDisc') to have padding top and bottom of 10% each
+  $('section.displayDisc').css({
+  	paddingTop: '10%',
+  	paddingBottom: '10%'
+  });
+
   $.each(targetResultsArray, function(index, objItem) {
-    var $li = $('<li>');
+    // var $li = $('<li>');
     var $section = $('<section>').addClass('exploreUnit');
     
     var $imgFrame = $('<div>').addClass('imgFrame');
@@ -401,8 +398,8 @@ marTron.displayComicCovers = function (apiObj) {
     $frame.append($aPreview,$aPurchase);
     $imgFrame.append($img);
     $section.append($imgFrame,$frame);
-    $li.append($section);
-    $('section.comicCoverTest1 ul.nameList').append($li);
+    // $li.append($section);
+    $('section.displayDisc').append($section);
   });
 }
 
@@ -419,6 +416,42 @@ marTron.displayComicCovers = function (apiObj) {
 
 //////////////////////////////////////////////////
 // FUNCTIONS
+
+function getRandom (num) {
+  var my_num = Math.floor(Math.random()*num);
+  return my_num;
+}
+
+marTron.randomCharacters1 = function (array) {
+	// array to use...
+	// marTron.characterDefaultSearch1
+
+	var randNum = 0;
+	var randNumPrev = [];
+
+	// store a reference to character entry boxes
+	var $charBoxes = $('section.characterEntry');
+
+	// for each section.characterEntry
+	$.each($charBoxes, function(index, entryBox) {
+		// select a random number
+		// we don't want the same characters showing up so if the generated number matches the previous number then roll another random number
+		do{
+			randNum = getRandom(array.length);
+			randNumPrev.push(randNum);
+		}while(randNumPrev.indexOf(randNum) == -1);
+		
+
+		// when the page loads, randomly select some Marvel characters who I know have full entries
+		var charSelectString = array[randNum];		
+
+		// pass the chosen character string to get character data
+		// you want to pass the targetParent, which will be $(this)... don't use entryBox
+		marTron.getCharacter($(this),charSelectString);
+	});
+
+	
+}
 
 marTron.events = function () {
 
@@ -450,19 +483,20 @@ marTron.events = function () {
 
 	// if comic mode is true (thus enabled), if you click one of the character entries... you reveal its comics
 	
-	$('section.characterEntry').on('click', function(event) {
+	$('section.characterEntry article').on('click', function(event) {
 		event.preventDefault();
 		
 		// if comic mode is enabled from nav menu
 		if (marTron.comicMode == true) {
 			// grab the data attribute with the character ID
 			var $thisEntry = $(this);
-			var heroID = $thisEntry.find('article').attr('data-martronheroid');
+			var heroID = $thisEntry.attr('data-martronheroid');
+			console.log('The hero/character ID is %s', heroID);
 
 			// use that data ID to find the correct comics
 			// get digital comics for this named character
 			// previous version used a character array, you have to change the GET to use a string
-			marTron.getDigitalComics(marTron.characterIDStored);
+			marTron.getDigitalComics(heroID);
 		}
 
 	});
@@ -475,6 +509,7 @@ marTron.events = function () {
 // all our code will be put inside here
 // you should not be defining things in here
 marTron.init = function () {
+	marTron.randomCharacters1(marTron.characterDefaultSearch1);
 	marTron.events();
 }
 

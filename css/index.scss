@@ -150,7 +150,8 @@ section.displayDisc {
 	border-radius: 50%;
 	// alter the plane of the circle with perspective or skew
 	
-	@include sectionPadding041515(10%,10%);
+	// if we want this area to vanish until the comics are displayed then you should set padding-top and padding-bottom using jQuery
+	// @include sectionPadding041515(10%,10%);
 
 	// because I don't know how many exploreUnits will be added by a call we shouldn't set a specific width to anything
 	@include flexboxRow1;
@@ -168,6 +169,10 @@ section.exploreUnit {
 
 	// for the modal frame
 	position: relative;
+
+	// while using flexbox the tops and bottoms are right up against each other
+	// this may change during responsive CSS coding
+	@include sectionMargins041515(0,1.5%);
 
 	@include transitionEffectAllEaseIn(0.5s);
 
