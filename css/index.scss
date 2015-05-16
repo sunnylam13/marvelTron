@@ -1,4 +1,23 @@
 ////////////////////////////////////////////
+// 		NAV SELECT MENU
+////////////////////////////////////////////
+// used for controlling the current modes that are available
+
+// ----------------------------------------
+// PARENT  ------------------
+// ----------------------------------------
+nav.selectMenu {
+	display: none;
+}
+// ----------------------------------------
+// END PARENT  ------------------
+// ----------------------------------------
+
+////////////////////////////////////////////
+// 		END NAV SELECT MENU
+////////////////////////////////////////////
+
+////////////////////////////////////////////
 // 		SHOW CASE
 ////////////////////////////////////////////
 // this is the section that carries the 3 floating cards that will be filled with the character data
@@ -9,19 +28,9 @@ section.showcase {
 	// flexbox parent
 	@include flexboxRow1;
 	align-items: flex-start;
+	// align-items: flex-end;
 
-	position: relative;
-
-	// section.showcase os nth-child(0)
-	section.characterEntry:nth-child(1) {
-		background: $marvelNavyBlue;
-	}
-	section.characterEntry:nth-child(2) {
-		background: $marvelShieldGreen;
-	}
-	section.characterEntry:nth-child(3) {
-		background: $marvelPurple;
-	}
+	position: relative;	
 }
 
 // ----------------------------------------
@@ -31,7 +40,7 @@ section.showcase {
 // Parent  ------------------------------------------------
 section.characterEntry {
 	padding: 1%;
-	border-radius: 5px;
+	border-radius: 10px;
 	border: 3px solid $marvelDarkSky;
 
 	// flexbox child
@@ -46,6 +55,19 @@ section.characterEntry {
 
 	// to allow the tooltip to be positioned relative to this parent
 	position: relative;
+}
+
+// section.showcase os nth-child(0)
+section.characterEntry:nth-child(1) {
+	background: $marvelNavyBlue;
+	transform: matrix(1,-0.5,0,1,0,0);
+}
+section.characterEntry:nth-child(2) {
+	background: $marvelShieldGreen;
+}
+section.characterEntry:nth-child(3) {
+	background: $marvelPurple;
+	transform: matrix(1,0.5,0,1,0,0);
 }
 // END Parent ------------------------------------------------
 
@@ -92,7 +114,7 @@ aside.tooltip {
 	height: 5em;
 	background: $marvelRedRGBA1;
 	right: 0;
-	top: 40%;
+	top: 33%;
 
 	padding: 2%;
 
@@ -123,6 +145,7 @@ section.characterEntry article {
 
 	.imgFrame img {
 		max-width: 100%;
+		border-radius: 5px;
 	}
 
 	h2 {

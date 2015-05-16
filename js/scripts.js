@@ -341,10 +341,12 @@ marTron.displayComicCovers = function (apiObj) {
   $('section.displayDisc').empty();
 
   // set the $('section.displayDisc') to have padding top and bottom of 10% each
-  $('section.displayDisc').css({
-  	paddingTop: '10%',
-  	paddingBottom: '10%'
-  });
+  // $('section.displayDisc').css({
+  // 	paddingTop: '10%',
+  // 	paddingBottom: '10%'
+  // });
+  // Tween option
+  TweenMax.to($('section.displayDisc'),2,{ease:Power2.easeIn,paddingTop: '10%',paddingBottom: '10%'});
 
   $.each(targetResultsArray, function(index, objItem) {
     // var $li = $('<li>');
@@ -535,6 +537,12 @@ marTron.randomCharacters1 = function (array) {
 
 marTron.events = function () {
 
+  // animate the character cards into place
+  var startTL1 = new TimelineMax();
+  startTL1.staggerFrom($('section.characterEntry:nth-child(1)'),3,{ease: Power2.easeInOut, left:'-9999999px',opacity:0},1);
+  startTL1.staggerFrom($('section.characterEntry:nth-child(3)'),3,{ease: Power2.easeInOut, right:'-9999999px',opacity:0},1);
+  startTL1.staggerFrom($('section.characterEntry:nth-child(2)'),3,{ease: Power2.easeInOut, bottom:'-9999999px',opacity:0},1);  
+
   // stop clicks on the links from triggering the character entry
   $('a.readMore').click(function(e) {
     e.stopPropagation();
@@ -572,8 +580,8 @@ marTron.events = function () {
 
 	// if comic mode is true (thus enabled), if you click one of the character entries... you reveal its comics
 	
-	$('section.characterEntry article').on('click', function(event) {
-		event.preventDefault();
+	$('section.characterEntry article').on('click', function(e) {
+		e.preventDefault();
 		
 		// if comic mode is enabled from nav menu
 		if (marTron.comicMode == true) {
@@ -592,23 +600,54 @@ marTron.events = function () {
 
   // when the user hover over the character entries... display the tool tip
   $('section.characterEntry').on('mouseover', function(e) {
+    e.preventDefault();
     // console.log('Mouse over section.characterEntry works.');
-    // e.preventDefault();
     var $thisItem = $(this);
+    
     var comicToolTip = $thisItem.attr('data-comictooltips1');
     // console.log(comicToolTip);
     // var $p = $('<p>').text(comicToolTip);
 
     // $thisItem.find('aside.tooltip').empty();
     // $thisItem.find('aside.tooltip').append($p);
-    $thisItem.find('aside.tooltip').css('display', 'flex');
+    // $thisItem.find('aside.tooltip').css('display', 'flex');
+    // Tween option
+    TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'flex'});
   })
   .on('mouseout', function(e) {
     // console.log('Mouse out of section.');
     e.preventDefault();
     var $thisItem = $(this);
-    $thisItem.find('aside.tooltip').css('display', 'none');
+    // $thisItem.find('aside.tooltip').css('display', 'none');
+    TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'none'});
   });
+
+  // when the user hovers over the character entries
+  $('section.characterEntry').on('mouseover', function(e) {
+    e.preventDefault();
+    // remove the transform to straighten them out
+    // expand the size/scale them
+    // move them into center position
+    TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
+
+    
+  })
+  .on('mouseleave', function(e) {
+    e.preventDefault();
+    // add back the transform
+    TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn});
+    // un-scale them
+    // move them back to their original position
+  });
+
+  // $('section.characterEntry:nth-child(1)').on('mouseover', function(e) {
+  //   e.preventDefault();
+  //   TweenMax.to($(this),1,{ease:Power2.easeIn,left:'20%',zIndex:100,rotate:'360deg'});
+  // })
+  // .on('mouseout', function(e) {
+  //   e.preventDefault();
+  //   TweenMax.to($(this),1,{ease:Power2.easeIn,left:'0',zIndex: 0});
+  // });
 
 }
 
