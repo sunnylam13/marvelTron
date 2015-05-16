@@ -535,9 +535,15 @@ marTron.randomCharacters1 = function (array) {
 
 marTron.events = function () {
 
+  // stop clicks on the links from triggering the character entry
+  $('a.readMore').click(function(e) {
+    e.stopPropagation();
+  });
+
 	// when user changes the form field and submits, get the character data
-	$('section.characterEntry form').on('submit', function(event) {
-		event.preventDefault();
+	$('section.characterEntry form').on('submit', function(e) {
+		e.preventDefault();
+    e.stopPropagation();
 
 		// create a reference to 'this' section...
 		// aim for the parent
@@ -557,6 +563,9 @@ marTron.events = function () {
 
 		// use that input field value to get the character if any (it is the target destination)
 		marTron.getCharacter($targetParent,inputString);
+
+    // clear the input field once all of this is done
+    $('section.characterEntry form input#hero').val('');
 
 	});
 
@@ -584,7 +593,7 @@ marTron.events = function () {
   // when the user hover over the character entries... display the tool tip
   $('section.characterEntry').on('mouseover', function(e) {
     // console.log('Mouse over section.characterEntry works.');
-    e.preventDefault();
+    // e.preventDefault();
     var $thisItem = $(this);
     var comicToolTip = $thisItem.attr('data-comictooltips1');
     // console.log(comicToolTip);
