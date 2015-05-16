@@ -479,6 +479,7 @@ marTron.randomCharacters1 = function (array) {
 	// marTron.characterDefaultSearch1
 
 	var randNum;
+  	var currentNum;
 	var randNumPrev = [];
 
 	// store a reference to character entry boxes
@@ -488,14 +489,41 @@ marTron.randomCharacters1 = function (array) {
 	$.each($charBoxes, function(index, entryBox) {
 		// select a random number
 		// we don't want the same characters showing up so if the generated number matches the previous number then roll another random number
-		do{
-			randNum = getRandom(array.length);
-			randNumPrev.push(randNum);
-		}while(randNumPrev.indexOf(randNum) == -1);
 		
+		randNum = getRandom(array.length);
+
+		// while currentNum != randNum... the opposite of what we want...
+		while (currentNum != randNum) {
+			// place this condition in the loop
+			if (randNumPrev.indexOf(randNum) == -1) {
+				// if the number isn't in the array set var currentNum = randNum and use this for the selection
+				// this is the condition we want
+				currentNum = randNum;
+			} else if (randNumPrev.indexOf(randNum) != -1) {
+				// if the number is in the array then I want to generate another random number
+				randNum = getRandom(array.length);
+			}
+		}
+
+		// do{
+		// 	randNum = getRandom(array.length);
+		// 	randNumPrev.push(randNum);
+		// }while(randNumPrev.indexOf(randNum) == -1);
+		
+		// for (var i = 0; i < randNumPrev.length; i++) {
+		// 	if (randNum == undefined) {
+		// 		randNum = getRandom(array.length);
+		// 		randNumPrev.push(randNum);
+		// 	} else if(randNumPrev[i] == randNum){
+		// 		return;
+		// 	} else if (randNumPrev[i] != randNum) {
+		// 		randNum = getRandom(array.length);
+		// 	}
+		// }
 
 		// when the page loads, randomly select some Marvel characters who I know have full entries
-		var charSelectString = array[randNum];		
+		// var charSelectString = array[randNum];
+		var charSelectString = array[currentNum];		
 
 		// pass the chosen character string to get character data
 		// you want to pass the targetParent, which will be $(this)... don't use entryBox
