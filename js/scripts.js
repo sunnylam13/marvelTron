@@ -79,21 +79,6 @@ marTron.getCharacter = function (targetParent,userInputString) {
       // don't forget to pass the targetParent as per the parameter design
       marTron.displayCharacter(targetParent,convertData);
 
-      // if comic mode is enabled from nav menu
-  //     if (marTron.comicMode == true) {
-  //     	// for later use with acquiring covers... we need to store the characte name and ID into an array
-  //     	// get the character ID and store it in an array
- 
-  //     	marTron.characterIDStored.push(marTron.getCharacterID(convertData));
-  //     	console.log('Character ID stored is ', marTron.characterIDStored);
-
-  //     	// give the article a data attribute matching the character's id by passing the data object
-  //     	targetParent.find('article').attr('data-martronheroid', marTron.getCharacterID(convertData).id);
-
-		// // get digital comics for this named character
-		// // marTron.getDigitalComics(marTron.characterIDStored);
-  //     }
-
       // I want the character's ID stored anyway as a data attribute for later access when calling comics upon click
       marTron.characterIDStored.push(marTron.getCharacterID(convertData));
       console.log('Character ID stored is ', marTron.characterIDStored);
@@ -431,49 +416,14 @@ marTron.comicTooltips = function () {
 
 	// go to each section.characterEntry
 	$.each($targetParent, function(index, val) {
-    // if (marTron.comicMode ==  true) {
-    //  // when comic mode is enabled
-    //  // set the title attribute to have text for the jQuery tooltip
-    //  $(this).attr('data-comictooltips1', 'Click to see comics');
-    // } else {
-    //  $(this).attr('data-comictooltips1', '');
-    // }
-
     if (marTron.comicMode ==  true) {
       // when comic mode is enabled
       // set the title attribute to have text for the jQuery tooltip
-      // $(this).attr('title', 'Click the above card to see comics.');
       $(this).attr('data-comictooltips1', 'Click to see comics');
     } else {
-      // $(this).attr('title', '');
       $(this).attr('data-comictooltips1', '');
     }
-
-    // if (marTron.comicMode ==  true) {
-    //   // when comic mode is enabled
-    //   // set the title attribute to have text for the jQuery tooltip
-    //   // $(this).attr('title', 'Click the above card to see comics.');
-    //   $(this).find('aside.toolip').attr('display', 'flex');
-    // } else {
-    //   // $(this).attr('title', '');
-    //   $(this).find('aside.toolip').attr('display', 'none');
-    // }
-
-    // if (marTron.comicMode ==  true) {
-    //   // when comic mode is enabled
-    //   // set the title attribute to have text for the jQuery tooltip
-    //   // $(this).attr('title', 'Click the above card to see comics.');
-    //   $(this).find('aside.toolip').attr('display', 'flex');
-    // }
-
-    // has attribute activate
-    // $('[data-comictooltips1]').tooltip();
-    // $('[title]').tooltip();
-	});
-
-	// has attribute activate
-	// $('[data-comictooltips1]').tooltip();
-	
+	});	
 }
 
 marTron.randomCharacters1 = function (array) {
@@ -481,7 +431,7 @@ marTron.randomCharacters1 = function (array) {
 	// marTron.characterDefaultSearch1
 
 	var randNum;
-  	var currentNum;
+  var currentNum;
 	var randNumPrev = [];
 
 	// store a reference to character entry boxes
@@ -507,22 +457,6 @@ marTron.randomCharacters1 = function (array) {
 			}
 		}
 
-		// do{
-		// 	randNum = getRandom(array.length);
-		// 	randNumPrev.push(randNum);
-		// }while(randNumPrev.indexOf(randNum) == -1);
-		
-		// for (var i = 0; i < randNumPrev.length; i++) {
-		// 	if (randNum == undefined) {
-		// 		randNum = getRandom(array.length);
-		// 		randNumPrev.push(randNum);
-		// 	} else if(randNumPrev[i] == randNum){
-		// 		return;
-		// 	} else if (randNumPrev[i] != randNum) {
-		// 		randNum = getRandom(array.length);
-		// 	}
-		// }
-
 		// when the page loads, randomly select some Marvel characters who I know have full entries
 		// var charSelectString = array[randNum];
 		var charSelectString = array[currentNum];		
@@ -535,13 +469,30 @@ marTron.randomCharacters1 = function (array) {
 	
 }
 
-marTron.events = function () {
+
+marTron.firstLoadAnim1 = function () {
 
   // animate the character cards into place
-  var startTL1 = new TimelineMax();
-  startTL1.staggerFrom($('section.characterEntry:nth-child(1)'),3,{ease: Power2.easeInOut, left:'-9999999px',opacity:0},1);
-  startTL1.staggerFrom($('section.characterEntry:nth-child(3)'),3,{ease: Power2.easeInOut, right:'-9999999px',opacity:0},1);
-  startTL1.staggerFrom($('section.characterEntry:nth-child(2)'),3,{ease: Power2.easeInOut, bottom:'-9999999px',opacity:0},1);  
+  this.startTL1 = new TimelineMax();
+  this.startTL1.staggerFrom($('section.characterEntry:nth-child(1)'),1,{ease: Power2.easeInOut, left:'-9999999px',opacity:0},0.6);
+  this.startTL1.staggerFrom($('section.characterEntry:nth-child(3)'),1,{ease: Power2.easeInOut, right:'-9999999px',opacity:0},0.6);
+  this.startTL1.staggerFrom($('section.characterEntry:nth-child(2)'),1,{ease: Power2.easeInOut, top:'-9999999px',opacity:0},0.6);  
+}
+
+marTron.hoverCards1 = function () {
+  // make the character card entries hover
+  
+  $target = $('section.characterEntry');
+
+  this.hovercardTL1 = new TimelineMax({repeat:-1,yoyo:true});
+  this.hovercardTL1.yoyo(true);
+  this.hovercardTL1.staggerTo($target,1.6,{css:{transform:'translateX(0) translateY(15px) translateZ(15px)'},ease:SlowMo.easeOut},0.2);
+  this.hovercardTL1.staggerTo($target,1.6,{css:{transform:'translateX(0) translateY(0) translateZ(0)'}, ease:SlowMo.easeOut},0.2);
+  this.hovercardTL1.play();
+
+ }
+
+marTron.events = function () {
 
   // stop clicks on the links from triggering the character entry
   $('a.readMore').click(function(e) {
@@ -598,56 +549,93 @@ marTron.events = function () {
 
 	});
 
-  // when the user hover over the character entries... display the tool tip
+  // when the user hover over the character entries... 
   $('section.characterEntry').on('mouseover', function(e) {
     e.preventDefault();
     // console.log('Mouse over section.characterEntry works.');
     var $thisItem = $(this);
-    
-    var comicToolTip = $thisItem.attr('data-comictooltips1');
-    // console.log(comicToolTip);
-    // var $p = $('<p>').text(comicToolTip);
 
-    // $thisItem.find('aside.tooltip').empty();
-    // $thisItem.find('aside.tooltip').append($p);
+    // ----------------------------------------
+    // TOOLTIP  ------------------
+    // ----------------------------------------
+    // setup the data attribute
+    var comicToolTip = $thisItem.attr('data-comictooltips1');
+    
+    // display the tool tip
     // $thisItem.find('aside.tooltip').css('display', 'flex');
     // Tween option
     TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'flex'});
+    // ----------------------------------------
+    // END TOOLTIP  ------------------
+    // ----------------------------------------
+    
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    // remove the transform to straighten them out
+    // expand the size/scale them
+    // move them into center position
+    TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(0px)'}});
+    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(0px)'}});
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+
   })
   .on('mouseout', function(e) {
     // console.log('Mouse out of section.');
     e.preventDefault();
     var $thisItem = $(this);
+    
+    // ----------------------------------------
+    // TOOLTIP  ------------------
+    // ----------------------------------------
     // $thisItem.find('aside.tooltip').css('display', 'none');
     TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'none'});
-  });
-
-  // when the user hovers over the character entries
-  $('section.characterEntry').on('mouseover', function(e) {
-    e.preventDefault();
-    // remove the transform to straighten them out
-    // expand the size/scale them
-    // move them into center position
-    TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
-
+    // ----------------------------------------
+    // END TOOLTIP  ------------------
+    // ----------------------------------------
     
-  })
-  .on('mouseleave', function(e) {
-    e.preventDefault();
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
     // add back the transform
     TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
     // un-scale them
     // move them back to their original position
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
   });
 
   // $('section.characterEntry:nth-child(1)').on('mouseover', function(e) {
   //   e.preventDefault();
-  //   TweenMax.to($(this),1,{ease:Power2.easeIn,left:'20%',zIndex:100,rotate:'360deg'});
-  // })
-  // .on('mouseout', function(e) {
+  //   TweenMax.to($(this),1.5,{css:{transform:"matrix(0,0,0,0,0,0)"}});
+  // }).on('mouseout', function(e) {
   //   e.preventDefault();
-  //   TweenMax.to($(this),1,{ease:Power2.easeIn,left:'0',zIndex: 0});
+  //   TweenMax.to($(this),1.5,{css:{transform:"matrix(1,-0.5,0,1,0,0)"}});
   // });
+
+  // $('section.characterEntry:nth-child(3)').on('mouseover', function(e) {
+  //   e.preventDefault();
+  //   TweenMax.to($(this),1.5,{css:{transform:"matrix(0,0,0,0,0,0)"}});
+  // }).on('mouseout', function(e) {
+  //   e.preventDefault();
+  //   TweenMax.to($(this),1.5,{css:{transform:"matrix(1,0.5,0,1,0,0)"}});
+  // });
+
+  // WARNING:  section.exploreUnit don't exist yet, they are dynamically created, you need event delegation
+  $('section.displayDisc').on('mouseover','section.exploreUnit', function(e) {
+    e.preventDefault();
+    console.log('section.exploreUnit mouseover fired');
+    TweenMax.to($(this),0.6,{scaleX:1.5,scaleY:1.5,zIndex:10,ease:Power2.easeIn});
+  }).on('mouseout','section.exploreUnit', function(event) {
+    event.preventDefault();
+    console.log('section.exploreUnit mouseout fired');
+    TweenMax.to($(this),0.3,{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn});
+  });
 
 }
 
@@ -656,6 +644,8 @@ marTron.events = function () {
 // all our code will be put inside here
 // you should not be defining things in here
 marTron.init = function () {
+  marTron.firstLoadAnim1();
+  // marTron.hoverCards1();
 	marTron.randomCharacters1(marTron.characterDefaultSearch1);
   marTron.comicTooltips();
 	marTron.events();
