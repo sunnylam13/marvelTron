@@ -212,18 +212,61 @@ section.characterEntry article {
 // Parent  ------------------
 // ----------------------------------------
 section.displayDisc {
+	width: 100%;
+
 	// make it round
-	border-radius: 50%;
+	// border-radius: 50%;
 	// alter the plane of the circle with perspective or skew
+	// Saturday, May 16, 2015 10:09 PM:  after doing some research, setting the border radius isn't needed, what I need are transforms
 	
 	// if we want this area to vanish until the comics are displayed then you should set padding-top and padding-bottom using jQuery
 	// @include sectionPadding041515(10%,10%);
 
 	// because I don't know how many exploreUnits will be added by a call we shouldn't set a specific width to anything
-	@include flexboxRow1;
+	// flexbox may not be needed at all for the circling gallery effect
+	// @include flexboxRow1;
+	
+	//3D
+	perspective: 1200px;
+	overflow: hidden;
+
+	// positioning
+	// use this for setting the location of the slider nav
+	position: relative;
 }
 // ----------------------------------------
 // END Parent  ------------------
+// ----------------------------------------
+
+// ----------------------------------------
+// FIGURE SPINNER  ------------------
+// ----------------------------------------
+figure#spinner {
+	
+	width: 100%;
+
+	// 3D  ------------------------------------------------
+	transform-style: preserve-3d;
+	// /*change the origin for the animation... The transform-origin CSS property lets you modify the origin for transformations of an element.  A -ve z-offset means into the page usually unless the element has already been rotated, while +ve means towards the user's eye. */
+	// /*the z-offset of the figure#spinner must match those of the img's within it*/
+	// transform-origin: 50% 50% $exploreUnitZOffSet1;
+	// transition: 1s;
+	// @include transitionEffectAllEaseIn(1s);
+
+	// /* change the plane of view so it seems like you're looking partially from the top at an angle... you must also add this to your Javascript otherwise it will be overwritten...
+	// may mean I need to set this on the images? */
+	// transform: rotateX(-7deg);
+
+	// END 3D ------------------------------------------------
+
+	
+	// flexbox parent
+	// because I don't know how many exploreUnits will be added by a call we shouldn't set a specific width to anything
+	// flexbox may not be needed at all for the circling gallery effect
+	@include flexboxRow1;
+}
+// ----------------------------------------
+// END FIGURE SPINNER  ------------------
 // ----------------------------------------
 
 // ----------------------------------------
@@ -241,6 +284,10 @@ section.exploreUnit {
 	@include sectionMargins041515(0,1.5%);
 
 	@include transitionEffectAllEaseIn(0.5s);
+
+	//3D
+	// transform-origin: 50% 50% $exploreUnitZOffSet1;
+	// outline: 1px solid transparent;
 
 	.imgFrame {
 		width: auto;
@@ -298,7 +345,55 @@ section.exploreUnit .frame {
 // END Modal Frame  ------------------
 // ----------------------------------------
 
+// ----------------------------------------
+// SLIDER NAV  ------------------
+// ----------------------------------------
+section.displayDisc .sliderNav {
+	position: absolute;
+	bottom:50%;
+	left:0;
+	width: 100%;
+	overflow: hidden;
 
+	// flexbox parent
+	@include flexboxRow1;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+
+	// DISPLAY STATUS
+
+	.left,.right {
+		//flexbox child
+		flex: 1 50%;
+	}
+
+	.left {
+		//flexbox parent
+		@include flexboxRow1;
+		justify-content: flex-start;
+		align-content: flex-start;
+	}
+
+	.right {
+		//flexbox parent
+		@include flexboxRow1;
+		justify-content: flex-end;
+		align-content: flex-end;
+	}
+
+	span.fa.fa-chevron-left,span.fa.fa-chevron-right {
+		color: white;
+		@include transitionEffectAllEaseIn(0.5s);
+		&:hover {
+			color: $marvelRed;
+		}
+	}
+}
+// ----------------------------------------
+// END SLIDER NAV  ------------------
+// ----------------------------------------
 
 ////////////////////////////////////////////
 // 		END DISPLAY DISC
