@@ -510,21 +510,29 @@ marTron.hoverCardsLeft1 = function () {
 
   }
 
- marTron.hoverCardsRight1 = function () {
+marTron.hoverCardsRight1 = function () {
   // make the character card entries hover
-  
-  $target = $('section.characterEntry:nth-child(3)');
+
+  var $target = $('section.characterEntry:nth-child(3)');
 
   this.hcR1 = new TimelineMax({repeat:-1,yoyo:true});
   this.hcR1.yoyo(true);
   this.hcR1.staggerTo($target,2.6,{css:{transform:'matrix(1,0.5,0,1,0,-10)'},ease:SlowMo.easeOut},0.3);
   this.hcR1.staggerTo($target,3,{css:{transform:'matrix(1,0.5,0,1,0,10)'},ease:SlowMo.easeOut},0.5);
   this.hcR1.play();
+}
 
- }
+marTron.pulsingBorder1 = function (targetE) {
+  // where targetE is the selector with quotes
+  var $target = $(targetE);
+
+  this.psB1 = new TimelineMax({repeat:-1,yoyo:true});
+  this.hcR1.yoyo(true);
+  this.psB1.to($target,0.6,{outline:'5px solid #f0141e'});
+}
 
 marTron.events = function () {
-  // marTron.carouselEvents();
+
 
   // stop clicks on the links from triggering the character entry
   $('a.readMore').click(function(e) {
@@ -648,12 +656,19 @@ marTron.events = function () {
   // WARNING:  section.exploreUnit don't exist yet, they are dynamically created, you need event delegation
   $('section.displayDisc').on('mouseover','section.exploreUnit', function(e) {
     e.preventDefault();
+    //setup the pulsing border animation
+    marTron.pulsingBorder1($(this));
+
     // console.log('section.exploreUnit mouseover fired');    
     TweenMax.to($(this),0.6,{scaleX:1.5,scaleY:1.5,zIndex:10,ease:Power2.easeIn});
+
+    marTron.psB1.play();
   }).on('mouseout','section.exploreUnit', function(event) {
     event.preventDefault();
     // console.log('section.exploreUnit mouseout fired');
     TweenMax.to($(this),0.3,{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn});
+
+    marTron.psB1.kill();
   });
 
   // ----------------------------------------
