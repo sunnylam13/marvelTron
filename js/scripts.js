@@ -406,104 +406,6 @@ marTron.displayComicCovers = function (apiObj) {
 ////////////////////////////////////////////
 
 
-////////////////////////////////////////////
-//    3D CAROUSEL
-////////////////////////////////////////////
-// because of the animation JS plugin we need to convert everything into matrix(1,0,0,1,0,0) format
-
-marTron.craftRotateString = function (axisString,angleValue) {
-  var string = "rotate" + axisString + "(";
-    string += angleValue;
-    string += "deg)";
-  return string;
-}
-
-marTron.itemAngles = function () {
-  // this function sets the initial item angle positions upon load before we do anything else... especially if our gallery is huge
-
-  var totalItems = marTron.items1.length;
-  // may want to floor the value so you avoid decimals
-  // var degreeItem = marTron.netDegrees/totalItems;
-  var degreeItem = Math.floor(marTron.netDegrees/totalItems);
-  marTron.degreeConstant = degreeItem;
-  var degreeCount = degreeItem;
-
-  $.each(marTron.items1, function(index, target) {
-    // what we have here is an array of objects
-    // console.log(index,target);
-
-    // I had to store the target in the $() so that it became a jQuery object, otherwise jQuery methods wouldn't work
-    var finalTarget = $(target);
-
-    if (index == 0) {
-      // finalTarget.css('transform', 'rotateY(0deg)');
-      finalTarget.css('transform', 'rotateY(0deg)').attr('data-maritemangle', 'rotateY(0deg)');
-    }
-
-    // you needed to use degreeCount not degreeItem otherwise all images would be set with the same angle
-    // finalTarget.css('transform', marTron.craftRotateString("Y",degreeCount));
-    finalTarget.css('transform', marTron.craftRotateString("Y",degreeCount)).attr('data-maritemangle', marTron.craftRotateString("Y",degreeCount));
-
-    degreeCount += degreeItem;
-  });
-}
-
-marTron.galleryspin = function (dirString) {
-
-  // this is used for the previous and next buttons
-  if (dirString == "left") {
-    marTron.angle -= marTron.degreeConstant;
-    console.log(marTron.angle);
-  } else {
-    marTron.angle += marTron.degreeConstant;
-    
-    console.log(marTron.angle);
-  }
-
-  marTron.spinner.css({
-    '-webkit-transform': "rotateY("+ marTron.angle +"deg) rotateX(-7deg)",
-    '-moz-transform': "rotateY("+ marTron.angle +"deg) rotateX(-7deg)",
-    'transform': "rotateY("+ marTron.angle +"deg) rotateX(-7deg)"
-  });
-
-}
-
-marTron.carouselEvents = function () {
-  // ----------------------------------------
-  // 3D CAROUSEL EVENTS  ------------------
-  // ----------------------------------------
-  marTron.itemAngles();
-
-  $(marTron.leftPrev).on('click', function(e) {
-    e.preventDefault();
-    console.log('clicked left');
-    // var dirString = marTron.leftPrev.attr('data-dir1').val();
-    // console.log(dirString);
-    // marTron.galleryspin(dirString);
-    marTron.galleryspin("left");
-  });
-
-  $(marTron.rightNext).on('click', function(e) {
-    e.preventDefault();
-    console.log('clicked right');
-    // var dirString = marTron.rightNext.attr('data-dir1').val();
-    // console.log(dirString);
-    // marTron.galleryspin(dirString);
-    marTron.galleryspin("right");
-  });
-
-  
-  // ----------------------------------------
-  // END 3D CAROUSEL EVENTS  ------------------
-  // ----------------------------------------
-}
-
-
-////////////////////////////////////////////
-//    END 3D CAROUSEL
-////////////////////////////////////////////
-
-
 //////////////////////////////////////////////////
 // FUNCTIONS
 
@@ -706,8 +608,7 @@ marTron.events = function () {
     // expand the size/scale them
     // move them into center position
     TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
-    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(0px)'}});
-    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(0px)'}});
+
     // ----------------------------------------
     // END ANIMATIONS  ------------------
     // ----------------------------------------
@@ -747,45 +648,12 @@ marTron.events = function () {
   // WARNING:  section.exploreUnit don't exist yet, they are dynamically created, you need event delegation
   $('section.displayDisc').on('mouseover','section.exploreUnit', function(e) {
     e.preventDefault();
-    console.log('section.exploreUnit mouseover fired');
-
-    // due to the animation changes, we need to make sure that the item is set to the correct rotation when the item is affected by the JS animation plugin
-    // this should avoid the weird z-rotations that cause the comic cover to be upside down
-    // we have to switch to matrix syntax, since I haven't altered the matrix at all (we're only rotating it)
-    // the default of matrix(1, 0, 0, 1, 0, 0) doesn't work
-    // has to be matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)
-    
-    // grab this unit's transform property value
-    // note that this is actually applied as an inline style attribute so you must use .attr()
-    // var transformString = $(this).attr('data-maritemangle');
-    // var transformString = $(this).attr('style').match(/(rotateY)\((\-*)(\d*)(deg)\)/);
-    // console.log(transformString);
-    // EXAMPLE:  style="transform: rotateY(225deg);"
-    // need to extract the rotate
-    
-    // var transformOriginString = $(this).css('transform-origin');
-    // console.log(transformOriginString);
-
+    // console.log('section.exploreUnit mouseover fired');    
     TweenMax.to($(this),0.6,{scaleX:1.5,scaleY:1.5,zIndex:10,ease:Power2.easeIn});
-    // TweenMax.to($(this),0.6,{scaleX:1.5,scaleY:1.5,zIndex:10,ease:Power2.easeIn,css:{transform:'matrix(1, 0, 0, 1, 0, 0)'}});
-    // TweenMax.to($(this),0.6,{scaleX:1.5,scaleY:1.5,zIndex:10,ease:Power2.easeIn});
-    // TweenMax.set($(this),{css:{transform:'matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)'}});
-    // TweenMax.to($(this),{css:{transform:'matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)'}});
-    // moment you start scaling things it messes up
-    // TweenMax.to($(this),0.6,{scaleX:1.5,scaleY:1.5,zIndex:10,ease:Power2.easeIn, css:{transform:'matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)'}});
-    // TweenMax.to($(this),0.6,{css:{transform:'matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)'}});
-    // TweenMax.set($(this),{scaleX:1.5,scaleY:1.5,zIndex:10,ease:Power2.easeIn, css:{transform:'matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)'}});
   }).on('mouseout','section.exploreUnit', function(event) {
     event.preventDefault();
-    console.log('section.exploreUnit mouseout fired');
+    // console.log('section.exploreUnit mouseout fired');
     TweenMax.to($(this),0.3,{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn});
-    // TweenMax.to($(this),0.3,{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn,css:{transform:'matrix(1, 0, 0, 1, 0, 0)'}});
-    // TweenMax.to($(this),0.3,{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn});
-    // TweenMax.set($(this),{css:{transform:'matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)'}});
-    // TweenMax.to($(this),{css:{transform:'matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)'}});
-    // TweenMax.to($(this),0.6,{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn,css:{transform:'matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)'}});
-    // TweenMax.to($(this),0.6,{css:{transform:'matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)'}});
-    // TweenMax.set($(this),{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn,css:{transform:'matrix3d(0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 2000, 0, -2000, 1)'}});
   });
 
   // ----------------------------------------
