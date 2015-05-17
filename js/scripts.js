@@ -148,10 +148,17 @@ marTron.displayCharacter = function (targetParent,apiObj) {
 			// "http://i.annihil.us/u/prod/marvel/i/mg/5/a0/538615ca33ab0"
 			// https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg
 			// you have to concatenate the https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9/ + '.' + '.jpg'
-			var thumbnail = targetResults.thumbnail.path+"."+targetResults.thumbnail.extension;
-			console.log('The image thumbnail is', thumbnail);
-			var description = targetResults.description;
-			console.log('The character description is', description);
+			if (targetResults.thumbnail != undefined || targetResults.thumbnail != null) {
+        var thumbnail = targetResults.thumbnail.path + "." + targetResults.thumbnail.extension;
+        console.log('The image thumbnail is', thumbnail);
+      }
+      
+      var description = targetResults.description;
+      console.log('The character description is', description);
+      if (description == "") {
+        description = "No data available at this time.  Please check back later.";
+      }
+			
 			var wikiLink1 = "";
 			// use a loop to find the object with the wiki link and set it
 			$.each(targetResults.urls, function(index, arrayVal) {
@@ -350,22 +357,30 @@ marTron.displayComicCovers = function (apiObj) {
 
     // the images of the comic are in an array and include the first image which is the cover...  that would be objItem.images[0]
     // the remaining images are previews... with text separated out
-    var $img = $('<img>').attr('src', objItem.images[0].path + "." + objItem.images[0].extension);
+    if (objItem.images != null || objItem.images != undefined) {
+      var $img = $('<img>').attr('src', objItem.images[0].path + "." + objItem.images[0].extension);
+      $imgFrame.append($img);
+    }
+
     var $frame = $('<div>').addClass('frame');
 
     // the issue is whether the url array links increase or change
     // store a reference to the "reader" link
-    // var readerLink = objItem.urls[2];
-    // console.log(readerLink);
-    var readerLink = marTron.retrieveURL(objItem.urls, "reader");
-    // console.log(readerLink);
+    if (marTron.retrieveURL(objItem.urls, "reader")) {
+      // var readerLink = objItem.urls[2];
+      // console.log(readerLink);
+      var readerLink = marTron.retrieveURL(objItem.urls, "reader");
+      // console.log(readerLink);
+    }
 
     // store a reference to the "purchase" link
-    // var purchaseLink = objItem.urls[1];
-    // console.log(purchaseLink);
-    var purchaseLink = marTron.retrieveURL(objItem.urls, "purchase");
-    // console.log(purchaseLink);
-
+    if (marTron.retrieveURL(objItem.urls, "purchase")) {
+      // var purchaseLink = objItem.urls[1];
+      // console.log(purchaseLink);
+      var purchaseLink = marTron.retrieveURL(objItem.urls, "purchase");
+      // console.log(purchaseLink);
+    }
+    
     // create the buttons
     // var $button = $('<button>').attr('name', 'buynow').text('Buy Now');
     var $aPurchase = $('<a>').attr({
@@ -392,7 +407,7 @@ marTron.displayComicCovers = function (apiObj) {
 
     // $frame.append($buttonPreview,$button);
     $frame.append($aPreview,$aPurchase);
-    $imgFrame.append($img);
+    // $imgFrame.append($img);
     $section.append($imgFrame,$frame);
     // $li.append($section);
     marTron.sliderParent.append($section);
@@ -530,7 +545,9 @@ marTron.pulsingBorder1 = function (targetE) {
 
   this.psB1 = new TimelineMax({repeat:-1,yoyo:true});
   this.hcR1.yoyo(true);
+  this.psB1.to($target,0.6,{outline:'none'});
   this.psB1.to($target,0.6,{outline:'5px solid #f0141e'});
+  this.psB1.to($target,0.6,{outline:'none'});
 }
 
 marTron.characterEvents = function () {
@@ -667,6 +684,9 @@ marTron.comicEvents = function () {
   // WARNING:  section.exploreUnit don't exist yet, they are dynamically created, you need event delegation
   $('section.displayDisc').on('mouseover','section.exploreUnit', function(e) {
     e.preventDefault();
+
+    // console.log('section.exploreUnit mouseover');
+
     //setup the pulsing border animation
     marTron.pulsingBorder1($(this));
 
@@ -676,11 +696,17 @@ marTron.comicEvents = function () {
     marTron.psB1.play();
   }).on('mouseout','section.exploreUnit', function(event) {
     event.preventDefault();
+
+    // console.log('section.exploreUnit mouseout');
+
     // console.log('section.exploreUnit mouseout fired');
     TweenMax.to($(this),0.3,{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn});
 
-    // kill works better than pause or reverse in this case
+    // WARNING:  you'll want a reverse and then a kill at this point... provided that your animation sequence starts with a base state, goes to your desired end state and then ends back at your base state... otherwise if you mouseout halfway through the animation, the outline/border remains midway which isn't what I want
+    marTron.psB1.reverse();
+    // this.psB1.set($(this),{outline:'none'});
     marTron.psB1.kill();
+
   });
 
   // ----------------------------------------
@@ -697,6 +723,7 @@ marTron.events = function () {
   marTron.randomCharacters1(marTron.characterDefaultSearch1);
   marTron.comicTooltips();
   marTron.characterEvents();
+  marTron.comicEvents();
 }
 
 
