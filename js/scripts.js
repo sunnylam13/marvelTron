@@ -535,7 +535,7 @@ marTron.characterEvents = function () {
   // things were starting to get crowded
   // this holds the events for the character entries
   
-  
+
   // stop clicks on the links from triggering the character entry
   $('a.readMore').click(function(e) {
     e.stopPropagation();
@@ -672,6 +672,7 @@ marTron.comicEvents = function () {
     // console.log('section.exploreUnit mouseout fired');
     TweenMax.to($(this),0.3,{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn});
 
+    // kill works better than pause or reverse in this case
     marTron.psB1.kill();
   });
 
