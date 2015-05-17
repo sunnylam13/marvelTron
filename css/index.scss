@@ -6,11 +6,78 @@
 // ----------------------------------------
 // PARENT  ------------------
 // ----------------------------------------
-nav.selectMenu {
-	display: none;
+nav.selectMenu {	
+	// positioning
+	position: fixed;
+	
+	top: 0;
+	right: 0;
+	z-index: 10;
+
+	background: $marvelGrey;
+	padding: 2%;
+	width: 25%;
+	border-radius: 10px;
+
+	//flexbox parent
+	@include flexboxColumn1;
+	// align-items: flex-start;
+
+	// DISPLAY STATUS
+	// must come after the flexbox/display:flex
+	right: -25%;
+
+	// .naviFrame {
+	// 	position: relative;
+	// 	// .naviTab will be positioned relative to this
+	// 	width: 100%;
+	// 	height: auto;
+	// }
 }
 // ----------------------------------------
 // END PARENT  ------------------
+// ----------------------------------------
+
+// ----------------------------------------
+// NAVI TAB  ------------------
+// ----------------------------------------
+// this is the visible portion of the mode/nav menu
+
+nav.selectMenu .naviTab {
+	position: absolute;
+	left: -26.5%;
+	top: 10%;
+
+	font-family: $openSans;
+	padding: 1% 5% 1% 5%;
+	cursor: pointer;
+
+	//testing
+	background: $marvelRed;
+
+	transform: rotate(-90deg);
+	// use the right bottom corner as the rotation point
+	transform-origin: right bottom 0;
+}
+
+// ----------------------------------------
+// END NAVI TAB  ------------------
+// ----------------------------------------
+
+// ----------------------------------------
+// BUTTONS  ------------------
+// ----------------------------------------
+// remember to prevent any default activity
+
+nav.selectMenu button {
+	@include sectionMargins041515(5%,5%);
+	padding: 1% 2% 1% 2%;
+	width: 95%;
+	font-size: $basefontsize;
+}
+
+// ----------------------------------------
+// END BUTTONS  ------------------
 // ----------------------------------------
 
 ////////////////////////////////////////////

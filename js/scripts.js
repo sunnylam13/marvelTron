@@ -714,13 +714,40 @@ marTron.comicEvents = function () {
   // ----------------------------------------
 }
 
+marTron.navMenuEvents = function () {
+  var $handle = $('.naviTab');
+  var $target = $('nav.selectMenu');
+  // toggleState... where true means menu is out, false means it's hidden
+  var toggleState = false;
+
+  $handle.on('click', function(e) {
+    e.preventDefault();
+    switch(toggleState) {
+      case false:
+        // $target.css('right', '0');
+        TweenMax.to($target,1,{right:0,ease:Power2.easeIn});
+        toggleState = true;
+        break;
+      case true:
+        // $target.css('right', '-25%');
+        TweenMax.to($target,1,{right:'-25%',ease:Power2.easeIn});
+        toggleState = false;
+        break;
+    }
+  });
+}
+
 marTron.events = function () {
 
+  marTron.navMenuEvents();
   marTron.firstLoadAnim1();
+
   marTron.hoverCardsLeft1();
   marTron.hoverCardsCenter1();
   marTron.hoverCardsRight1();
+
   marTron.randomCharacters1(marTron.characterDefaultSearch1);
+
   marTron.comicTooltips();
   marTron.characterEvents();
   marTron.comicEvents();
