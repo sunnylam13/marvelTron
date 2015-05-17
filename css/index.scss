@@ -38,6 +38,10 @@ section.showcase {
 // ----------------------------------------
 
 // Parent  ------------------------------------------------
+
+// enable keyframe animation for section.characterEntry
+// @include animationHoverEntry1;
+
 section.characterEntry {
 	padding: 1%;
 	border-radius: 10px;
@@ -52,6 +56,7 @@ section.characterEntry {
 
 	// 3D
 	transform-style: preserve-3d;
+	perspective: 1200px;
 
 	// to allow the tooltip to be positioned relative to this parent
 	position: relative;
@@ -60,8 +65,9 @@ section.characterEntry {
 // section.showcase os nth-child(0)
 section.characterEntry:nth-child(1) {
 	background: $marvelNavyBlue;
+	// matrix still isn't understood, opted for the less complex version
 	transform: matrix(1,-0.5,0,1,0,0);
-	// transform: translateX(0) translateY(0) translateZ(15px);
+	// transform: 	translateX(0.5625em) translateY(7.125em) translateZ(-50em) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(-39deg);
 }
 section.characterEntry:nth-child(2) {
 	background: $marvelShieldGreen;
@@ -69,7 +75,9 @@ section.characterEntry:nth-child(2) {
 section.characterEntry:nth-child(3) {
 	background: $marvelPurple;
 	transform: matrix(1,0.5,0,1,0,0);
+	// transform: 	translateX(-0.4375em) translateY(7.125em) translateZ(-50em) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(39deg);
 }
+
 // END Parent ------------------------------------------------
 
 // Form  ------------------------------------------------

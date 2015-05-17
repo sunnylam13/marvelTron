@@ -479,16 +479,42 @@ marTron.firstLoadAnim1 = function () {
   this.startTL1.staggerFrom($('section.characterEntry:nth-child(2)'),1,{ease: Power2.easeInOut, top:'-9999999px',opacity:0},0.6);  
 }
 
-marTron.hoverCards1 = function () {
+marTron.hoverCardsLeft1 = function () {
   // make the character card entries hover
   
-  $target = $('section.characterEntry');
+  $target = $('section.characterEntry:nth-child(1)');
 
-  this.hovercardTL1 = new TimelineMax({repeat:-1,yoyo:true});
-  this.hovercardTL1.yoyo(true);
-  this.hovercardTL1.staggerTo($target,1.6,{css:{transform:'translateX(0) translateY(15px) translateZ(15px)'},ease:SlowMo.easeOut},0.2);
-  this.hovercardTL1.staggerTo($target,1.6,{css:{transform:'translateX(0) translateY(0) translateZ(0)'}, ease:SlowMo.easeOut},0.2);
-  this.hovercardTL1.play();
+  this.hcL1 = new TimelineMax({repeat:-1,yoyo:true});
+  this.hcL1.yoyo(true);
+  this.hcL1.staggerTo($target,3,{css:{transform:'matrix(1,-0.5,0,1,0,-10)'},ease:SlowMo.easeOut},0.2);
+  this.hcL1.staggerTo($target,2.7,{css:{transform:'matrix(1,-0.5,0,1,0,10)'},ease:SlowMo.easeOut},0.4);
+  this.hcL1.play();
+
+ }
+
+ marTron.hoverCardsCenter1 = function () {
+   // make the character card entries hover
+   
+   $target = $('section.characterEntry:nth-child(2)');
+
+   this.hcc1 = new TimelineMax({repeat:-1,yoyo:true});
+   this.hcc1.yoyo(true);
+   this.hcc1.staggerTo($target,3.1,{css:{transform:'matrix(1,0,0,1,0,-10)'},ease:SlowMo.easeOut},0.4);
+   this.hcc1.staggerTo($target,2.8,{css:{transform:'matrix(1,0,0,1,0,10)'},ease:SlowMo.easeOut},0.3);
+   this.hcc1.play();
+
+  }
+
+ marTron.hoverCardsRight1 = function () {
+  // make the character card entries hover
+  
+  $target = $('section.characterEntry:nth-child(3)');
+
+  this.hcR1 = new TimelineMax({repeat:-1,yoyo:true});
+  this.hcR1.yoyo(true);
+  this.hcR1.staggerTo($target,2.6,{css:{transform:'matrix(1,0.5,0,1,0,-10)'},ease:SlowMo.easeOut},0.3);
+  this.hcR1.staggerTo($target,3,{css:{transform:'matrix(1,0.5,0,1,0,10)'},ease:SlowMo.easeOut},0.5);
+  this.hcR1.play();
 
  }
 
@@ -645,7 +671,9 @@ marTron.events = function () {
 // you should not be defining things in here
 marTron.init = function () {
   marTron.firstLoadAnim1();
-  // marTron.hoverCards1();
+  marTron.hoverCardsLeft1();
+  marTron.hoverCardsCenter1();
+  marTron.hoverCardsRight1();
 	marTron.randomCharacters1(marTron.characterDefaultSearch1);
   marTron.comicTooltips();
 	marTron.events();

@@ -27,4 +27,24 @@
 	background-image: linear-gradient(to bottom right, $start 0%, $end 100%);
 }
 
+@mixin animationHoverEntry1 {
+	@keyframes hoverEntry1 {
+		0% {
+			/* */
+		}
+
+		25% {
+			transform: 	translateX(8.5625em) translateY(2.125em) translateZ(-50em) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(-39deg);
+		}
+
+		75% {
+			transform: 	translateX(8.5625em) translateY(1.125em) translateZ(-50em) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(-39deg);
+		}
+
+		100% {
+			transform: 	translateX(8.5625em) translateY(0.125em) translateZ(-50em) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(-39deg);
+		}
+	}
+}
+
 ///////////////////////////////////////////////
