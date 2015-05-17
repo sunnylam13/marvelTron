@@ -19,6 +19,7 @@ marTron.publicKey = "2c57ad00857c6163fa0417563cd31499";
 marTron.limit = 50;
 marTron.characterDefaultSearch1 = ["Wolverine","Hulk","Thor","Captain America","Silver Surfer", "Thanos","Iron Man","Vision","Warpath","Silver Sable","daredevil"];
 marTron.characterIDStored = [];
+marTron.singleCharacterID = "";
 marTron.comicMode = true;
 marTron.movieMode = false;
 marTron.tvMode = false;
@@ -88,6 +89,7 @@ marTron.getCharacter = function (targetParent,userInputString) {
 
       // I want the character's ID stored anyway as a data attribute for later access when calling comics upon click
       marTron.characterIDStored.push(marTron.getCharacterID(convertData));
+      marTron.singleCharacterID = marTron.getCharacterID(convertData);
       console.log('Character ID stored is ', marTron.characterIDStored);
 
       // give the article a data attribute matching the character's id by passing the data object
@@ -436,7 +438,7 @@ marTron.randomCharacters1 = function (array) {
 	// marTron.characterDefaultSearch1
 
 	var randNum;
-  var currentNum;
+  	var currentNum;
 	var randNumPrev = [];
 
 	// store a reference to character entry boxes
@@ -564,6 +566,11 @@ marTron.characterEvents = function () {
 
     // use that input field value to get the character if any (it is the target destination)
     marTron.getCharacter($targetParent,inputString);
+
+    // display the comics of the newly searched character
+    // get their ID
+    // pass this ID to the comic getting
+    marTron.getDigitalComics(marTron.singleCharacterID.id);
 
     // clear the input field once all of this is done
     $('section.characterEntry form input#hero').val('');
