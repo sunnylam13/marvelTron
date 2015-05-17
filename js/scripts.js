@@ -531,63 +531,65 @@ marTron.pulsingBorder1 = function (targetE) {
   this.psB1.to($target,0.6,{outline:'5px solid #f0141e'});
 }
 
-marTron.events = function () {
-
-
+marTron.characterEvents = function () {
+  // things were starting to get crowded
+  // this holds the events for the character entries
+  
+  
   // stop clicks on the links from triggering the character entry
   $('a.readMore').click(function(e) {
     e.stopPropagation();
   });
 
-	// when user changes the form field and submits, get the character data
-	$('section.characterEntry form').on('submit', function(e) {
-		e.preventDefault();
+  // when user changes the form field and submits, get the character data
+  $('section.characterEntry form').on('submit', function(e) {
+    e.preventDefault();
     e.stopPropagation();
 
-		// create a reference to 'this' section...
-		// aim for the parent
-		var $targetParent = $(this).parents('section.characterEntry');
-		console.log($targetParent);
+    // create a reference to 'this' section...
+    // aim for the parent
+    var $targetParent = $(this).parents('section.characterEntry');
+    console.log($targetParent);
 
-		// grab the value from 'this' input field
-		var inputString = $targetParent.find('input#hero').val();
-		console.log('User input before encoding is %s', inputString);
+    // grab the value from 'this' input field
+    var inputString = $targetParent.find('input#hero').val();
+    console.log('User input before encoding is %s', inputString);
 
-		// encode the user's input so that it's ready for a URI string
-		// https://stackoverflow.com/questions/332872/encode-url-in-javascript
-		// not using this seems to work better than using it
-		// inputString = encodeURIComponent(inputString);
+    // encode the user's input so that it's ready for a URI string
+    // https://stackoverflow.com/questions/332872/encode-url-in-javascript
+    // not using this seems to work better than using it
+    // inputString = encodeURIComponent(inputString);
 
-		console.log('The user searches for: ',inputString);
+    console.log('The user searches for: ',inputString);
 
-		// use that input field value to get the character if any (it is the target destination)
-		marTron.getCharacter($targetParent,inputString);
+    // use that input field value to get the character if any (it is the target destination)
+    marTron.getCharacter($targetParent,inputString);
 
     // clear the input field once all of this is done
     $('section.characterEntry form input#hero').val('');
 
-	});
+  });
 
 
-	// if comic mode is true (thus enabled), if you click one of the character entries... you reveal its comics
-	
-	$('section.characterEntry article').on('click', function(e) {
-		e.preventDefault();
-		
-		// if comic mode is enabled from nav menu
-		if (marTron.comicMode == true) {
-			// grab the data attribute with the character ID
-			var $thisEntry = $(this);
-			var heroID = $thisEntry.attr('data-martronheroid');
-			console.log('The hero/character ID is %s', heroID);
+  // if comic mode is true (thus enabled), if you click one of the character entries... you reveal its comics
+  
+  $('section.characterEntry article').on('click', function(e) {
+    e.preventDefault();
+    
+    // if comic mode is enabled from nav menu
+    if (marTron.comicMode == true) {
+      // grab the data attribute with the character ID
+      var $thisEntry = $(this);
+      var heroID = $thisEntry.attr('data-martronheroid');
+      console.log('The hero/character ID is %s', heroID);
 
-			// use that data ID to find the correct comics
-			// get digital comics for this named character
-			// previous version used a character array, you have to change the GET to use a string
-			marTron.getDigitalComics(heroID);
-		}
+      // use that data ID to find the correct comics
+      // get digital comics for this named character
+      // previous version used a character array, you have to change the GET to use a string
+      marTron.getDigitalComics(heroID);
+    }
 
-	});
+  });
 
   // when the user hover over the character entries... 
   $('section.characterEntry').on('mouseover', function(e) {
@@ -648,7 +650,9 @@ marTron.events = function () {
     // END ANIMATIONS  ------------------
     // ----------------------------------------
   });
+}
 
+marTron.comicEvents = function () {
   // ----------------------------------------
   // EXPLORE UNIT ANIMATION  ------------------
   // ----------------------------------------
@@ -674,9 +678,17 @@ marTron.events = function () {
   // ----------------------------------------
   // END EXPLORE UNIT ANIMATION  ------------------
   // ----------------------------------------
+}
 
- 
+marTron.events = function () {
 
+  marTron.firstLoadAnim1();
+  marTron.hoverCardsLeft1();
+  marTron.hoverCardsCenter1();
+  marTron.hoverCardsRight1();
+  marTron.randomCharacters1(marTron.characterDefaultSearch1);
+  marTron.comicTooltips();
+  marTron.characterEvents();
 }
 
 
@@ -684,12 +696,6 @@ marTron.events = function () {
 // all our code will be put inside here
 // you should not be defining things in here
 marTron.init = function () {
-  marTron.firstLoadAnim1();
-  marTron.hoverCardsLeft1();
-  marTron.hoverCardsCenter1();
-  marTron.hoverCardsRight1();
-	marTron.randomCharacters1(marTron.characterDefaultSearch1);
-  marTron.comicTooltips();
 	marTron.events();
 	
 }
