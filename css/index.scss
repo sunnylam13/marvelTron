@@ -376,7 +376,7 @@ section.exploreUnit:hover > .frame {
 // ----------------------------------------
 
 // ----------------------------------------
-// Modal Frame  ------------------
+// Modal Frame - Explore Unit  ------------------
 // ----------------------------------------
 section.exploreUnit .frame {
 	position: absolute;
@@ -409,57 +409,7 @@ section.exploreUnit .frame {
 	}
 }
 // ----------------------------------------
-// END Modal Frame  ------------------
-// ----------------------------------------
-
-// ----------------------------------------
-// SLIDER NAV  ------------------
-// ----------------------------------------
-section.displayDisc .sliderNav {
-	position: absolute;
-	bottom:50%;
-	left:0;
-	width: 100%;
-	overflow: hidden;
-
-	// flexbox parent
-	@include flexboxRow1;
-	flex-flow: row nowrap;
-	justify-content: center;
-	align-content: center;
-	align-items: center;
-
-	// DISPLAY STATUS
-
-	.left,.right {
-		//flexbox child
-		flex: 1 50%;
-	}
-
-	.left {
-		//flexbox parent
-		@include flexboxRow1;
-		justify-content: flex-start;
-		align-content: flex-start;
-	}
-
-	.right {
-		//flexbox parent
-		@include flexboxRow1;
-		justify-content: flex-end;
-		align-content: flex-end;
-	}
-
-	span.fa.fa-chevron-left,span.fa.fa-chevron-right {
-		color: white;
-		@include transitionEffectAllEaseIn(0.5s);
-		&:hover {
-			color: $marvelRed;
-		}
-	}
-}
-// ----------------------------------------
-// END SLIDER NAV  ------------------
+// END Modal Frame - Explore Unit  ------------------
 // ----------------------------------------
 
 ////////////////////////////////////////////
