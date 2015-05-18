@@ -719,6 +719,9 @@ marTron.navMenuEvents = function () {
   var $target = $('nav.selectMenu');
   // toggleState... where true means menu is out, false means it's hidden
   var toggleState = false;
+  marTron.comicModeButton = $('button.comics');
+  marTron.movieModeButton = $('button.movies');
+  marTron.tvModeButton = $('button.tvshows');
 
   $handle.on('click', function(e) {
     e.preventDefault();
@@ -735,6 +738,28 @@ marTron.navMenuEvents = function () {
         break;
     }
   });
+
+  marTron.comicModeButton.on('click', function(e) {
+  	e.preventDefault();
+  	marTron.comicMode = true;
+  	marTron.movieMode = false;
+  	marTron.tvMode = false;
+  });
+
+  marTron.movieModeButton.on('click', function(e) {
+  	e.preventDefault();
+  	marTron.comicMode = false;
+  	marTron.movieMode = true;
+  	marTron.tvMode = false;
+  });
+
+  marTron.tvModeButton.on('click', function(e) {
+  	e.preventDefault();
+  	marTron.comicMode = false;
+  	marTron.movieMode = false;
+  	marTron.tvMode = true;
+  });
+
 }
 
 marTron.events = function () {
