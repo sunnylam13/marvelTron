@@ -486,6 +486,238 @@ marTron.displayComicCovers = function (apiObj) {
 //    MOVIES
 ////////////////////////////////////////////
 
+marTron.movieModeGet = function (searchString,typeString, paramObject,startSearchYear,currentYear) {
+  if (marTron.movieMode == true) {
+    // we want to empty out the storage array every time we make a new request... because below we're pushing the objects into it... that means the entries build up and keep being displayed
+      // this has to be placed outside of the loop or you'll have nothing
+      marTron.omdbArray1 = [];
+
+      for (var i = startSearchYear; i < currentYear; i++) {
+        // t will change based on the passed search query
+        // i is the year
+        paramObj = {
+          // callback: "marvelMovieSearch",
+          t: searchString,
+          y: i,
+          type: typeString,
+          plot: "full",
+          r: "json",
+          tomatoes: "true"
+        };
+
+        $.ajax({
+          url: marTron.omdbBaseURL,
+          type: 'GET',
+          dataType: 'json',
+          data: paramObj,
+          success: function (res,status,jqXHR) {
+            // marTron.spinner.empty();
+            // marTron.sliderParent.empty();
+
+            
+
+            // console.log(res);
+            // Object {Response: "False", Error: "Movie not found!"}
+            if (!res.Error || !res.Response || res.Response != "False" || res.Error != "Movie not found!") {
+              console.log('marTron.getMovies GET was successful.');
+              console.log(status);
+              console.log(res);
+
+              marTron.omdbArray1.push(res);
+              // marTron.omdbArray1.push(convertedObj);
+              console.log(marTron.omdbArray1);
+
+              // marTron.spinner.empty();
+              // marTron.sliderParent.empty();
+
+            }
+          }
+        })
+        .done(function() {
+          console.log("success");
+
+          // runn the function that displays all the movie posters works best when put here in the .done() method...
+          // because in this instance we're querying dozens of times to create the object, placing the function in .success() wouldn't work, it has to be activated after the object is finished
+
+          if (marTron.omdbArray1) {
+            // empty the target location
+            // placing the emptying here works very well to clear out everything before placing new items
+            marTron.spinner.empty();
+            marTron.sliderParent.empty();
+
+            marTron.displayMovies(marTron.omdbArray1,"movie")
+          }
+        })
+        // .fail(function() {
+        //   console.log("error");
+        // })
+        // .always(function() {
+        //   console.log("complete");
+        // });
+        
+      }  
+  }
+}
+
+marTron.tvModeGet = function (searchString,typeString, paramObject,startSearchYear,currentYear) {
+
+  // in this version we don't use typeString at all because we want to find both tv "series" and "episode"... we run a loop for each one, and accumulate the entries into a single array
+  // if we find that the "episode" search type yields nothing useful we may disable it
+
+  if (marTron.tvMode == true) {
+    // we want to empty out the storage array every time we make a new request... because below we're pushing the objects into it... that means the entries build up and keep being displayed
+    // this has to be placed outside of the loop or you'll have nothing
+    marTron.omdbArray1 = [];
+
+    // ----------------------------------------
+    // SERIES  ------------------
+    // ----------------------------------------
+    // run the first GET loop to grab all those with episodes (aka "series")
+    for (var i = startSearchYear; i < currentYear; i++) {
+      // t will change based on the passed search query
+      // i is the year
+      paramObj = {
+        // callback: "marvelMovieSearch",
+        t: searchString,
+        y: i,
+        type: "series",
+        plot: "full",
+        r: "json",
+        tomatoes: "true"
+      };
+
+      $.ajax({
+        url: marTron.omdbBaseURL,
+        type: 'GET',
+        dataType: 'json',
+        data: paramObj,
+        success: function (res,status,jqXHR) {
+          // marTron.spinner.empty();
+          // marTron.sliderParent.empty();
+
+          
+
+          // console.log(res);
+          // Object {Response: "False", Error: "Movie not found!"}
+          if (!res.Error || !res.Response || res.Response != "False" || res.Error != "Movie not found!") {
+            console.log('marTron.getMovies GET was successful.');
+            console.log(status);
+            console.log(res);
+
+            marTron.omdbArray1.push(res);
+            // marTron.omdbArray1.push(convertedObj);
+            console.log(marTron.omdbArray1);
+
+            // marTron.spinner.empty();
+            // marTron.sliderParent.empty();
+
+          }
+        }
+      })
+      .done(function() {
+        console.log("success");
+      })
+      // .fail(function() {
+      //   console.log("error");
+      // })
+      // .always(function() {
+      //   console.log("complete");
+      // });
+      
+    }
+
+    // ----------------------------------------
+    // END SERIES  ------------------
+    // ----------------------------------------
+
+    // ----------------------------------------
+    // EPISODE  ------------------
+    // ----------------------------------------
+    for (var i = startSearchYear; i < currentYear; i++) {
+      // t will change based on the passed search query
+      // i is the year
+      paramObj = {
+        // callback: "marvelMovieSearch",
+        t: searchString,
+        y: i,
+        type: "episode",
+        plot: "full",
+        r: "json",
+        tomatoes: "true"
+      };
+
+      $.ajax({
+        url: marTron.omdbBaseURL,
+        type: 'GET',
+        dataType: 'json',
+        data: paramObj,
+        success: function (res,status,jqXHR) {
+          // marTron.spinner.empty();
+          // marTron.sliderParent.empty();
+
+          
+
+          // console.log(res);
+          // Object {Response: "False", Error: "Movie not found!"}
+          if (!res.Error || !res.Response || res.Response != "False" || res.Error != "Movie not found!") {
+            console.log('marTron.getMovies GET was successful.');
+            console.log(status);
+            console.log(res);
+
+            marTron.omdbArray1.push(res);
+            // marTron.omdbArray1.push(convertedObj);
+            console.log(marTron.omdbArray1);
+
+            // marTron.spinner.empty();
+            // marTron.sliderParent.empty();
+
+          }
+        }
+      })
+      .done(function() {
+        console.log("success");
+
+        // NOTE:  The callback function is best placed here or within success and not outside
+
+        // runn the function that displays all the movie posters works best when put here in the .done() method...
+        // because in this instance we're querying dozens of times to create the object, placing the function in .success() wouldn't work, it has to be activated after the object is finished
+
+        if (marTron.omdbArray1) {
+          // empty the target location
+          // placing the emptying here works very well to clear out everything before placing new items
+          // marTron.spinner.empty();
+          // marTron.sliderParent.empty();
+
+          marTron.displayMovies(marTron.omdbArray1,"series")
+        }
+      })
+      // .fail(function() {
+      //   console.log("error");
+      // })
+      // .always(function() {
+      //   console.log("complete");
+      // });
+      
+    }
+    // ----------------------------------------
+    // END EPISODE  ------------------
+    // ----------------------------------------
+
+    // // runn the function that displays all the movie posters works best when put here in the .done() method...
+    // // because in this instance we're querying dozens of times to create the object, placing the function in .success() wouldn't work, it has to be activated after the object is finished
+
+    // if (marTron.omdbArray1) {
+    //   // empty the target location
+    //   // placing the emptying here works very well to clear out everything before placing new items
+    //   // marTron.spinner.empty();
+    //   // marTron.sliderParent.empty();
+
+    //   marTron.displayMovies(marTron.omdbArray1,"movie")
+    // }
+
+  }
+}
+
 marTron.getMovies = function (searchString,typeString) {
   // this method could be used to get either movies or tv series
   // typeString = "movie", "series", "episode"
@@ -497,74 +729,11 @@ marTron.getMovies = function (searchString,typeString) {
   // the parameter object is setup here
   var paramObj = {};
 
-  // we want to empty out the storage array every time we make a new request... because below we're pushing the objects into it... that means the entries build up and keep being displayed
-  // this has to be placed outside of the loop or you'll have nothing
-  marTron.omdbArray1 = [];
-
-  for (var i = startSearchYear; i < currentYear; i++) {
-    // t will change based on the passed search query
-    // i is the year
-    paramObj = {
-      // callback: "marvelMovieSearch",
-      t: searchString,
-      y: i,
-      type: typeString,
-      plot: "full",
-      r: "json",
-      tomatoes: "true"
-    };
-
-    $.ajax({
-      url: marTron.omdbBaseURL,
-      type: 'GET',
-      dataType: 'json',
-      data: paramObj,
-      success: function (res,status,jqXHR) {
-      	// marTron.spinner.empty();
-      	// marTron.sliderParent.empty();
-
-      	
-
-        // console.log(res);
-        // Object {Response: "False", Error: "Movie not found!"}
-        if (!res.Error || !res.Response || res.Response != "False" || res.Error != "Movie not found!") {
-          console.log('marTron.getMovies GET was successful.');
-          console.log(status);
-          console.log(res);
-
-          marTron.omdbArray1.push(res);
-          // marTron.omdbArray1.push(convertedObj);
-          console.log(marTron.omdbArray1);
-
-          // marTron.spinner.empty();
-          // marTron.sliderParent.empty();
-
-        }
-      }
-    })
-    .done(function() {
-      console.log("success");
-
-      // runn the function that displays all the movie posters works best when put here in the .done() method...
-      // because in this instance we're querying dozens of times to create the object, placing the function in .success() wouldn't work, it has to be activated after the object is finished
-
-      if (marTron.omdbArray1) {
-        // empty the target location
-        // placing the emptying here works very well to clear out everything before placing new items
-        marTron.spinner.empty();
-        marTron.sliderParent.empty();
-
-        marTron.displayMovies(marTron.omdbArray1,"movie")
-      }
-    })
-    // .fail(function() {
-    //   console.log("error");
-    // })
-    // .always(function() {
-    //   console.log("complete");
-    // });
-    
-  }  
+  // run the GET functions if movie mode is true
+  marTron.movieModeGet(searchString,typeString,paramObj,startSearchYear,currentYear);
+  
+  // run the GET functions if tv mode is true
+  marTron.tvModeGet(searchString,typeString,paramObj,startSearchYear,currentYear);
 }
 
 // a function similar to my Jade mixin that constructs each row
@@ -737,10 +906,112 @@ marTron.displayMovies = function (mediaArray,typeString) {
 
         break;
       case "series":
-        // adjust for series data
-        break;
-      case "episode":
-        // adjust for episode data
+        // ----------------------------------------
+        // MOVIE UNIT  ------------------
+        // ----------------------------------------
+        // this is the movie poster shown on the page
+
+        // construct the parts for the displayed movie unit on the page
+        var $section = $("<section>").addClass('movieUnit');
+        var $imgFrame = $('<div>').addClass('imgFrame');
+        if (objItem.Poster != "N/A") {
+          var $img = $("<img>").attr('src', objItem.Poster);
+        }
+        var $frame = $("<div>").addClass('frame');
+        var $buttonReadMore = $("<button>").attr({
+          name: 'readMore',
+          type: 'button'
+        }).text("Read More");
+
+        if (objItem.Poster != "N/A") {
+          $frame.append($buttonReadMore);
+          if ($img) {
+            $imgFrame.append($img,$frame);
+          }
+          $section.append($imgFrame);
+        }
+        // ----------------------------------------
+        // END MOVIE UNIT  ------------------
+        // ----------------------------------------
+
+        // ----------------------------------------
+        // MOVIE DETAILS  ------------------
+        // ----------------------------------------
+        // construct the parts for details and store it in an object
+        var dataDetails = {};
+
+        // at the very minimum it has a title
+        dataDetails.$h2 = $('<h2>').text(objItem.Title);
+        if (objItem.Year != "N/A") {
+          dataDetails.$year = rowEntry1("Year",objItem.Year);
+        }
+        if (objItem.Released != "N/A") {
+          dataDetails.$released = rowEntry1("Released",objItem.Released);
+        }
+        if (objItem.Runtime != "N/A") {
+          dataDetails.$runTime = rowEntry1("Runtime",objItem.Runtime);
+        }
+        if (objItem.Genre != "N/A") {
+          dataDetails.$genre = rowEntry1("Genre",objItem.Genre);
+        }
+        if (objItem.Plot != "N/A") {
+          dataDetails.$plot = rowEntry1("Plot",objItem.Plot);
+        }
+        if (objItem.Metascore != "N/A") {
+          dataDetails.$metaScore = rowEntry1("Metascore",objItem.Metascore);
+        }
+        if (objItem.imdbRating != "N/A") {
+          dataDetails.$imdbRating = rowEntry1("IMDB Rating",objItem.imdbRating);
+        }
+        if (objItem.tomatoRating != "N/A") {
+          dataDetails.$rottenRating = rowEntry1("Rotten Tomatoes",objItem.tomatoRating);
+        }
+        if (objItem.tomatoConsensus != "N/A") {
+          dataDetails.$rottenConsensus = rowEntry1("Tomato Consensus",objItem.tomatoConsensus);
+        }
+        if (objItem.BoxOffice != "N/A") {
+          dataDetails.$boxOfficeEarn = rowEntry1("Box Office Earnings",objItem.BoxOffice);
+        }
+        
+        console.log('The movie whose data details were stored is %s',objItem.Title);
+        console.log(dataDetails);
+
+        // do we need to convert the object into JSON string to store it in the data attribute... if you don't you see only [object Object], which doesn't work
+        // NOTE**:  JSON parse/string won't help with DOM element insertion, it won't convert... I've tried...
+        // the data is lost
+        // {"$h2":{"0":{},"length":1},"$year":{"0":{},"length":1},"$released":{"0":{},"length":1},"$runTime":{"0":{},"length":1},"$genre":{"0":{},"length":1},"$plot":{"0":{},"length":1},"$metaScore":{"0":{},"length":1},"$imdbRating":{"0":{},"length":1},"$rottenRating":{"0":{},"length":1},"$rottenConsensus":{"0":{},"length":1},"$boxOfficeEarn":{"0":{},"length":1}}
+
+        // store the dataDetails in an array
+        // marTron.movieArray1.push(dataDetails);
+
+        // store this movie's name and number into an object or array for later retrieval
+        // incorrect... you set the movie tracker object to equal only one dataDetails
+        // marTron.movieTracker = objItem.Title;
+        // marTron.movieTracker = dataDetails;
+        // use object bracket notation here
+        // marTron.movieTracker[objItem.Title] = dataDetails;
+        // even object notation doesn't work, since you can't use the objItm.Title variable for it
+        // switched to 2 arrays
+        marTron.tvIndexArray.push(objItem.Title);
+        marTron.tvObjArray.push(dataDetails);
+
+        // attach the name of the movie to the section and use that to reference marTron.movieTracker and acquire the correct data
+        $section.attr('data-tvtrackerkey', objItem.Title);
+
+        // increment the dataObjLocationCount counter so that the next object gets the next position
+        // counts are less useful, use objects
+        // dataObjLocationCount++
+        // ----------------------------------------
+        // END MOVIE DETAILS  ------------------
+        // ----------------------------------------
+
+        // add the movie unit to the DOM
+        // only if it actually has a poster image
+        // marTron.spinner.append($section);
+
+        if (objItem.Poster != "N/A") {
+          marTron.spinner.append($section);
+        }
         break;
     }
 
@@ -786,8 +1057,30 @@ marTron.displayMovieDetails = function () {
         // where objItem is the DOM insert object
         marTron.modalDetailsRef.append(objItem);
       });
+    }
 
+    if (marTron.tvMode ==  true) {
+      var dataItem = thisItem.parents("section.movieUnit").attr('data-tvtrackerkey');
+      console.log(dataItem);
+      // use the acquired key to access the marTron.movieTracker object and acquire the correct data object
+      // var detailsObj = marTron.movieTracker[dataItem];
+      // console.log(detailsObj);
 
+      // use the data to search for correct object in 2 arrays
+      var detailsObj = getMediaObj1(dataItem, marTron.tvIndexArray, marTron.tvObjArray);
+      console.log(detailsObj);
+
+      // store a reference to the array object
+      // passing the dataItem with the object location in the array should mean we have the movie object in question
+      // var movieObj = marTron.movieArray1[dataItem];
+
+      // empty the text area before you append anything
+      marTron.modalDetailsRef.empty();
+
+      $.each(detailsObj, function(index, objItem) {
+        // where objItem is the DOM insert object
+        marTron.modalDetailsRef.append(objItem);
+      });
     }
 
     // make the modal visible
@@ -822,6 +1115,7 @@ function getRandom (num) {
 }
 
 marTron.modalDetailsEvents = function () {
+	// if you click the big modal anywhere you close it
   marTron.modalDetails.on('click', function(e) {
     e.preventDefault();
     TweenMax.to(marTron.modalDetails,1,{display:'none',zIndex: '-5', opacity: 0});
@@ -997,6 +1291,10 @@ marTron.characterEvents = function () {
       // marTron.displayMovies(marTron.omdbArray1,"movie");
     }
 
+    if (marTron.tvMode ==  true) {
+    	marTron.getMovies(inputString,"series");
+    }
+
     // display tv shows if tv mode is true
 
     // clear the input field once all of this is done
@@ -1029,8 +1327,18 @@ marTron.characterEvents = function () {
       var heroName = $thisEntry.attr('data-martronheroname');
       console.log('The character name is %s', heroName);
 
-      marTron.spinner.empty();
+      // marTron.spinner.empty();
       marTron.getMovies(heroName,"movie");
+    }
+
+    if (marTron.tvMode ==  true) {
+    	// grab the data attribute with the hero's name
+    	var $thisEntry = $(this);
+    	var heroName = $thisEntry.attr('data-martronheroname');
+    	console.log('The character name is %s', heroName);
+
+    	// marTron.spinner.empty();
+    	marTron.getMovies(heroName,"series");
     }
 
   });
@@ -1043,6 +1351,7 @@ marTron.characterEvents = function () {
 
     if (marTron.comicMode == true) {
 	    var comicToolTip = $thisItem.attr('data-comictooltips1');
+	    $thisItem.find('aside.tooltip p').text("Click for this character's comics.")
     }
 
     if (marTron.movieMode ==  true) {

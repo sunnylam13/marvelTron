@@ -4,7 +4,7 @@
 
 header.wrapper {
 	text-align: center;
-	@include sectionPadding041515(1%,1%);
+	@include sectionPadding041515(1%,5%);
 	// craft the logo for the site here
 	h1.logo {
 		display: inline-block;
