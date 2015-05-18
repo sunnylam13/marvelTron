@@ -67,8 +67,10 @@ marTron.omdbArray1 = [];
 marTron.movieUnit = $("section.movieUnit");
 marTron.modalDetails = $("section.modalDetails");
 marTron.modalDetailsRef = $('section.modalDetails .text');
-// marTron.movieArray1 = [];
-// marTron.tvArray1 = [];
+marTron.movieIndexArray = [];
+marTron.movieObjArray = [];
+marTron.tvIndexArray = [];
+marTron.tvObjArray = [];
 marTron.movieTracker = {};
 marTron.tvTracker = {};
 // ----------------------------------------
@@ -495,6 +497,10 @@ marTron.getMovies = function (searchString,typeString) {
   // the parameter object is setup here
   var paramObj = {};
 
+  // we want to empty out the storage array every time we make a new request... because below we're pushing the objects into it... that means the entries build up and keep being displayed
+  // this has to be placed outside of the loop or you'll have nothing
+  marTron.omdbArray1 = [];
+
   for (var i = startSearchYear; i < currentYear; i++) {
     // t will change based on the passed search query
     // i is the year
@@ -514,8 +520,10 @@ marTron.getMovies = function (searchString,typeString) {
       dataType: 'json',
       data: paramObj,
       success: function (res,status,jqXHR) {
-      	marTron.spinner.empty();
-      	marTron.sliderParent.empty();
+      	// marTron.spinner.empty();
+      	// marTron.sliderParent.empty();
+
+      	
 
         // console.log(res);
         // Object {Response: "False", Error: "Movie not found!"}
@@ -528,8 +536,8 @@ marTron.getMovies = function (searchString,typeString) {
           // marTron.omdbArray1.push(convertedObj);
           console.log(marTron.omdbArray1);
 
-          marTron.spinner.empty();
-          marTron.sliderParent.empty();
+          // marTron.spinner.empty();
+          // marTron.sliderParent.empty();
 
         }
       }
@@ -569,6 +577,17 @@ function rowEntry1 (txtLeft,txtRight) {
   var $rowEntry = $divRow.append($divLeft,$divRight);
   // don't forget to return your constructed item for use
   return $rowEntry;
+}
+
+function getMediaObj1 (string, indexArray, objArray) {
+	// using the supplied string, find the index number of it and store it
+	var indexNum = indexArray.indexOf(string);
+
+	// store a reference to the corresponding object
+	var dataObj = objArray[indexNum];
+
+	// return the data object for use
+	return dataObj;
 }
 
 marTron.displayMovies = function (mediaArray,typeString) {
@@ -687,13 +706,16 @@ marTron.displayMovies = function (mediaArray,typeString) {
         // store the dataDetails in an array
         // marTron.movieArray1.push(dataDetails);
 
-        // store this movie's name and number into an object
+        // store this movie's name and number into an object or array for later retrieval
         // incorrect... you set the movie tracker object to equal only one dataDetails
         // marTron.movieTracker = objItem.Title;
         // marTron.movieTracker = dataDetails;
         // use object bracket notation here
-        marTron.movieTracker[objItem.Title] = dataDetails;
-        
+        // marTron.movieTracker[objItem.Title] = dataDetails;
+        // even object notation doesn't work, since you can't use the objItm.Title variable for it
+        // switched to 2 arrays
+        marTron.movieIndexArray.push(objItem.Title);
+        marTron.movieObjArray.push(dataDetails);
 
         // attach the name of the movie to the section and use that to reference marTron.movieTracker and acquire the correct data
         $section.attr('data-movietrackerkey', objItem.Title);
@@ -746,20 +768,21 @@ marTron.displayMovieDetails = function () {
       var dataItem = thisItem.parents("section.movieUnit").attr('data-movietrackerkey');
       console.log(dataItem);
       // use the acquired key to access the marTron.movieTracker object and acquire the correct data object
-      var detailsObj = marTron.movieTracker[dataItem];
+      // var detailsObj = marTron.movieTracker[dataItem];
+      // console.log(detailsObj);
+
+      // use the data to search for correct object in 2 arrays
+      var detailsObj = getMediaObj1(dataItem, marTron.movieIndexArray, marTron.movieObjArray);
       console.log(detailsObj);
-      
 
       // store a reference to the array object
       // passing the dataItem with the object location in the array should mean we have the movie object in question
       // var movieObj = marTron.movieArray1[dataItem];
 
+      // empty the text area before you append anything
+      marTron.modalDetailsRef.empty();
+
       $.each(detailsObj, function(index, objItem) {
-
-      	// place the empty command in here
-      	// empty the target location
-	    marTron.modalDetailsRef.empty();
-
         // where objItem is the DOM insert object
         marTron.modalDetailsRef.append(objItem);
       });
@@ -969,7 +992,7 @@ marTron.characterEvents = function () {
 
     // display movies if movie mode is true
     if (marTron.movieMode == true) {
-      marTron.spinner.empty();
+      // marTron.spinner.empty();
       marTron.getMovies(inputString,"movie");
       // marTron.displayMovies(marTron.omdbArray1,"movie");
     }
@@ -1012,29 +1035,32 @@ marTron.characterEvents = function () {
 
   });
 
-  // when the user hover over the character entries... 
+  // when the user hover over the character entries... display the tool tip
   $('section.characterEntry').on('mouseover', function(e) {
     e.preventDefault();
     // console.log('Mouse over section.characterEntry works.');
     var $thisItem = $(this);
 
+    if (marTron.comicMode == true) {
+	    var comicToolTip = $thisItem.attr('data-comictooltips1');
+    }
+
+    if (marTron.movieMode ==  true) {
+    	$thisItem.find('aside.tooltip p').text("Click for this character's movies.")
+    }
+
+    if (marTron.tvMode ==  true) {
+    	$thisItem.find('aside.tooltip p').text("Click for this character's TV series.")
+    }
+
     // ----------------------------------------
-    // TOOLTIP  ------------------
+    // ANIMATIONS  ------------------
     // ----------------------------------------
-    // setup the data attribute
-    var comicToolTip = $thisItem.attr('data-comictooltips1');
-    
     // display the tool tip
     // $thisItem.find('aside.tooltip').css('display', 'flex');
     // Tween option
     TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'flex'});
-    // ----------------------------------------
-    // END TOOLTIP  ------------------
-    // ----------------------------------------
-    
-    // ----------------------------------------
-    // ANIMATIONS  ------------------
-    // ----------------------------------------
+
     // remove the transform to straighten them out
     // expand the size/scale them
     // move them into center position
