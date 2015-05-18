@@ -67,8 +67,10 @@ marTron.omdbArray1 = [];
 marTron.movieUnit = $("section.movieUnit");
 marTron.modalDetails = $("section.modalDetails");
 marTron.modalDetailsRef = $('section.modalDetails .text');
-marTron.movieArray1 = [];
-marTron.tvArray1 = [];
+// marTron.movieArray1 = [];
+// marTron.tvArray1 = [];
+marTron.movieTracker = {};
+marTron.tvTracker = {};
 // ----------------------------------------
 // END MOVIES  ------------------
 // ----------------------------------------
@@ -143,20 +145,25 @@ marTron.getCharacter = function (targetParent,userInputString) {
       console.log('Character ID stored is ', marTron.characterIDStored);
 
       // give the article a data attribute matching the character's id by passing the data object
-      targetParent.find('article').attr('data-martronheroid', marTron.getCharacterID(convertData).id);
+      // also give the article a data attribute for hero name for later movie and tv searches
+      // targetParent.find('article').attr('data-martronheroid', marTron.getCharacterID(convertData).id);
+      targetParent.find('article').attr({
+        'data-martronheroid': marTron.getCharacterID(convertData).id,
+        'data-martronheroname': marTron.getCharacterID(convertData).name
+      });
 
 
     }
   })
-  .done(function() {
-    console.log("success");
-  })
-  .fail(function() {
-    console.log("error");
-  })
-  .always(function() {
-    console.log("complete");
-  });
+  // .done(function() {
+  //   console.log("success");
+  // })
+  // .fail(function() {
+  //   console.log("error");
+  // })
+  // .always(function() {
+  //   console.log("complete");
+  // });
   
 }
 // ----------------------------------------
@@ -507,6 +514,9 @@ marTron.getMovies = function (searchString,typeString) {
       dataType: 'json',
       data: paramObj,
       success: function (res,status,jqXHR) {
+      	marTron.spinner.empty();
+      	marTron.sliderParent.empty();
+
         // console.log(res);
         // Object {Response: "False", Error: "Movie not found!"}
         if (!res.Error || !res.Response || res.Response != "False" || res.Error != "Movie not found!") {
@@ -517,12 +527,28 @@ marTron.getMovies = function (searchString,typeString) {
           marTron.omdbArray1.push(res);
           // marTron.omdbArray1.push(convertedObj);
           console.log(marTron.omdbArray1);
+
+          marTron.spinner.empty();
+          marTron.sliderParent.empty();
+
         }
       }
     })
-    // .done(function() {
-    //   console.log("success");
-    // })
+    .done(function() {
+      console.log("success");
+
+      // runn the function that displays all the movie posters works best when put here in the .done() method...
+      // because in this instance we're querying dozens of times to create the object, placing the function in .success() wouldn't work, it has to be activated after the object is finished
+
+      if (marTron.omdbArray1) {
+        // empty the target location
+        // placing the emptying here works very well to clear out everything before placing new items
+        marTron.spinner.empty();
+        marTron.sliderParent.empty();
+
+        marTron.displayMovies(marTron.omdbArray1,"movie")
+      }
+    })
     // .fail(function() {
     //   console.log("error");
     // })
@@ -530,8 +556,7 @@ marTron.getMovies = function (searchString,typeString) {
     //   console.log("complete");
     // });
     
-  }
-
+  }  
 }
 
 // a function similar to my Jade mixin that constructs each row
@@ -551,7 +576,8 @@ marTron.displayMovies = function (mediaArray,typeString) {
   // WARNING:  when testing in console, do not input a string for mediaArray, input the variable
 
   var arrayFile = mediaArray;
-  var dataObjLocationCount = 0;
+  // counts are less useful, use objects
+  // var dataObjLocationCount = 0;
 
   // you will access an array of stored movie results
   // construct the html to insert into figure#spinner or the parent
@@ -561,6 +587,7 @@ marTron.displayMovies = function (mediaArray,typeString) {
   // empty the existing entries within the modal
   // empty the $('section.displayDisc')
   marTron.spinner.empty();
+  marTron.sliderParent.empty();
 
   // set the $('section.displayDisc') to have padding top and bottom of 10% each
   // $('section.displayDisc').css({
@@ -594,7 +621,7 @@ marTron.displayMovies = function (mediaArray,typeString) {
           var $img = $("<img>").attr('src', objItem.Poster);
         }
         var $frame = $("<div>").addClass('frame');
-        var $buttonReadMore = $("button").attr({
+        var $buttonReadMore = $("<button>").attr({
           name: 'readMore',
           type: 'button'
         }).text("Read More");
@@ -658,19 +685,33 @@ marTron.displayMovies = function (mediaArray,typeString) {
         // {"$h2":{"0":{},"length":1},"$year":{"0":{},"length":1},"$released":{"0":{},"length":1},"$runTime":{"0":{},"length":1},"$genre":{"0":{},"length":1},"$plot":{"0":{},"length":1},"$metaScore":{"0":{},"length":1},"$imdbRating":{"0":{},"length":1},"$rottenRating":{"0":{},"length":1},"$rottenConsensus":{"0":{},"length":1},"$boxOfficeEarn":{"0":{},"length":1}}
 
         // store the dataDetails in an array
-        marTron.movieArray1.push(dataDetails);
+        // marTron.movieArray1.push(dataDetails);
 
-        // attach the location count of the item to the movie unit for later reference
-        $section.attr('data-moviedetails', dataObjLocationCount.toString());
+        // store this movie's name and number into an object
+        // incorrect... you set the movie tracker object to equal only one dataDetails
+        // marTron.movieTracker = objItem.Title;
+        // marTron.movieTracker = dataDetails;
+        // use object bracket notation here
+        marTron.movieTracker[objItem.Title] = dataDetails;
+        
+
+        // attach the name of the movie to the section and use that to reference marTron.movieTracker and acquire the correct data
+        $section.attr('data-movietrackerkey', objItem.Title);
 
         // increment the dataObjLocationCount counter so that the next object gets the next position
-        dataObjLocationCount++
+        // counts are less useful, use objects
+        // dataObjLocationCount++
         // ----------------------------------------
         // END MOVIE DETAILS  ------------------
         // ----------------------------------------
 
         // add the movie unit to the DOM
-        marTron.spinner.append($section);
+        // only if it actually has a poster image
+        // marTron.spinner.append($section);
+
+        if (objItem.Poster != "N/A") {
+          marTron.spinner.append($section);
+        }
 
         break;
       case "series":
@@ -697,23 +738,28 @@ marTron.displayMovieDetails = function () {
   
   // make sure to setup this event marTron.events()
   
-  marTron.spinner.on('click', 'section.movieUnit button[name="readMore"]', function(e) {
+  marTron.spinner.on('click', 'section.movieUnit button', function(e) {
     var thisItem = $(this);
     e.preventDefault();
 
     if (marTron.movieMode == true) {
-      var dataItem = thisItem.parents("section.movieUnit").attr('data-moviedetails');
-      dataItem = parseInt(dataItem);
+      var dataItem = thisItem.parents("section.movieUnit").attr('data-movietrackerkey');
       console.log(dataItem);
-
-      // empty the target location
-      marTron.modalDetailsRef.empty();
+      // use the acquired key to access the marTron.movieTracker object and acquire the correct data object
+      var detailsObj = marTron.movieTracker[dataItem];
+      console.log(detailsObj);
+      
 
       // store a reference to the array object
       // passing the dataItem with the object location in the array should mean we have the movie object in question
-      var movieObj = marTron.movieArray1[dataItem];
+      // var movieObj = marTron.movieArray1[dataItem];
 
-      $.each(movieObj, function(index, objItem) {
+      $.each(detailsObj, function(index, objItem) {
+
+      	// place the empty command in here
+      	// empty the target location
+	    marTron.modalDetailsRef.empty();
+
         // where objItem is the DOM insert object
         marTron.modalDetailsRef.append(objItem);
       });
@@ -923,6 +969,7 @@ marTron.characterEvents = function () {
 
     // display movies if movie mode is true
     if (marTron.movieMode == true) {
+      marTron.spinner.empty();
       marTron.getMovies(inputString,"movie");
       // marTron.displayMovies(marTron.omdbArray1,"movie");
     }
@@ -951,6 +998,16 @@ marTron.characterEvents = function () {
       // get digital comics for this named character
       // previous version used a character array, you have to change the GET to use a string
       marTron.getDigitalComics(heroID);
+    }
+
+    if (marTron.movieMode == true) {
+      // grab the data attribute with the hero's name
+      var $thisEntry = $(this);
+      var heroName = $thisEntry.attr('data-martronheroname');
+      console.log('The character name is %s', heroName);
+
+      marTron.spinner.empty();
+      marTron.getMovies(heroName,"movie");
     }
 
   });
