@@ -77,6 +77,13 @@ marTron.tvTracker = {};
 // END MOVIES  ------------------
 // ----------------------------------------
 
+// ----------------------------------------
+// STATUS MESSAGES  ------------------
+// ----------------------------------------
+marTron.statusMessageBox1 = $('aside.statusBox');
+// ----------------------------------------
+// END STATUS MESSAGES  ------------------
+// ----------------------------------------
 
 //////////////////////////////////////////////////
 // END GLOBAL VARIABLES
@@ -1114,6 +1121,38 @@ function getRandom (num) {
   return my_num;
 }
 
+marTron.showStatusMsg1 = function (textString) {
+
+  console.log('marTron.showStatusMsg1 active');
+
+  // create new sequence
+  marTron.sSM1 = new TimelineMax();
+
+  // empty the status message box
+  marTron.statusMessageBox1.empty();
+
+  // construct the new status
+  var $statusMessage = $("<p>").text(textString);
+
+  // change the status text
+  marTron.statusMessageBox1.append($statusMessage);
+
+  // make the modal appear
+  // use yoyo so it returns to its previous state... yoyo doesn't work for once offs
+  this.sSM1.to(marTron.statusMessageBox1,0.6,{top:"2%",opacity:1, zIndex: "15",ease:Power2.easeIn});
+  // TweenMax.to(marTron.statusMessageBox1,0.6,{top:"2%",opacity:1, zIndex: "15",ease:Power2.easeIn});
+  
+  //make the modal disappear
+  this.sSM1.to(marTron.statusMessageBox1,5,{top:"-50em",opacity:0, zIndex: "-5",ease:Power2.easeIn});
+  
+  //execute the sequence
+  this.sSM1.play();
+
+  // setTimeout(marTron.sSM1.reverse(), 3000);
+
+  // entire sequence should only happen once
+}
+
 marTron.modalDetailsEvents = function () {
 	// if you click the big modal anywhere you close it
   marTron.modalDetails.on('click', function(e) {
@@ -1476,6 +1515,8 @@ marTron.navMenuEvents = function () {
   	marTron.comicMode = true;
   	marTron.movieMode = false;
   	marTron.tvMode = false;
+
+  	marTron.showStatusMsg1("Comic Search Mode Activated");
   });
 
   marTron.movieModeButton.on('click', function(e) {
@@ -1483,6 +1524,8 @@ marTron.navMenuEvents = function () {
   	marTron.comicMode = false;
   	marTron.movieMode = true;
   	marTron.tvMode = false;
+
+  	marTron.showStatusMsg1("Movie Search Mode Activated");
   });
 
   marTron.tvModeButton.on('click', function(e) {
@@ -1490,6 +1533,8 @@ marTron.navMenuEvents = function () {
   	marTron.comicMode = false;
   	marTron.movieMode = false;
   	marTron.tvMode = true;
+
+  	marTron.showStatusMsg1("TV Search Mode Activated");
   });
 
 }

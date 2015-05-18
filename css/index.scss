@@ -560,3 +560,42 @@ section.modalDetails .text {
 ////////////////////////////////////////////
 // 		END MODAL DETAILS
 ////////////////////////////////////////////
+
+////////////////////////////////////////////
+// 		STATUS BOX
+////////////////////////////////////////////
+// for displaying status messages
+// also for showing that marTron modes have changed
+// it should be displayed relative to the body
+
+aside.statusBox {
+	position: fixed;
+	width: 16em;
+	height: 6.75em;
+
+	top: 2%;
+	left: 3%;
+	opacity: 1;
+
+	z-index: 15;
+	text-align: center;
+
+	// background gradient
+	@include exploreUnitFrameGradient1($marvelRedRGBA1,$marvelLightBlueRGBA1);
+
+	// flexbox parent
+	@include flexboxColumn1;
+
+	// DEFAULT DISPLAY STATUS
+	z-index: -5;
+	top: -999999%;
+	opacity: 0;
+
+	p {
+		margin-bottom: 0;
+	}
+}
+
+////////////////////////////////////////////
+// 		END STATUS BOX
+////////////////////////////////////////////
