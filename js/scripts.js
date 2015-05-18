@@ -1,12 +1,11 @@
 //////////////////////////////////////////////////
 // GLOBAL VARIABLES
 
-////////////////////////////////////////////
-// 		CHARACTER
-////////////////////////////////////////////
 var marTron = {};
 
 marTron.baseURL = "http://gateway.marvel.com:80/v1/public/";
+marTron.omdbBaseURL = "http://www.omdbapi.com/";
+marTron.omdbArray1 = [];
 marTron.categoryURLAdd = [
   "characters",
   "comics",
@@ -32,6 +31,10 @@ marTron.leftPrev = $('span.fa.fa-chevron-left');
 marTron.rightNext = $('span.fa.fa-chevron-right');
 // marTron.items1 holds the items in the gallery... whether they're images or a div
 marTron.items1 = $('section.exploreUnit');
+
+////////////////////////////////////////////
+// 		CHARACTER
+////////////////////////////////////////////
 
 // ----------------------------------------
 // GET CHARACTER REQUEST  ------------------
@@ -423,6 +426,66 @@ marTron.displayComicCovers = function (apiObj) {
 ////////////////////////////////////////////
 
 
+////////////////////////////////////////////
+//    MOVIES
+////////////////////////////////////////////
+
+marTron.getMovies = function (searchString) {
+  var startSearchYear = 1945;
+  var currentYear = new Date().getFullYear();
+
+  // the parameter object is setup here
+  var paramObj = {};
+
+  for (var i = startSearchYear; i < currentYear; i++) {
+    // t will change based on the passed search query
+    // i is the year
+    paramObj = {
+      // callback: "marvelMovieSearch",
+      t: searchString,
+      y: i,
+      plot: "full",
+      r: "json",
+      tomatoes: "true"
+    };
+
+    $.ajax({
+      url: marTron.omdbBaseURL,
+      type: 'GET',
+      dataType: 'json',
+      data: paramObj,
+      success: function (res,status,jqXHR) {
+        if (!res.Error && res.Type == "movie") {
+          console.log('marTron.getMovies GET was successful.');
+          marTron.omdbArray1.push(res);
+        }
+      }
+    })
+    .done(function() {
+      console.log("success");
+    })
+    .fail(function() {
+      console.log("error");
+    })
+    .always(function() {
+      console.log("complete");
+    });
+    
+  }
+
+}
+
+marTron.displayMovies = function (array) {
+  // you will access an array of stored movie results
+  // construct the html to insert into figure#spinner or the parent
+}
+
+////////////////////////////////////////////
+//    END MOVIES
+////////////////////////////////////////////
+
+
+
 //////////////////////////////////////////////////
 // FUNCTIONS
 
@@ -576,7 +639,7 @@ marTron.characterEvents = function () {
 
     // encode the user's input so that it's ready for a URI string
     // https://stackoverflow.com/questions/332872/encode-url-in-javascript
-    // not using this seems to work better than using it
+    // NOTE:  not using this seems to work better than using it
     // inputString = encodeURIComponent(inputString);
 
     console.log('The user searches for: ',inputString);
