@@ -1,11 +1,19 @@
 //////////////////////////////////////////////////
 // GLOBAL VARIABLES
+////////////////////////////////////////////
 
 var marTron = {};
 
 marTron.baseURL = "http://gateway.marvel.com:80/v1/public/";
-marTron.omdbBaseURL = "http://www.omdbapi.com/";
-marTron.omdbArray1 = [];
+marTron.publicKey = "2c57ad00857c6163fa0417563cd31499";
+marTron.limit = 50;
+
+// ----------------------------------------
+// CHARACTERS  ------------------
+// ----------------------------------------
+marTron.characterDefaultSearch1 = ["Wolverine","Hulk","Thor","Captain America","Silver Surfer", "Thanos","Iron Man","Vision","Warpath","Silver Sable","daredevil"];
+marTron.characterIDStored = [];
+marTron.singleCharacterID = "";
 marTron.categoryURLAdd = [
   "characters",
   "comics",
@@ -14,23 +22,57 @@ marTron.categoryURLAdd = [
   "series",
   "stories"
 ];
-marTron.publicKey = "2c57ad00857c6163fa0417563cd31499";
-marTron.limit = 50;
-marTron.characterDefaultSearch1 = ["Wolverine","Hulk","Thor","Captain America","Silver Surfer", "Thanos","Iron Man","Vision","Warpath","Silver Sable","daredevil"];
-marTron.characterIDStored = [];
-marTron.singleCharacterID = "";
+// ----------------------------------------
+// END CHARACTERS  ------------------
+// ----------------------------------------
+
+// ----------------------------------------
+// SEARCH MODES  ------------------
+// ----------------------------------------
 marTron.comicMode = true;
 marTron.movieMode = false;
 marTron.tvMode = false;
-marTron.sliderParent = $('figure#spinner');
+// ----------------------------------------
+// END SEARCH MODES  ------------------
+// ----------------------------------------
 
+// ----------------------------------------
+// DISPLAY DISC  ------------------
+// ----------------------------------------
+marTron.sliderParent = $('figure#spinner');
+marTron.spinner = $('figure#spinner');
 marTron.angle = 0;
 marTron.netDegrees = 360;
-marTron.spinner = $('figure#spinner');
 marTron.leftPrev = $('span.fa.fa-chevron-left');
 marTron.rightNext = $('span.fa.fa-chevron-right');
+
+// ----------------------------------------
+// END DISPLAY DISC  ------------------
+// ----------------------------------------
+
+// ----------------------------------------
+// COMICS  ------------------
+// ----------------------------------------
 // marTron.items1 holds the items in the gallery... whether they're images or a div
 marTron.items1 = $('section.exploreUnit');
+// ----------------------------------------
+// END COMICS  ------------------
+// ----------------------------------------
+
+// ----------------------------------------
+// MOVIES  ------------------
+// ----------------------------------------
+marTron.omdbBaseURL = "http://www.omdbapi.com/";
+marTron.omdbArray1 = [];
+// ----------------------------------------
+// END MOVIES  ------------------
+// ----------------------------------------
+
+
+//////////////////////////////////////////////////
+// END GLOBAL VARIABLES
+////////////////////////////////////////////
+
 
 ////////////////////////////////////////////
 // 		CHARACTER

@@ -44,6 +44,16 @@ mixin superHeroProductSearchTest1
 	// 		END PRODUCT SEARCH TEST 1
 	///////////////////////////////////////////
 
+mixin rowEntry1(txtLeft,txtRight)
+	if block
+		block
+	else
+		div.row
+			div
+				h4=txtLeft
+			div
+				p=txtRight
+
 mixin characterEntry1
 	////////////////////////////////////////////
 	// 		CHARACTER ENTRY CARD
@@ -57,8 +67,8 @@ mixin characterEntry1
 		aside.tooltip
 			p Click for this hero's comics.
 		article
-			// Javascript will dynamically generate character entries to fill these by default... once user enters hero names into fields these will change from randomly generated to the selected
-			// we'll use some default elements here so we can style things... mostly they'll be replaced later on with JS
+			//- Javascript will dynamically generate character entries to fill these by default... once user enters hero names into fields these will change from randomly generated to the selected
+			//- we'll use some default elements here so we can style things... mostly they'll be replaced later on with JS
 			if block
 				block
 			else
@@ -123,16 +133,16 @@ mixin exploreUnit1
 	////////////////////////////////////////////
 	// 		EXPLORE UNIT
 	//////////////////////////////////////////
-	// these are the containers used to hold comic covers, movie covers and TV show covers
-	// upon hovering over them they should have a slight modal effect for either Buying or Learn More, which should take the user to either Amazon to buy, IMDB for movies or TV shows or a similar place
+	//- these are the containers used to hold comic covers, movie covers and TV show covers
+	//- upon hovering over them they should have a slight modal effect for either Buying or Learn More, which should take the user to either Amazon to buy, IMDB for movies or TV shows or a similar place
 
 	section.exploreUnit
 		// using JS we can change the src= 
 		.imgFrame
 			img(src='https://annihilusssl.sslcs.cdngc.net/c/DIG056738_2.jpg?h=057812441f3b2534b437bf937fb3d24e&width=180')
 		.frame
-			// using JS we will change the name= and the text to reflect either a purchase or a learn more action
-			// for accessibility, surround the buttons with a elements so that even if JS isn't working links still work
+			//- using JS we will change the name= and the text to reflect either a purchase or a learn more action
+			//- for accessibility, surround the buttons with a elements so that even if JS isn't working links still work
 			a(href='')
 				button(name='preview', type='button') Preview
 			a(href='')
@@ -142,5 +152,49 @@ mixin exploreUnit1
 	// 		END EXPLORE UNIT
 	////////////////////////////////////////////
 
+mixin movieUnit1
+	////////////////////////////////////////////
+	// 		MOVIE UNIT
+	////////////////////////////////////////////
+	
+	section.movieUnit
+		// ----------------------------------------
+		// THUMB  ------------------
+		// ----------------------------------------
+		.imgFrame
+			img(src="http://ia.media-imdb.com/images/M/MV5BMzA2NDkwODAwM15BMl5BanBnXkFtZTgwODk5MTgzMTE@._V1_SX300.jpg")
+			.frame
+				button(name='readMore', type='button') Read More
+		// ----------------------------------------
+		// END THUMB  ------------------
+		// ----------------------------------------
+
+	////////////////////////////////////////////
+	// 		END MOVIE UNIT
+	////////////////////////////////////////////
+
+mixin modalDetails1
+	// ----------------------------------------
+	// MODAL DETAILS  ------------------
+	// ----------------------------------------
+	// for use with anything, including loaded images
+	// want this positioned relative to the body
+	section.modalDetails
+		.close Click Anywhere To Close
+		.text
+			h2 Captain America: The Winter Soldier
+			+rowEntry1("Year","2014")
+			+rowEntry1("Released","04 Apr 2014")
+			+rowEntry1("Runtime","136 min")
+			+rowEntry1("Genre","Action, Adventure, Sci-Fi")
+			+rowEntry1("Plot","For Steve Rogers, awakening after decades of suspended animation involves more than catching up on pop culture; it also means that this old school idealist must face a world of subtler threats and difficult moral complexities. That becomes clear when Director Nick Fury is killed by the mysterious assassin, the Winter Soldier, but not before warning Rogers that SHIELD has been subverted by its enemies. When Rogers acts on Fury's warning to trust no one there, he is branded as a traitor by the organization. Now a fugitive, Captain America must get to the bottom of this deadly mystery with the help of the Black Widow and his new friend, The Falcon. However, the battle will be costly for the Sentinel of Liberty, with Rogers finding enemies where he least expects them while learning that the Winter Soldier looks disturbingly familiar. ")
+			+rowEntry1("Metascore","70")
+			+rowEntry1("IMDB Rating","7.8")
+			+rowEntry1("Rotten Tomatoes","7.5")
+			+rowEntry1("Tomato Consensus","Suspenseful and politically astute, Captain America: The Winter Soldier is a superior entry in the Avengers canon and is sure to thrill Marvel diehards.")
+			+rowEntry1("Box Office Earnings","$259.7M")
+	// ----------------------------------------
+	// END MODAL DETAILS  ------------------
+	// ----------------------------------------
 
 //- END MIXINS PROJECT 

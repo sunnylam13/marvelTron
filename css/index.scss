@@ -84,6 +84,24 @@ nav.selectMenu button {
 // 		END NAV SELECT MENU
 ////////////////////////////////////////////
 
+
+////////////////////////////////////////////
+// 		MAIN
+////////////////////////////////////////////
+
+main {
+	// flexbox parent
+	@include flexboxColumn1;
+	// justify-content: center;
+	// align-content: center;
+	// align-items: center;
+}
+
+////////////////////////////////////////////
+// 		END MAIN
+////////////////////////////////////////////
+
+
 ////////////////////////////////////////////
 // 		SHOW CASE
 ////////////////////////////////////////////
@@ -280,26 +298,21 @@ section.characterEntry article {
 // ----------------------------------------
 section.displayDisc {
 	width: 100%;
-
-	// make it round
-	// border-radius: 50%;
-	// alter the plane of the circle with perspective or skew
-	// Saturday, May 16, 2015 10:09 PM:  after doing some research, setting the border radius isn't needed, what I need are transforms
 	
 	// if we want this area to vanish until the comics are displayed then you should set padding-top and padding-bottom using jQuery
 	// @include sectionPadding041515(10%,10%);
 
 	// because I don't know how many exploreUnits will be added by a call we shouldn't set a specific width to anything
 	// flexbox may not be needed at all for the circling gallery effect
-	// @include flexboxRow1;
-	
-	//3D
-	perspective: 1200px;
-	overflow: hidden;
+	@include flexboxRow1;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
 
-	// positioning
-	// use this for setting the location of the slider nav
-	position: relative;
+	// images seem skewed to the left
+	// NOTE:  you don't need this if you remove flex: 1 auto on .exploreUnit, .movieUnit
+	// margin-left: 1.5%;
+
 }
 // ----------------------------------------
 // END Parent  ------------------
@@ -308,28 +321,11 @@ section.displayDisc {
 // ----------------------------------------
 // FIGURE SPINNER  ------------------
 // ----------------------------------------
-figure#spinner {
-	
+figure#spinner {	
 	width: 100%;
 
-	// 3D  ------------------------------------------------
-	transform-style: preserve-3d;
-	// /*change the origin for the animation... The transform-origin CSS property lets you modify the origin for transformations of an element.  A -ve z-offset means into the page usually unless the element has already been rotated, while +ve means towards the user's eye. */
-	// /*the z-offset of the figure#spinner must match those of the img's within it*/
-	// transform-origin: 50% 50% $exploreUnitZOffSet1;
-	// transition: 1s;
-	// @include transitionEffectAllEaseIn(1s);
-
-	// /* change the plane of view so it seems like you're looking partially from the top at an angle... you must also add this to your Javascript otherwise it will be overwritten...
-	// may mean I need to set this on the images? */
-	// transform: rotateX(-7deg);
-
-	// END 3D ------------------------------------------------
-
-	
 	// flexbox parent
 	// because I don't know how many exploreUnits will be added by a call we shouldn't set a specific width to anything
-	// flexbox may not be needed at all for the circling gallery effect
 	@include flexboxRow1;
 }
 // ----------------------------------------
@@ -341,7 +337,6 @@ figure#spinner {
 // ----------------------------------------
 section.exploreUnit {
 	width: 172px;
-	// height: 278px;
 
 	// for the modal frame
 	position: relative;
@@ -351,10 +346,6 @@ section.exploreUnit {
 	@include sectionMargins041515(0,1.5%);
 
 	@include transitionEffectAllEaseIn(0.5s);
-
-	//3D
-	// transform-origin: 50% 50% $exploreUnitZOffSet1;
-	// outline: 1px solid transparent;
 
 	.imgFrame {
 		width: auto;
@@ -412,6 +403,164 @@ section.exploreUnit .frame {
 // END Modal Frame - Explore Unit  ------------------
 // ----------------------------------------
 
+// ----------------------------------------
+// MOVIE UNITS  ------------------
+// ----------------------------------------
+
+// PARENT  ------------------------------------------------
+section.movieUnit {
+	//flexbox child
+	// flex: 1 auto;
+
+	// for the modal frame
+	// position: relative;
+
+	// while using flexbox the tops and bottoms are right up against each other
+	// this may change during responsive CSS coding
+	@include sectionMargins041515(0,1.5%);
+
+	@include transitionEffectAllEaseIn(0.5s);
+}
+
+// when you hover over movieUnit, the .frame appears 
+// section.movieUnit .imgFrame:hover > .frame {
+// 	display: flex;
+// }
+// END PARENT ------------------------------------------------
+
+// THUMBNAIL  ------------------------------------------------
+
+section.movieUnit .imgFrame {
+	max-width: 172px;
+	position: relative;
+}
+
+section.movieUnit .imgFrame:hover > .frame {
+	display: flex;
+}
+
+section.movieUnit .imgFrame img {
+	max-width: 100%;
+}
+
+// ................... modal...................
+section.movieUnit .frame {
+	position: absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	width: 172px;
+
+	// to shift the buttons away from bottom
+	padding: 0 0 5% 0;
+
+	// modal background
+	// background: $marvelRedRGBA1;
+	@include exploreUnitFrameGradient1($marvelLightBlueRGBA1,$marvelRedRGBA1);
+
+	//flexbox parent
+	// display: flex
+	@include flexboxColumn1;
+	justify-content: flex-end;
+	align-content: flex-end;
+
+	@include transitionEffectAllEaseIn(0.5s);
+
+	//default display
+	display: none;
+
+	button {
+		@include sectionMargins041515(10%,2%);
+		font-size: $basefontsize*0.75;
+	}
+}
+// ...................END modal ...................
+
+
+// END THUMBNAIL ------------------------------------------------
+
+
+// ----------------------------------------
+// END MOVIE UNITS  ------------------
+// ----------------------------------------
+
 ////////////////////////////////////////////
 // 		END DISPLAY DISC
+////////////////////////////////////////////
+
+////////////////////////////////////////////
+// 		MODAL DETAILS
+////////////////////////////////////////////
+// for use with anything
+// not just movies
+
+section.modalDetails {
+
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 50;
+	opacity: 1;
+
+	// background gradient
+	@include exploreUnitFrameGradient1($marvelLightBlueRGBA2,$marvelPurple);
+
+	// flexbox parent
+	@include flexboxColumn1;
+
+	// DEFAULT display status
+	// display: none;
+	// z-index: -5;
+	// opacity: 0;
+
+}
+
+section.modalDetails .close {
+	position: absolute;
+	top: 2%;
+	right: 2%;
+	color: $marvelRed;
+}
+
+section.modalDetails .text {
+	// testing
+	background: transparent;
+	width: 940px;
+
+	h2 {
+		margin-bottom: 5%;
+	}
+
+	div.row {
+		// flexbox parent
+		@include flexboxRow1;
+		align-items: baseline;
+
+		div:nth-child(1) {
+			//flexbox child
+			flex: 1 20%;
+			flex: 1 17%;
+			margin-right: 3%;
+		}
+
+		div:nth-child(2) {
+			//flexbox child
+			flex: 1 80%;
+		}
+
+		div h4 {
+			margin-bottom: 2%;
+		}
+
+		div p {
+			text-align: left;
+		}
+	}
+}
+
+////////////////////////////////////////////
+// 		END MODAL DETAILS
 ////////////////////////////////////////////
