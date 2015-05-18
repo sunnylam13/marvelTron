@@ -26,14 +26,8 @@ nav.selectMenu {
 	// DISPLAY STATUS
 	// must come after the flexbox/display:flex
 	right: -25%;
-
-	// .naviFrame {
-	// 	position: relative;
-	// 	// .naviTab will be positioned relative to this
-	// 	width: 100%;
-	// 	height: auto;
-	// }
 }
+
 // ----------------------------------------
 // END PARENT  ------------------
 // ----------------------------------------
@@ -45,8 +39,10 @@ nav.selectMenu {
 
 nav.selectMenu .naviTab {
 	position: absolute;
+	// left: -26.5%;
+	// top: 10%;
 	left: -26.5%;
-	top: 10%;
+	top: 17%;
 
 	font-family: $openSans;
 	padding: 1% 5% 1% 5%;
@@ -512,9 +508,9 @@ section.modalDetails {
 	@include flexboxColumn1;
 
 	// DEFAULT display status
-	// display: none;
-	// z-index: -5;
-	// opacity: 0;
+	display: none;
+	z-index: -5;
+	opacity: 0;
 
 }
 

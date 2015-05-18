@@ -64,6 +64,11 @@ marTron.items1 = $('section.exploreUnit');
 // ----------------------------------------
 marTron.omdbBaseURL = "http://www.omdbapi.com/";
 marTron.omdbArray1 = [];
+marTron.movieUnit = $("section.movieUnit");
+marTron.modalDetails = $("section.modalDetails");
+marTron.modalDetailsRef = $('section.modalDetails .text');
+marTron.movieArray1 = [];
+marTron.tvArray1 = [];
 // ----------------------------------------
 // END MOVIES  ------------------
 // ----------------------------------------
@@ -472,7 +477,11 @@ marTron.displayComicCovers = function (apiObj) {
 //    MOVIES
 ////////////////////////////////////////////
 
-marTron.getMovies = function (searchString) {
+marTron.getMovies = function (searchString,typeString) {
+  // this method could be used to get either movies or tv series
+  // typeString = "movie", "series", "episode"
+  // otherwise you'd have to grab the object and write a loop to find data.Type=""
+  
   var startSearchYear = 1945;
   var currentYear = new Date().getFullYear();
 
@@ -486,6 +495,7 @@ marTron.getMovies = function (searchString) {
       // callback: "marvelMovieSearch",
       t: searchString,
       y: i,
+      type: typeString,
       plot: "full",
       r: "json",
       tomatoes: "true"
@@ -497,29 +507,235 @@ marTron.getMovies = function (searchString) {
       dataType: 'json',
       data: paramObj,
       success: function (res,status,jqXHR) {
-        if (!res.Error && res.Type == "movie") {
+        // console.log(res);
+        // Object {Response: "False", Error: "Movie not found!"}
+        if (!res.Error || !res.Response || res.Response != "False" || res.Error != "Movie not found!") {
           console.log('marTron.getMovies GET was successful.');
+          console.log(status);
+          console.log(res);
+
           marTron.omdbArray1.push(res);
+          // marTron.omdbArray1.push(convertedObj);
+          console.log(marTron.omdbArray1);
         }
       }
     })
-    .done(function() {
-      console.log("success");
-    })
-    .fail(function() {
-      console.log("error");
-    })
-    .always(function() {
-      console.log("complete");
-    });
+    // .done(function() {
+    //   console.log("success");
+    // })
+    // .fail(function() {
+    //   console.log("error");
+    // })
+    // .always(function() {
+    //   console.log("complete");
+    // });
     
   }
 
 }
 
-marTron.displayMovies = function (array) {
+// a function similar to my Jade mixin that constructs each row
+// used in marTron.displayMovies() method
+// must be declared before it
+function rowEntry1 (txtLeft,txtRight) {
+  var $divRow = $("<div>").addClass('row');
+  var $divLeft = $("<div>").append($("<h4>").text(txtLeft));
+  var $divRight = $("<div>").append($("<h4>").text(txtRight));
+  var $rowEntry = $divRow.append($divLeft,$divRight);
+  // don't forget to return your constructed item for use
+  return $rowEntry;
+}
+
+marTron.displayMovies = function (mediaArray,typeString) {
+
+  // WARNING:  when testing in console, do not input a string for mediaArray, input the variable
+
+  var arrayFile = mediaArray;
+  var dataObjLocationCount = 0;
+
   // you will access an array of stored movie results
   // construct the html to insert into figure#spinner or the parent
+  // this one function should be able to handle both movies and tv shows based on what mode is active
+  // if you constructed the obj.getMovies() method to select for type movie, series, episode you won't have to use a loop to analyze/screen type
+
+  // empty the existing entries within the modal
+  // empty the $('section.displayDisc')
+  marTron.spinner.empty();
+
+  // set the $('section.displayDisc') to have padding top and bottom of 10% each
+  // $('section.displayDisc').css({
+  //  paddingTop: '10%',
+  //  paddingBottom: '10%'
+  // });
+  // Tween option
+  TweenMax.to(marTron.spinner,2,{ease:Power2.easeIn,paddingTop: '10%',paddingBottom: '10%'});
+
+  console.log(arrayFile);
+  console.log(arrayFile[0]);
+  console.log(arrayFile.length);
+  console.log('Display %s', typeString);
+
+  $.each(mediaArray, function(index, objItem) {
+    // if you weren't outputting specific data you would use Object.getOwnPropertyNames() or Object.keys() to construct arrays of all the property key names and match them to the values
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames
+    // https://stackoverflow.com/questions/6765864/javascript-get-first-and-only-property-name-of-object
+
+    switch(typeString) {
+      case "movie":
+        // ----------------------------------------
+        // MOVIE UNIT  ------------------
+        // ----------------------------------------
+        // this is the movie poster shown on the page
+
+        // construct the parts for the displayed movie unit on the page
+        var $section = $("<section>").addClass('movieUnit');
+        var $imgFrame = $('<div>').addClass('imgFrame');
+        if (objItem.Poster != "N/A") {
+          var $img = $("<img>").attr('src', objItem.Poster);
+        }
+        var $frame = $("<div>").addClass('frame');
+        var $buttonReadMore = $("button").attr({
+          name: 'readMore',
+          type: 'button'
+        }).text("Read More");
+
+        if (objItem.Poster != "N/A") {
+          $frame.append($buttonReadMore);
+          if ($img) {
+            $imgFrame.append($img,$frame);
+          }
+          $section.append($imgFrame);
+        }
+        // ----------------------------------------
+        // END MOVIE UNIT  ------------------
+        // ----------------------------------------
+
+        // ----------------------------------------
+        // MOVIE DETAILS  ------------------
+        // ----------------------------------------
+        // construct the parts for details and store it in an object
+        var dataDetails = {};
+
+        // at the very minimum it has a title
+        dataDetails.$h2 = $('<h2>').text(objItem.Title);
+        if (objItem.Year != "N/A") {
+          dataDetails.$year = rowEntry1("Year",objItem.Year);
+        }
+        if (objItem.Released != "N/A") {
+          dataDetails.$released = rowEntry1("Released",objItem.Released);
+        }
+        if (objItem.Runtime != "N/A") {
+          dataDetails.$runTime = rowEntry1("Runtime",objItem.Runtime);
+        }
+        if (objItem.Genre != "N/A") {
+          dataDetails.$genre = rowEntry1("Genre",objItem.Genre);
+        }
+        if (objItem.Plot != "N/A") {
+          dataDetails.$plot = rowEntry1("Plot",objItem.Plot);
+        }
+        if (objItem.Metascore != "N/A") {
+          dataDetails.$metaScore = rowEntry1("Metascore",objItem.Metascore);
+        }
+        if (objItem.imdbRating != "N/A") {
+          dataDetails.$imdbRating = rowEntry1("IMDB Rating",objItem.imdbRating);
+        }
+        if (objItem.tomatoRating != "N/A") {
+          dataDetails.$rottenRating = rowEntry1("Rotten Tomatoes",objItem.tomatoRating);
+        }
+        if (objItem.tomatoConsensus != "N/A") {
+          dataDetails.$rottenConsensus = rowEntry1("Tomato Consensus",objItem.tomatoConsensus);
+        }
+        if (objItem.BoxOffice != "N/A") {
+          dataDetails.$boxOfficeEarn = rowEntry1("Box Office Earnings",objItem.BoxOffice);
+        }
+        
+        console.log('The movie whose data details were stored is %s',objItem.Title);
+        console.log(dataDetails);
+
+        // do we need to convert the object into JSON string to store it in the data attribute... if you don't you see only [object Object], which doesn't work
+        // NOTE**:  JSON parse/string won't help with DOM element insertion, it won't convert... I've tried...
+        // the data is lost
+        // {"$h2":{"0":{},"length":1},"$year":{"0":{},"length":1},"$released":{"0":{},"length":1},"$runTime":{"0":{},"length":1},"$genre":{"0":{},"length":1},"$plot":{"0":{},"length":1},"$metaScore":{"0":{},"length":1},"$imdbRating":{"0":{},"length":1},"$rottenRating":{"0":{},"length":1},"$rottenConsensus":{"0":{},"length":1},"$boxOfficeEarn":{"0":{},"length":1}}
+
+        // store the dataDetails in an array
+        marTron.movieArray1.push(dataDetails);
+
+        // attach the location count of the item to the movie unit for later reference
+        $section.attr('data-moviedetails', dataObjLocationCount.toString());
+
+        // increment the dataObjLocationCount counter so that the next object gets the next position
+        dataObjLocationCount++
+        // ----------------------------------------
+        // END MOVIE DETAILS  ------------------
+        // ----------------------------------------
+
+        // add the movie unit to the DOM
+        marTron.spinner.append($section);
+
+        break;
+      case "series":
+        // adjust for series data
+        break;
+      case "episode":
+        // adjust for episode data
+        break;
+    }
+
+    
+  });
+
+}
+
+marTron.displayMovieDetails = function () {
+  // when the user clicks on the displayed movie item... since these displayed movies are dynamically generated you must use event delegation
+  // navigate up to the parent movie unit, find the element with the "data-moviedetails" attribute
+  // grab the value of the attribute "data-moviedetails" and store it in a reference
+  // you should have the location of the data object with the DOM elements
+  // open the section.modalDetails
+  // erase the existing section.modalDetails .text
+  // append the reference into it... with a loop
+  
+  // make sure to setup this event marTron.events()
+  
+  marTron.spinner.on('click', 'section.movieUnit button[name="readMore"]', function(e) {
+    var thisItem = $(this);
+    e.preventDefault();
+
+    if (marTron.movieMode == true) {
+      var dataItem = thisItem.parents("section.movieUnit").attr('data-moviedetails');
+      dataItem = parseInt(dataItem);
+      console.log(dataItem);
+
+      // empty the target location
+      marTron.modalDetailsRef.empty();
+
+      // store a reference to the array object
+      // passing the dataItem with the object location in the array should mean we have the movie object in question
+      var movieObj = marTron.movieArray1[dataItem];
+
+      $.each(movieObj, function(index, objItem) {
+        // where objItem is the DOM insert object
+        marTron.modalDetailsRef.append(objItem);
+      });
+
+
+    }
+
+    // make the modal visible
+    // marTron.modalDetails.css({
+    //   display: 'flex',
+    //   zIndex: '50',
+    //   opacity: 0
+    // });
+    TweenMax.to(marTron.modalDetails,1,{display:'flex',zIndex: '50', opacity: 1});
+  });
+
+
+}
+
+marTron.mediaEvents = function () {
+  // for movies, tv series, episodes
+  marTron.displayMovieDetails(); 
 }
 
 ////////////////////////////////////////////
@@ -534,6 +750,13 @@ marTron.displayMovies = function (array) {
 function getRandom (num) {
   var my_num = Math.floor(Math.random()*num);
   return my_num;
+}
+
+marTron.modalDetailsEvents = function () {
+  marTron.modalDetails.on('click', function(e) {
+    e.preventDefault();
+    TweenMax.to(marTron.modalDetails,1,{display:'none',zIndex: '-5', opacity: 0});
+  });
 }
 
 marTron.comicTooltips = function () {
@@ -697,6 +920,14 @@ marTron.characterEvents = function () {
     if (marTron.comicMode == true) {
     	marTron.getDigitalComics(marTron.singleCharacterID.id);
     }
+
+    // display movies if movie mode is true
+    if (marTron.movieMode == true) {
+      marTron.getMovies(inputString,"movie");
+      // marTron.displayMovies(marTron.omdbArray1,"movie");
+    }
+
+    // display tv shows if tv mode is true
 
     // clear the input field once all of this is done
     $('section.characterEntry form input#hero').val('');
@@ -875,6 +1106,7 @@ marTron.events = function () {
 
   marTron.navMenuEvents();
   marTron.firstLoadAnim1();
+  marTron.modalDetailsEvents();
 
   marTron.hoverCardsLeft1();
   marTron.hoverCardsCenter1();
@@ -885,6 +1117,7 @@ marTron.events = function () {
   marTron.comicTooltips();
   marTron.characterEvents();
   marTron.comicEvents();
+  marTron.mediaEvents();
 }
 
 
