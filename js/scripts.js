@@ -587,7 +587,11 @@ marTron.characterEvents = function () {
     // display the comics of the newly searched character
     // get their ID
     // pass this ID to the comic getting
-    marTron.getDigitalComics(marTron.singleCharacterID.id);
+    // allow this to work only if comic mode is true
+    
+    if (marTron.comicMode == true) {
+    	marTron.getDigitalComics(marTron.singleCharacterID.id);
+    }
 
     // clear the input field once all of this is done
     $('section.characterEntry form input#hero').val('');
