@@ -1633,25 +1633,15 @@ marTron.navMenuEvents = function () {
   $handle.on('click', function(e) {
     e.preventDefault();
 
-    // grab this item's current width, a % which is altered by media queries
-    // in the browser the % is always converted to a pixel value
-    // use it for resetting the menu back to its starting location off the page
-    // the Tween translates the % width into pixels
-    // you must also convert it to a negative number
-    var cssWidth = $target.css('width');
-    cssWidth = "-"+cssWidth;
-    console.log(cssWidth);
-
     switch(toggleState) {
       case false:
         // $target.css('right', '0');
-        TweenMax.to($target,1,{right:0,ease:Power2.easeIn});
+        TweenMax.to($target,1,{top:0,ease:Power2.easeIn});
         toggleState = true;
         break;
       case true:
         // $target.css('right', '-25%');
-        // TweenMax.to($target,1,{right:'-25%',ease:Power2.easeIn});
-        TweenMax.to($target,1,{right:cssWidth,ease:Power2.easeIn});
+        TweenMax.to($target,1,{top:"-27%",ease:Power2.easeIn});
         toggleState = false;
         break;
     }

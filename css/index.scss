@@ -17,6 +17,8 @@ nav.selectMenu {
 	background: $marvelGrey;
 	padding: 2%;
 	width: 25%;
+	// if I set a fixed height then I don't always have to worry about Javascript moving it back to the wrong position when closing the menu
+	height: 27%;
 	border-radius: 10px;
 
 	//flexbox parent
@@ -25,12 +27,13 @@ nav.selectMenu {
 
 	// DISPLAY STATUS
 	// must come after the flexbox/display:flex
-	right: -25%;
+	top: -27%;
 
 	@include tabletR {
 		width: 38%;
-		right: -38%;
 	}
+
+
 }
 
 // ----------------------------------------
@@ -42,12 +45,32 @@ nav.selectMenu {
 // ----------------------------------------
 // this is the visible portion of the mode/nav menu
 
-nav.selectMenu .naviTab {
+nav.selectMenu .naviPlacer {
 	position: absolute;
+	bottom: -18.5%;
+	left: 0;
+	
+	width: 100%; // to match the width of nav.selectMenu
+	height: 2em;
+	//testing
+	// background: blue;
+
+	//flexbox parent
+	@include flexboxRow1;
+	align-items: flex-start;
+
+	@include phoneR {
+		justify-content: flex-end;
+		align-content: flex-end;
+	}
+}
+
+nav.selectMenu .naviTab {
+	// position: absolute;
 	// left: -26.5%;
 	// top: 10%;
-	left: -26.5%;
-	top: 17%;
+	// left: -26.5%;
+	// top: 17%;
 
 	font-family: $openSans;
 	padding: 1% 5% 1% 5%;
@@ -56,37 +79,37 @@ nav.selectMenu .naviTab {
 	//testing
 	background: $marvelRed;
 
-	transform: rotate(-90deg);
+	// transform: rotate(-90deg);
 	// use the right bottom corner as the rotation point
-	transform-origin: right bottom 0;
+	// transform-origin: right bottom 0;
 
-	@include desktopRHD1024t1280 {
-		left: -30%;
-		top: 12%;
-	}
+	// @include desktopRHD1024t1280 {
+	// 	left: -30%;
+	// 	top: 12%;
+	// }
 
-	@include desktopRHD940t1024 {
-		left: -34.5%;
-		top: 10%;
-	}
+	// @include desktopRHD940t1024 {
+	// 	left: -34.5%;
+	// 	top: 10%;
+	// }
 
-	@include desktopR {
-		left: -36.5%;
-		top: 11%;
-	}
+	// @include desktopR {
+	// 	left: -36.5%;
+	// 	top: 11%;
+	// }
 
-	@include tabletR {
-		left: -31.5%;
-	}
+	// @include tabletR {
+	// 	left: -31.5%;
+	// }
 
-	@include phabletR {
-		left: -32.5%;
-	}
+	// @include phabletR {
+	// 	left: -32.5%;
+	// }
 
-	@include phoneR {
-		left: -45.5%;
-		top: 3%;
-	}
+	// @include phoneR {
+	// 	left: -45.5%;
+	// 	top: 3%;
+	// }
 }
 
 // ----------------------------------------

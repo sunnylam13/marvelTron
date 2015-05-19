@@ -13,14 +13,45 @@ header.wrapper {
 		color: white;
 		background: $marvelRed;
 		text-align: center;
-		padding: 0 0.8% 0 0.8%;
+		// padding: 0 0.8% 0 0.8%;
+		@include scalePadding042815a(0,0.8%);
 		letter-spacing: -5px;
+
+		width: 23%;
+
+		@include desktopRHD1024t1280 {
+			width: 34%;
+		}
+
+		@include desktopRHD940t1024 {
+			width: 34%;
+		}
+
+		@include desktopR {
+			width: 34%;
+		}
+
+		@include tabletR {
+			width: 42%;
+		}
+
+		@include phabletR {
+			width: 43%;
+		}
+
+		@include phoneR {
+			@include scalePadding042815a(0,1.6%);
+			// padding: 0 1.6% 0 1.6%;
+			width: 66%;
+		}
 	}
 
 	h2 {
 		font-size: $basefontsize*2;
 		@include sectionMargins041515(2%,2%);
 	}
+
+
 }
 
 ////////////////////////////////////////////
