@@ -44,6 +44,14 @@ header.wrapper {
 			// padding: 0 1.6% 0 1.6%;
 			width: 66%;
 		}
+
+		@include iphone6Plus414R {
+			width: 73%;
+		}
+
+		@include iphone6Plus375R {
+			width: 80%;
+		}
 	}
 
 	h2 {

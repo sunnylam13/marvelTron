@@ -31,6 +31,7 @@ nav.selectMenu {
 
 	@include tabletR {
 		width: 38%;
+		width: 60%;
 	}
 
 
@@ -59,9 +60,33 @@ nav.selectMenu .naviPlacer {
 	@include flexboxRow1;
 	align-items: flex-start;
 
+	@include tabletR {
+		bottom: -17.5%;
+		bottom: -14%;
+		justify-content: flex-end;
+		align-content: flex-end;
+	}
+
+	@include iphone6Plus736R {
+		bottom: -35%;
+	}
+
+	@include iphone6Plus667R {
+		bottom: -39%;
+	}
+
 	@include phoneR {
 		justify-content: flex-end;
 		align-content: flex-end;
+		bottom: -46%;
+	}
+
+	@include iphone6Plus414R {
+		bottom: -20%;
+	}
+
+	@include iphone6Plus375R {
+		bottom: -22%;
 	}
 }
 
@@ -79,37 +104,9 @@ nav.selectMenu .naviTab {
 	//testing
 	background: $marvelRed;
 
-	// transform: rotate(-90deg);
-	// use the right bottom corner as the rotation point
-	// transform-origin: right bottom 0;
-
-	// @include desktopRHD1024t1280 {
-	// 	left: -30%;
-	// 	top: 12%;
-	// }
-
-	// @include desktopRHD940t1024 {
-	// 	left: -34.5%;
-	// 	top: 10%;
-	// }
-
-	// @include desktopR {
-	// 	left: -36.5%;
-	// 	top: 11%;
-	// }
-
-	// @include tabletR {
-	// 	left: -31.5%;
-	// }
-
-	// @include phabletR {
-	// 	left: -32.5%;
-	// }
-
-	// @include phoneR {
-	// 	left: -45.5%;
-	// 	top: 3%;
-	// }
+	@include iphone6Plus414R {
+		//
+	}
 }
 
 // ----------------------------------------
@@ -126,6 +123,20 @@ nav.selectMenu button {
 	padding: 1% 2% 1% 2%;
 	width: 95%;
 	font-size: $basefontsize;
+
+	@include iphone6Plus736R {
+		@include sectionMargins041515(1px,1px);
+		padding: 0;
+		border-radius: 0;
+		width: 100%;
+	}
+
+	@include phoneR {
+		@include sectionMargins041515(0,0);
+		padding: 0;
+		border-radius: 0;
+		width: 100%;
+	}
 }
 
 // ----------------------------------------
@@ -189,7 +200,7 @@ section.characterEntry {
 	flex: 1 29%;
 
 	// add margin, adjust flexbox child
-	margin: 0 2% 0 2%;
+	margin: 2% 2% 2% 2%;
 
 	// 3D
 	transform-style: preserve-3d;
@@ -197,6 +208,25 @@ section.characterEntry {
 
 	// to allow the tooltip to be positioned relative to this parent
 	position: relative;
+
+	@include desktopRHD940t1024 {
+		// flex: 1 75%;
+		// @include sectionMargins041515(15%,25%);
+	}
+
+	@include tabletR {
+		// flex: 1 48%;
+		@include sectionMargins041515(15%,25%);
+	}
+
+	@include phoneR {
+		flex: 1 50%;
+		@include sectionMargins041515(15%,25%);
+	}
+
+	@include iphone6Plus414R {
+		@include sectionMargins041515(20%,25%);
+	}
 }
 
 // section.showcase os nth-child(0)
@@ -233,6 +263,16 @@ section.characterEntry form {
 
 		//flexbox child
 		flex: 1 25%;
+
+		@include desktopRHD940t1024 {
+			text-align: left;
+			flex: 1 30%;
+		}
+
+		@include desktopR {
+			flex: 1 100%;
+			margin-bottom: 2%;
+		}
 	}
 
 	input {
@@ -248,6 +288,11 @@ section.characterEntry form {
 
 		//flexbox child
 		flex: 1 75%;
+
+		@include desktopRHD940t1024 {
+			text-align: left;
+			flex: 1 60%;
+		}
 	}
 }
 // END Form ------------------------------------------------
@@ -270,6 +315,25 @@ aside.tooltip {
 
 	// DEFAULT DISPLAY STATUS
 	display: none;
+
+	@include desktopRHD940t1024 {
+		width: 8em;
+		top: 15%;
+	}
+
+	@include tabletR {
+		width: 7em;
+		height: 6em;
+		top: 15%;
+	}
+
+	@include iphone6Plus736R {
+		top: 15%;
+	}
+
+	@include phabletR {
+		top: 15%;
+	}
 
 	p {
 		display: inline-block;
