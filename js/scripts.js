@@ -1203,6 +1203,8 @@ marTron.randomCharacters1 = function (array) {
 				// if the number isn't in the array set var currentNum = randNum and use this for the selection
 				// this is the condition we want
 				currentNum = randNum;
+        // store the random number in the previous number array
+        randNumPrev.push(randNum);
 			} else if (randNumPrev.indexOf(randNum) != -1) {
 				// if the number is in the array then I want to generate another random number
 				randNum = getRandom(array.length);
