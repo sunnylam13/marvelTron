@@ -270,6 +270,418 @@ marTron.displayCharacter = function (targetParent,apiObj) {
 // END DISPLAY CHARACTER  ------------------
 // ----------------------------------------
 
+// ----------------------------------------
+// CHARACTER EVENTS  ------------------
+// ----------------------------------------
+marTron.characterEvents = function () {
+  // things were starting to get crowded
+  // this holds the events for the character entries
+  
+
+  // stop clicks on the links from triggering the character entry
+  $('a.readMore').click(function(e) {
+    e.stopPropagation();
+  });
+
+  // when user changes the form field and submits, get the character data
+  $('section.characterEntry form').on('submit', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // create a reference to 'this' section...
+    // aim for the parent
+    var $targetParent = $(this).parents('section.characterEntry');
+    console.log($targetParent);
+
+    // grab the value from 'this' input field
+    var inputString = $targetParent.find('input#hero').val();
+    console.log('User input before encoding is %s', inputString);
+
+    // encode the user's input so that it's ready for a URI string
+    // https://stackoverflow.com/questions/332872/encode-url-in-javascript
+    // NOTE:  not using this seems to work better than using it
+    // inputString = encodeURIComponent(inputString);
+
+    console.log('The user searches for: ',inputString);
+
+    // use that input field value to get the character if any (it is the target destination)
+    marTron.getCharacter($targetParent,inputString);
+
+    // display the comics of the newly searched character
+    // get their ID
+    // pass this ID to the comic getting
+    // allow this to work only if comic mode is true
+    
+    if (marTron.comicMode == true) {
+      marTron.getDigitalComics(marTron.singleCharacterID.id);
+    }
+
+    // display movies if movie mode is true
+    if (marTron.movieMode == true) {
+      // marTron.spinner.empty();
+      marTron.getMovies(inputString,"movie");
+      // marTron.displayMovies(marTron.omdbArray1,"movie");
+    }
+
+    if (marTron.tvMode ==  true) {
+      marTron.getMovies(inputString,"series");
+    }
+
+    // display tv shows if tv mode is true
+
+    // clear the input field once all of this is done
+    $('section.characterEntry form input#hero').val('');
+
+  });
+
+
+  // if comic mode is true (thus enabled), if you click one of the character entries... you reveal its comics
+  
+  $('section.characterEntry article').on('click', function(e) {
+    e.preventDefault();
+    
+    // if comic mode is enabled from nav menu
+    if (marTron.comicMode == true) {
+      // grab the data attribute with the character ID
+      var $thisEntry = $(this);
+      var heroID = $thisEntry.attr('data-martronheroid');
+      console.log('The hero/character ID is %s', heroID);
+
+      // use that data ID to find the correct comics
+      // get digital comics for this named character
+      // previous version used a character array, you have to change the GET to use a string
+      marTron.getDigitalComics(heroID);
+    }
+
+    if (marTron.movieMode == true) {
+      // grab the data attribute with the hero's name
+      var $thisEntry = $(this);
+      var heroName = $thisEntry.attr('data-martronheroname');
+      console.log('The character name is %s', heroName);
+
+      // marTron.spinner.empty();
+      marTron.getMovies(heroName,"movie");
+    }
+
+    if (marTron.tvMode ==  true) {
+      // grab the data attribute with the hero's name
+      var $thisEntry = $(this);
+      var heroName = $thisEntry.attr('data-martronheroname');
+      console.log('The character name is %s', heroName);
+
+      // marTron.spinner.empty();
+      marTron.getMovies(heroName,"series");
+    }
+
+  });
+
+  // TOOLTIP ANIMATIONS
+  // when the user hover over the character entries... display the tool tip
+  $('section.characterEntry').on('mouseover', function(e) {
+    e.preventDefault();
+    // console.log('Mouse over section.characterEntry works.');
+    var $thisItem = $(this);
+
+    // ----------------------------------------
+    // TOOLTIP  ------------------
+    // ----------------------------------------
+    if (marTron.comicMode == true) {
+      var comicToolTip = $thisItem.attr('data-comictooltips1');
+      $thisItem.find('aside.tooltip p').text("Click for this character's comics.")
+    }
+
+    if (marTron.movieMode ==  true) {
+      $thisItem.find('aside.tooltip p').text("Click for this character's movies.")
+    }
+
+    if (marTron.tvMode ==  true) {
+      $thisItem.find('aside.tooltip p').text("Click for this character's TV series.")
+    }
+
+    // display the tool tip
+    // $thisItem.find('aside.tooltip').css('display', 'flex');
+    // Tween option
+    TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'flex'});
+    // ----------------------------------------
+    // END TOOLTIP  ------------------
+    // ----------------------------------------
+
+    // // ----------------------------------------
+    // // ANIMATIONS  ------------------
+    // // ----------------------------------------
+    
+
+    // // remove the transform to straighten them out
+    // // expand the size/scale them
+    // // move them into center position
+    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
+
+    // // ----------------------------------------
+    // // END ANIMATIONS  ------------------
+    // // ----------------------------------------
+
+  })
+  .on('mouseout', function(e) {
+    // console.log('Mouse out of section.');
+    e.preventDefault();
+    var $thisItem = $(this);
+    
+    // ----------------------------------------
+    // TOOLTIP  ------------------
+    // ----------------------------------------
+    // $thisItem.find('aside.tooltip').css('display', 'none');
+    TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'none'});
+    // ----------------------------------------
+    // END TOOLTIP  ------------------
+    // ----------------------------------------
+    
+    // // ----------------------------------------
+    // // ANIMATIONS  ------------------
+    // // ----------------------------------------
+    // // add back the transform
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn});
+    // // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
+    // // un-scale them
+    // // move them back to their original position
+    // // ----------------------------------------
+    // // END ANIMATIONS  ------------------
+    // // ----------------------------------------
+  });
+
+  // LEFT SECTION ENTRY HOVER ANIMATIONS
+  $('section.characterEntry:nth-child(1)').on('mouseover', function(e) {
+    e.preventDefault();
+    // console.log('Mouse over section.characterEntry works.');
+    var $thisItem = $(this);
+
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    
+
+    // remove the transform to straighten them out
+    // expand the size/scale them
+    // move them into center position
+    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,0,0,1,0,0) scaleX(1.2) scaleY(1.2)"},ease:Power2.easeIn});
+
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+
+  })
+  .on('mouseout', function(e) {
+    // console.log('Mouse out of section.');
+    e.preventDefault();
+    var $thisItem = $(this);
+    
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    // add back the transform
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:"matrix(1,-0.5,0,1,0,0)"}});
+    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,-0.5,0,1,0,0) scaleX(1) scaleY(1)"},ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,transform:"matrix(1,-0.5,0,1,0,0)"});
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
+    // un-scale them
+    // move them back to their original position
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+  });
+
+
+  // RIGHT SECTION ENTRY HOVER ANIMATIONS
+  $('section.characterEntry:nth-child(3)').on('mouseover', function(e) {
+    e.preventDefault();
+    // console.log('Mouse over section.characterEntry works.');
+    var $thisItem = $(this);
+
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    
+
+    // remove the transform to straighten them out
+    // expand the size/scale them
+    // move them into center position
+    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,css:{transform:"matrix(1,0,0,1,0,0)"}});
+    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,0,0,1,0,0) scaleX(1.2) scaleY(1.2)"}, ease:Power2.easeIn});
+
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+
+  })
+  .on('mouseout', function(e) {
+    // console.log('Mouse out of section.');
+    e.preventDefault();
+    var $thisItem = $(this);
+    
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    // add back the transform
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:"matrix(1,0.5,0,1,0,0)"}});
+    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,0.5,0,1,0,0) scaleX(1) scaleY(1)"},ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
+    // un-scale them
+    // move them back to their original position
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+  });
+
+  // CENTRE CHARACTER ENTRY
+  $('section.characterEntry:nth-child(2)').on('mouseover', function(e) {
+    e.preventDefault();
+    // console.log('Mouse over section.characterEntry works.');
+    var $thisItem = $(this);
+
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    
+
+    // remove the transform to straighten them out
+    // expand the size/scale them
+    // move them into center position
+    TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,transform:"matrix(1,-0.5,0,1,0,0)"});
+
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+
+  })
+  .on('mouseout', function(e) {
+    // console.log('Mouse out of section.');
+    e.preventDefault();
+    var $thisItem = $(this);
+    
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    // add back the transform
+    TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,transform:"matrix(1,0,0,1,0,0)"});
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
+    // un-scale them
+    // move them back to their original position
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+  });
+
+}
+// ----------------------------------------
+// END CHARACTER EVENTS  ------------------
+// ----------------------------------------
+
+// ----------------------------------------
+// RANDOM CHARACTER START  ------------------
+// ----------------------------------------
+marTron.randomCharacters1 = function (array) {
+  // array to use...
+  // marTron.characterDefaultSearch1
+
+  var randNum;
+    var currentNum;
+  var randNumPrev = [];
+
+  // store a reference to character entry boxes
+  var $charBoxes = $('section.characterEntry');
+
+  // for each section.characterEntry
+  $.each($charBoxes, function(index, entryBox) {
+    // select a random number
+    // we don't want the same characters showing up so if the generated number matches the previous number then roll another random number
+    
+    randNum = getRandom(array.length);
+
+    // while currentNum != randNum... the opposite of what we want...
+    while (currentNum != randNum) {
+      // place this condition in the loop
+      if (randNumPrev.indexOf(randNum) == -1) {
+        // if the number isn't in the array set var currentNum = randNum and use this for the selection
+        // this is the condition we want
+        currentNum = randNum;
+        // store the random number in the previous number array
+        randNumPrev.push(randNum);
+      } else if (randNumPrev.indexOf(randNum) != -1) {
+        // if the number is in the array then I want to generate another random number
+        randNum = getRandom(array.length);
+      }
+    }
+
+    // when the page loads, randomly select some Marvel characters who I know have full entries
+    // var charSelectString = array[randNum];
+    var charSelectString = array[currentNum];   
+
+    // pass the chosen character string to get character data
+    // you want to pass the targetParent, which will be $(this)... don't use entryBox
+    marTron.getCharacter($(this),charSelectString);
+  });
+
+  
+}
+// ----------------------------------------
+// END RANDOM CHARACTER START  ------------------
+// ----------------------------------------
+
+
+// ----------------------------------------
+// ANIMATION EVENTS  ------------------
+// ----------------------------------------
+marTron.firstLoadAnim1 = function () {
+
+  // animate the character cards into place
+  this.startTL1 = new TimelineMax();
+  this.startTL1.staggerFrom($('section.characterEntry:nth-child(1)'),1,{ease: Power2.easeInOut, left:'-9999999px',opacity:0},0.6);
+  this.startTL1.staggerFrom($('section.characterEntry:nth-child(3)'),1,{ease: Power2.easeInOut, right:'-9999999px',opacity:0},0.6);
+  this.startTL1.staggerFrom($('section.characterEntry:nth-child(2)'),1,{ease: Power2.easeInOut, top:'-9999999px',opacity:0},0.6);  
+}
+
+marTron.hoverCardsLeft1 = function () {
+  // make the character card entries hover
+  
+  $target = $('section.characterEntry:nth-child(1)');
+
+  this.hcL1 = new TimelineMax({repeat:-1,yoyo:true});
+  this.hcL1.yoyo(true);
+  this.hcL1.staggerTo($target,3,{css:{transform:'matrix(1,-0.5,0,1,0,-10)'},ease:SlowMo.easeOut},0.2);
+  this.hcL1.staggerTo($target,2.7,{css:{transform:'matrix(1,-0.5,0,1,0,10)'},ease:SlowMo.easeOut},0.4);
+  this.hcL1.play();
+
+ }
+
+ marTron.hoverCardsCenter1 = function () {
+   // make the character card entries hover
+   
+   $target = $('section.characterEntry:nth-child(2)');
+
+   this.hcc1 = new TimelineMax({repeat:-1,yoyo:true});
+   this.hcc1.yoyo(true);
+   this.hcc1.staggerTo($target,3.1,{css:{transform:'matrix(1,0,0,1,0,-10)'},ease:SlowMo.easeOut},0.4);
+   this.hcc1.staggerTo($target,2.8,{css:{transform:'matrix(1,0,0,1,0,10)'},ease:SlowMo.easeOut},0.3);
+   this.hcc1.play();
+
+  }
+
+marTron.hoverCardsRight1 = function () {
+  // make the character card entries hover
+
+  var $target = $('section.characterEntry:nth-child(3)');
+
+  this.hcR1 = new TimelineMax({repeat:-1,yoyo:true});
+  this.hcR1.yoyo(true);
+  this.hcR1.staggerTo($target,2.6,{css:{transform:'matrix(1,0.5,0,1,0,-10)'},ease:SlowMo.easeOut},0.3);
+  this.hcR1.staggerTo($target,3,{css:{transform:'matrix(1,0.5,0,1,0,10)'},ease:SlowMo.easeOut},0.5);
+  this.hcR1.play();
+}
+// ----------------------------------------
+// END ANIMATION EVENTS  ------------------
+// ----------------------------------------
+
 
 ////////////////////////////////////////////
 // 		END CHARACTER
@@ -285,6 +697,7 @@ marTron.displayCharacter = function (targetParent,apiObj) {
 // GET CHARACTER ID  ------------------
 // ----------------------------------------
 // for later use with acquiring covers... we need to store the ID
+// the search for comics does not use character names, only IDs so you have to extract the character's ID
 marTron.getCharacterID = function (apiObj) {
   // I want to return an object with a key value pair where key is the name of the character and the ID is the number returned
   
@@ -483,6 +896,52 @@ marTron.displayComicCovers = function (apiObj) {
 // ----------------------------------------
 // END DISPLAY COMICS  ------------------
 // ----------------------------------------
+
+// ----------------------------------------
+// ANIMATION EVENTS  ------------------
+// ----------------------------------------
+
+// ----------------------------------------
+// END ANIMATION EVENTS  ------------------
+// ----------------------------------------
+
+marTron.comicEvents = function () {
+  // ----------------------------------------
+  // EXPLORE UNIT ANIMATION  ------------------
+  // ----------------------------------------
+
+  // WARNING:  section.exploreUnit don't exist yet, they are dynamically created, you need event delegation
+  $('section.displayDisc').on('mouseover','section.exploreUnit', function(e) {
+    e.preventDefault();
+
+    // console.log('section.exploreUnit mouseover');
+
+    //setup the pulsing border animation
+    marTron.pulsingBorder1($(this));
+
+    // console.log('section.exploreUnit mouseover fired');    
+    TweenMax.to($(this),0.6,{scaleX:1.5,scaleY:1.5,zIndex:10,ease:Power2.easeIn});
+
+    marTron.psB1.play();
+  }).on('mouseout','section.exploreUnit', function(event) {
+    event.preventDefault();
+
+    // console.log('section.exploreUnit mouseout');
+
+    // console.log('section.exploreUnit mouseout fired');
+    TweenMax.to($(this),0.3,{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn});
+
+    // WARNING:  you'll want a reverse and then a kill at this point... provided that your animation sequence starts with a base state, goes to your desired end state and then ends back at your base state... otherwise if you mouseout halfway through the animation, the outline/border remains midway which isn't what I want
+    marTron.psB1.reverse();
+    // this.psB1.set($(this),{outline:'none'});
+    marTron.psB1.kill();
+
+  });
+
+  // ----------------------------------------
+  // END EXPLORE UNIT ANIMATION  ------------------
+  // ----------------------------------------
+}
 
 ////////////////////////////////////////////
 // 		END COMIC
@@ -1112,6 +1571,75 @@ marTron.mediaEvents = function () {
 ////////////////////////////////////////////
 
 
+////////////////////////////////////////////
+//    NAV MENU
+////////////////////////////////////////////
+
+// ----------------------------------------
+// NAV MENU EVENTS  ------------------
+// ----------------------------------------
+marTron.navMenuEvents = function () {
+  var $handle = $('.naviTab');
+  var $target = $('nav.selectMenu');
+  // toggleState... where true means menu is out, false means it's hidden
+  var toggleState = false;
+  marTron.comicModeButton = $('button.comics');
+  marTron.movieModeButton = $('button.movies');
+  marTron.tvModeButton = $('button.tvshows');
+
+  $handle.on('click', function(e) {
+    e.preventDefault();
+
+    switch(toggleState) {
+      case false:
+        // $target.css('right', '0');
+        TweenMax.to($target,1,{top:0,ease:Power2.easeIn});
+        toggleState = true;
+        break;
+      case true:
+        // $target.css('right', '-25%');
+        TweenMax.to($target,1,{top:"-27%",ease:Power2.easeIn});
+        toggleState = false;
+        break;
+    }
+  });
+
+  marTron.comicModeButton.on('click', function(e) {
+    e.preventDefault();
+    marTron.comicMode = true;
+    marTron.movieMode = false;
+    marTron.tvMode = false;
+
+    marTron.showStatusMsg1("Comic Search Mode Activated");
+  });
+
+  marTron.movieModeButton.on('click', function(e) {
+    e.preventDefault();
+    marTron.comicMode = false;
+    marTron.movieMode = true;
+    marTron.tvMode = false;
+
+    marTron.showStatusMsg1("Movie Search Mode Activated");
+  });
+
+  marTron.tvModeButton.on('click', function(e) {
+    e.preventDefault();
+    marTron.comicMode = false;
+    marTron.movieMode = false;
+    marTron.tvMode = true;
+
+    marTron.showStatusMsg1("TV Search Mode Activated");
+  });
+
+}
+// ----------------------------------------
+// END NAV MENU EVENTS  ------------------
+// ----------------------------------------
+
+////////////////////////////////////////////
+//    END NAV MENU
+////////////////////////////////////////////
+
 
 //////////////////////////////////////////////////
 // FUNCTIONS
@@ -1178,99 +1706,6 @@ marTron.comicTooltips = function () {
 	});	
 }
 
-marTron.randomCharacters1 = function (array) {
-	// array to use...
-	// marTron.characterDefaultSearch1
-
-	var randNum;
-  	var currentNum;
-	var randNumPrev = [];
-
-	// store a reference to character entry boxes
-	var $charBoxes = $('section.characterEntry');
-
-	// for each section.characterEntry
-	$.each($charBoxes, function(index, entryBox) {
-		// select a random number
-		// we don't want the same characters showing up so if the generated number matches the previous number then roll another random number
-		
-		randNum = getRandom(array.length);
-
-		// while currentNum != randNum... the opposite of what we want...
-		while (currentNum != randNum) {
-			// place this condition in the loop
-			if (randNumPrev.indexOf(randNum) == -1) {
-				// if the number isn't in the array set var currentNum = randNum and use this for the selection
-				// this is the condition we want
-				currentNum = randNum;
-        // store the random number in the previous number array
-        randNumPrev.push(randNum);
-			} else if (randNumPrev.indexOf(randNum) != -1) {
-				// if the number is in the array then I want to generate another random number
-				randNum = getRandom(array.length);
-			}
-		}
-
-		// when the page loads, randomly select some Marvel characters who I know have full entries
-		// var charSelectString = array[randNum];
-		var charSelectString = array[currentNum];		
-
-		// pass the chosen character string to get character data
-		// you want to pass the targetParent, which will be $(this)... don't use entryBox
-		marTron.getCharacter($(this),charSelectString);
-	});
-
-	
-}
-
-
-marTron.firstLoadAnim1 = function () {
-
-  // animate the character cards into place
-  this.startTL1 = new TimelineMax();
-  this.startTL1.staggerFrom($('section.characterEntry:nth-child(1)'),1,{ease: Power2.easeInOut, left:'-9999999px',opacity:0},0.6);
-  this.startTL1.staggerFrom($('section.characterEntry:nth-child(3)'),1,{ease: Power2.easeInOut, right:'-9999999px',opacity:0},0.6);
-  this.startTL1.staggerFrom($('section.characterEntry:nth-child(2)'),1,{ease: Power2.easeInOut, top:'-9999999px',opacity:0},0.6);  
-}
-
-marTron.hoverCardsLeft1 = function () {
-  // make the character card entries hover
-  
-  $target = $('section.characterEntry:nth-child(1)');
-
-  this.hcL1 = new TimelineMax({repeat:-1,yoyo:true});
-  this.hcL1.yoyo(true);
-  this.hcL1.staggerTo($target,3,{css:{transform:'matrix(1,-0.5,0,1,0,-10)'},ease:SlowMo.easeOut},0.2);
-  this.hcL1.staggerTo($target,2.7,{css:{transform:'matrix(1,-0.5,0,1,0,10)'},ease:SlowMo.easeOut},0.4);
-  this.hcL1.play();
-
- }
-
- marTron.hoverCardsCenter1 = function () {
-   // make the character card entries hover
-   
-   $target = $('section.characterEntry:nth-child(2)');
-
-   this.hcc1 = new TimelineMax({repeat:-1,yoyo:true});
-   this.hcc1.yoyo(true);
-   this.hcc1.staggerTo($target,3.1,{css:{transform:'matrix(1,0,0,1,0,-10)'},ease:SlowMo.easeOut},0.4);
-   this.hcc1.staggerTo($target,2.8,{css:{transform:'matrix(1,0,0,1,0,10)'},ease:SlowMo.easeOut},0.3);
-   this.hcc1.play();
-
-  }
-
-marTron.hoverCardsRight1 = function () {
-  // make the character card entries hover
-
-  var $target = $('section.characterEntry:nth-child(3)');
-
-  this.hcR1 = new TimelineMax({repeat:-1,yoyo:true});
-  this.hcR1.yoyo(true);
-  this.hcR1.staggerTo($target,2.6,{css:{transform:'matrix(1,0.5,0,1,0,-10)'},ease:SlowMo.easeOut},0.3);
-  this.hcR1.staggerTo($target,3,{css:{transform:'matrix(1,0.5,0,1,0,10)'},ease:SlowMo.easeOut},0.5);
-  this.hcR1.play();
-}
-
 marTron.pulsingBorder1 = function (targetE) {
   // where targetE is the selector with quotes
   var $target = $(targetE);
@@ -1282,400 +1717,9 @@ marTron.pulsingBorder1 = function (targetE) {
   this.psB1.to($target,0.6,{outline:'none'});
 }
 
-marTron.characterEvents = function () {
-  // things were starting to get crowded
-  // this holds the events for the character entries
-  
-
-  // stop clicks on the links from triggering the character entry
-  $('a.readMore').click(function(e) {
-    e.stopPropagation();
-  });
-
-  // when user changes the form field and submits, get the character data
-  $('section.characterEntry form').on('submit', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    // create a reference to 'this' section...
-    // aim for the parent
-    var $targetParent = $(this).parents('section.characterEntry');
-    console.log($targetParent);
-
-    // grab the value from 'this' input field
-    var inputString = $targetParent.find('input#hero').val();
-    console.log('User input before encoding is %s', inputString);
-
-    // encode the user's input so that it's ready for a URI string
-    // https://stackoverflow.com/questions/332872/encode-url-in-javascript
-    // NOTE:  not using this seems to work better than using it
-    // inputString = encodeURIComponent(inputString);
-
-    console.log('The user searches for: ',inputString);
-
-    // use that input field value to get the character if any (it is the target destination)
-    marTron.getCharacter($targetParent,inputString);
-
-    // display the comics of the newly searched character
-    // get their ID
-    // pass this ID to the comic getting
-    // allow this to work only if comic mode is true
-    
-    if (marTron.comicMode == true) {
-    	marTron.getDigitalComics(marTron.singleCharacterID.id);
-    }
-
-    // display movies if movie mode is true
-    if (marTron.movieMode == true) {
-      // marTron.spinner.empty();
-      marTron.getMovies(inputString,"movie");
-      // marTron.displayMovies(marTron.omdbArray1,"movie");
-    }
-
-    if (marTron.tvMode ==  true) {
-    	marTron.getMovies(inputString,"series");
-    }
-
-    // display tv shows if tv mode is true
-
-    // clear the input field once all of this is done
-    $('section.characterEntry form input#hero').val('');
-
-  });
-
-
-  // if comic mode is true (thus enabled), if you click one of the character entries... you reveal its comics
-  
-  $('section.characterEntry article').on('click', function(e) {
-    e.preventDefault();
-    
-    // if comic mode is enabled from nav menu
-    if (marTron.comicMode == true) {
-      // grab the data attribute with the character ID
-      var $thisEntry = $(this);
-      var heroID = $thisEntry.attr('data-martronheroid');
-      console.log('The hero/character ID is %s', heroID);
-
-      // use that data ID to find the correct comics
-      // get digital comics for this named character
-      // previous version used a character array, you have to change the GET to use a string
-      marTron.getDigitalComics(heroID);
-    }
-
-    if (marTron.movieMode == true) {
-      // grab the data attribute with the hero's name
-      var $thisEntry = $(this);
-      var heroName = $thisEntry.attr('data-martronheroname');
-      console.log('The character name is %s', heroName);
-
-      // marTron.spinner.empty();
-      marTron.getMovies(heroName,"movie");
-    }
-
-    if (marTron.tvMode ==  true) {
-    	// grab the data attribute with the hero's name
-    	var $thisEntry = $(this);
-    	var heroName = $thisEntry.attr('data-martronheroname');
-    	console.log('The character name is %s', heroName);
-
-    	// marTron.spinner.empty();
-    	marTron.getMovies(heroName,"series");
-    }
-
-  });
-
-  // TOOLTIP ANIMATIONS
-  // when the user hover over the character entries... display the tool tip
-  $('section.characterEntry').on('mouseover', function(e) {
-    e.preventDefault();
-    // console.log('Mouse over section.characterEntry works.');
-    var $thisItem = $(this);
-
-    // ----------------------------------------
-    // TOOLTIP  ------------------
-    // ----------------------------------------
-    if (marTron.comicMode == true) {
-      var comicToolTip = $thisItem.attr('data-comictooltips1');
-      $thisItem.find('aside.tooltip p').text("Click for this character's comics.")
-    }
-
-    if (marTron.movieMode ==  true) {
-      $thisItem.find('aside.tooltip p').text("Click for this character's movies.")
-    }
-
-    if (marTron.tvMode ==  true) {
-      $thisItem.find('aside.tooltip p').text("Click for this character's TV series.")
-    }
-
-    // display the tool tip
-    // $thisItem.find('aside.tooltip').css('display', 'flex');
-    // Tween option
-    TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'flex'});
-    // ----------------------------------------
-    // END TOOLTIP  ------------------
-    // ----------------------------------------
-
-    // // ----------------------------------------
-    // // ANIMATIONS  ------------------
-    // // ----------------------------------------
-    
-
-    // // remove the transform to straighten them out
-    // // expand the size/scale them
-    // // move them into center position
-    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
-
-    // // ----------------------------------------
-    // // END ANIMATIONS  ------------------
-    // // ----------------------------------------
-
-  })
-  .on('mouseout', function(e) {
-    // console.log('Mouse out of section.');
-    e.preventDefault();
-    var $thisItem = $(this);
-    
-    // ----------------------------------------
-    // TOOLTIP  ------------------
-    // ----------------------------------------
-    // $thisItem.find('aside.tooltip').css('display', 'none');
-    TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'none'});
-    // ----------------------------------------
-    // END TOOLTIP  ------------------
-    // ----------------------------------------
-    
-    // // ----------------------------------------
-    // // ANIMATIONS  ------------------
-    // // ----------------------------------------
-    // // add back the transform
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn});
-    // // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
-    // // un-scale them
-    // // move them back to their original position
-    // // ----------------------------------------
-    // // END ANIMATIONS  ------------------
-    // // ----------------------------------------
-  });
-
-  // LEFT SECTION ENTRY HOVER ANIMATIONS
-  $('section.characterEntry:nth-child(1)').on('mouseover', function(e) {
-    e.preventDefault();
-    // console.log('Mouse over section.characterEntry works.');
-    var $thisItem = $(this);
-
-    // ----------------------------------------
-    // ANIMATIONS  ------------------
-    // ----------------------------------------
-    
-
-    // remove the transform to straighten them out
-    // expand the size/scale them
-    // move them into center position
-    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,0,0,1,0,0) scaleX(1.2) scaleY(1.2)"},ease:Power2.easeIn});
-
-    // ----------------------------------------
-    // END ANIMATIONS  ------------------
-    // ----------------------------------------
-
-  })
-  .on('mouseout', function(e) {
-    // console.log('Mouse out of section.');
-    e.preventDefault();
-    var $thisItem = $(this);
-    
-    // ----------------------------------------
-    // ANIMATIONS  ------------------
-    // ----------------------------------------
-    // add back the transform
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:"matrix(1,-0.5,0,1,0,0)"}});
-    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,-0.5,0,1,0,0) scaleX(1) scaleY(1)"},ease:Power2.easeIn});
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,transform:"matrix(1,-0.5,0,1,0,0)"});
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
-    // un-scale them
-    // move them back to their original position
-    // ----------------------------------------
-    // END ANIMATIONS  ------------------
-    // ----------------------------------------
-  });
-
-
-  // RIGHT SECTION ENTRY HOVER ANIMATIONS
-  $('section.characterEntry:nth-child(3)').on('mouseover', function(e) {
-    e.preventDefault();
-    // console.log('Mouse over section.characterEntry works.');
-    var $thisItem = $(this);
-
-    // ----------------------------------------
-    // ANIMATIONS  ------------------
-    // ----------------------------------------
-    
-
-    // remove the transform to straighten them out
-    // expand the size/scale them
-    // move them into center position
-    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,css:{transform:"matrix(1,0,0,1,0,0)"}});
-    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,0,0,1,0,0) scaleX(1.2) scaleY(1.2)"}, ease:Power2.easeIn});
-
-    // ----------------------------------------
-    // END ANIMATIONS  ------------------
-    // ----------------------------------------
-
-  })
-  .on('mouseout', function(e) {
-    // console.log('Mouse out of section.');
-    e.preventDefault();
-    var $thisItem = $(this);
-    
-    // ----------------------------------------
-    // ANIMATIONS  ------------------
-    // ----------------------------------------
-    // add back the transform
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:"matrix(1,0.5,0,1,0,0)"}});
-    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,0.5,0,1,0,0) scaleX(1) scaleY(1)"},ease:Power2.easeIn});
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
-    // un-scale them
-    // move them back to their original position
-    // ----------------------------------------
-    // END ANIMATIONS  ------------------
-    // ----------------------------------------
-  });
-
-  // CENTRE CHARACTER ENTRY
-  $('section.characterEntry:nth-child(2)').on('mouseover', function(e) {
-    e.preventDefault();
-    // console.log('Mouse over section.characterEntry works.');
-    var $thisItem = $(this);
-
-    // ----------------------------------------
-    // ANIMATIONS  ------------------
-    // ----------------------------------------
-    
-
-    // remove the transform to straighten them out
-    // expand the size/scale them
-    // move them into center position
-    TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
-    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,transform:"matrix(1,-0.5,0,1,0,0)"});
-
-    // ----------------------------------------
-    // END ANIMATIONS  ------------------
-    // ----------------------------------------
-
-  })
-  .on('mouseout', function(e) {
-    // console.log('Mouse out of section.');
-    e.preventDefault();
-    var $thisItem = $(this);
-    
-    // ----------------------------------------
-    // ANIMATIONS  ------------------
-    // ----------------------------------------
-    // add back the transform
-    TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn});
-    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,transform:"matrix(1,0,0,1,0,0)"});
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
-    // un-scale them
-    // move them back to their original position
-    // ----------------------------------------
-    // END ANIMATIONS  ------------------
-    // ----------------------------------------
-  });
-
-}
-
-marTron.comicEvents = function () {
-  // ----------------------------------------
-  // EXPLORE UNIT ANIMATION  ------------------
-  // ----------------------------------------
-
-  // WARNING:  section.exploreUnit don't exist yet, they are dynamically created, you need event delegation
-  $('section.displayDisc').on('mouseover','section.exploreUnit', function(e) {
-    e.preventDefault();
-
-    // console.log('section.exploreUnit mouseover');
-
-    //setup the pulsing border animation
-    marTron.pulsingBorder1($(this));
-
-    // console.log('section.exploreUnit mouseover fired');    
-    TweenMax.to($(this),0.6,{scaleX:1.5,scaleY:1.5,zIndex:10,ease:Power2.easeIn});
-
-    marTron.psB1.play();
-  }).on('mouseout','section.exploreUnit', function(event) {
-    event.preventDefault();
-
-    // console.log('section.exploreUnit mouseout');
-
-    // console.log('section.exploreUnit mouseout fired');
-    TweenMax.to($(this),0.3,{scaleX:1,scaleY:1,zIndex:0,ease:Power2.easeIn});
-
-    // WARNING:  you'll want a reverse and then a kill at this point... provided that your animation sequence starts with a base state, goes to your desired end state and then ends back at your base state... otherwise if you mouseout halfway through the animation, the outline/border remains midway which isn't what I want
-    marTron.psB1.reverse();
-    // this.psB1.set($(this),{outline:'none'});
-    marTron.psB1.kill();
-
-  });
-
-  // ----------------------------------------
-  // END EXPLORE UNIT ANIMATION  ------------------
-  // ----------------------------------------
-}
-
-marTron.navMenuEvents = function () {
-  var $handle = $('.naviTab');
-  var $target = $('nav.selectMenu');
-  // toggleState... where true means menu is out, false means it's hidden
-  var toggleState = false;
-  marTron.comicModeButton = $('button.comics');
-  marTron.movieModeButton = $('button.movies');
-  marTron.tvModeButton = $('button.tvshows');
-
-  $handle.on('click', function(e) {
-    e.preventDefault();
-
-    switch(toggleState) {
-      case false:
-        // $target.css('right', '0');
-        TweenMax.to($target,1,{top:0,ease:Power2.easeIn});
-        toggleState = true;
-        break;
-      case true:
-        // $target.css('right', '-25%');
-        TweenMax.to($target,1,{top:"-27%",ease:Power2.easeIn});
-        toggleState = false;
-        break;
-    }
-  });
-
-  marTron.comicModeButton.on('click', function(e) {
-  	e.preventDefault();
-  	marTron.comicMode = true;
-  	marTron.movieMode = false;
-  	marTron.tvMode = false;
-
-  	marTron.showStatusMsg1("Comic Search Mode Activated");
-  });
-
-  marTron.movieModeButton.on('click', function(e) {
-  	e.preventDefault();
-  	marTron.comicMode = false;
-  	marTron.movieMode = true;
-  	marTron.tvMode = false;
-
-  	marTron.showStatusMsg1("Movie Search Mode Activated");
-  });
-
-  marTron.tvModeButton.on('click', function(e) {
-  	e.preventDefault();
-  	marTron.comicMode = false;
-  	marTron.movieMode = false;
-  	marTron.tvMode = true;
-
-  	marTron.showStatusMsg1("TV Search Mode Activated");
-  });
-
-}
-
+////////////////////////////////////////////
+//    EVENTS
+////////////////////////////////////////////
 marTron.events = function () {
 
   marTron.navMenuEvents();
@@ -1693,15 +1737,27 @@ marTron.events = function () {
   marTron.comicEvents();
   marTron.mediaEvents();
 }
+////////////////////////////////////////////
+//    END EVENTS
+////////////////////////////////////////////
+
+
+////////////////////////////////////////////
+//    INIT
+////////////////////////////////////////////
+marTron.init = function () {
+  marTron.events();
+  
+}
+////////////////////////////////////////////
+//    END INIT
+////////////////////////////////////////////
 
 
 // method to initialize our application
 // all our code will be put inside here
 // you should not be defining things in here
-marTron.init = function () {
-	marTron.events();
-	
-}
+
 
 //////////////////////////////////////////////////
 // EXECUTION CODE
