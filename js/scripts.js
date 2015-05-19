@@ -1384,41 +1384,50 @@ marTron.characterEvents = function () {
 
   });
 
+  // TOOLTIP ANIMATIONS
   // when the user hover over the character entries... display the tool tip
   $('section.characterEntry').on('mouseover', function(e) {
     e.preventDefault();
     // console.log('Mouse over section.characterEntry works.');
     var $thisItem = $(this);
 
+    // ----------------------------------------
+    // TOOLTIP  ------------------
+    // ----------------------------------------
     if (marTron.comicMode == true) {
-	    var comicToolTip = $thisItem.attr('data-comictooltips1');
-	    $thisItem.find('aside.tooltip p').text("Click for this character's comics.")
+      var comicToolTip = $thisItem.attr('data-comictooltips1');
+      $thisItem.find('aside.tooltip p').text("Click for this character's comics.")
     }
 
     if (marTron.movieMode ==  true) {
-    	$thisItem.find('aside.tooltip p').text("Click for this character's movies.")
+      $thisItem.find('aside.tooltip p').text("Click for this character's movies.")
     }
 
     if (marTron.tvMode ==  true) {
-    	$thisItem.find('aside.tooltip p').text("Click for this character's TV series.")
+      $thisItem.find('aside.tooltip p').text("Click for this character's TV series.")
     }
 
-    // ----------------------------------------
-    // ANIMATIONS  ------------------
-    // ----------------------------------------
     // display the tool tip
     // $thisItem.find('aside.tooltip').css('display', 'flex');
     // Tween option
     TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'flex'});
-
-    // remove the transform to straighten them out
-    // expand the size/scale them
-    // move them into center position
-    TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
-
     // ----------------------------------------
-    // END ANIMATIONS  ------------------
+    // END TOOLTIP  ------------------
     // ----------------------------------------
+
+    // // ----------------------------------------
+    // // ANIMATIONS  ------------------
+    // // ----------------------------------------
+    
+
+    // // remove the transform to straighten them out
+    // // expand the size/scale them
+    // // move them into center position
+    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
+
+    // // ----------------------------------------
+    // // END ANIMATIONS  ------------------
+    // // ----------------------------------------
 
   })
   .on('mouseout', function(e) {
@@ -1435,11 +1444,52 @@ marTron.characterEvents = function () {
     // END TOOLTIP  ------------------
     // ----------------------------------------
     
+    // // ----------------------------------------
+    // // ANIMATIONS  ------------------
+    // // ----------------------------------------
+    // // add back the transform
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn});
+    // // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
+    // // un-scale them
+    // // move them back to their original position
+    // // ----------------------------------------
+    // // END ANIMATIONS  ------------------
+    // // ----------------------------------------
+  });
+
+  // LEFT SECTION ENTRY HOVER ANIMATIONS
+  $('section.characterEntry:nth-child(1)').on('mouseover', function(e) {
+    e.preventDefault();
+    // console.log('Mouse over section.characterEntry works.');
+    var $thisItem = $(this);
+
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    
+
+    // remove the transform to straighten them out
+    // expand the size/scale them
+    // move them into center position
+    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,0,0,1,0,0) scaleX(1.2) scaleY(1.2)"},ease:Power2.easeIn});
+
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+
+  })
+  .on('mouseout', function(e) {
+    // console.log('Mouse out of section.');
+    e.preventDefault();
+    var $thisItem = $(this);
+    
     // ----------------------------------------
     // ANIMATIONS  ------------------
     // ----------------------------------------
     // add back the transform
-    TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:"matrix(1,-0.5,0,1,0,0)"}});
+    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,-0.5,0,1,0,0) scaleX(1) scaleY(1)"},ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,transform:"matrix(1,-0.5,0,1,0,0)"});
     // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
     // un-scale them
     // move them back to their original position
@@ -1447,6 +1497,90 @@ marTron.characterEvents = function () {
     // END ANIMATIONS  ------------------
     // ----------------------------------------
   });
+
+
+  // RIGHT SECTION ENTRY HOVER ANIMATIONS
+  $('section.characterEntry:nth-child(3)').on('mouseover', function(e) {
+    e.preventDefault();
+    // console.log('Mouse over section.characterEntry works.');
+    var $thisItem = $(this);
+
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    
+
+    // remove the transform to straighten them out
+    // expand the size/scale them
+    // move them into center position
+    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,css:{transform:"matrix(1,0,0,1,0,0)"}});
+    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,0,0,1,0,0) scaleX(1.2) scaleY(1.2)"}, ease:Power2.easeIn});
+
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+
+  })
+  .on('mouseout', function(e) {
+    // console.log('Mouse out of section.');
+    e.preventDefault();
+    var $thisItem = $(this);
+    
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    // add back the transform
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:"matrix(1,0.5,0,1,0,0)"}});
+    TweenMax.to($(this),1.5,{css:{transform:"matrix(1,0.5,0,1,0,0) scaleX(1) scaleY(1)"},ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
+    // un-scale them
+    // move them back to their original position
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+  });
+
+  // CENTRE CHARACTER ENTRY
+  $('section.characterEntry:nth-child(2)').on('mouseover', function(e) {
+    e.preventDefault();
+    // console.log('Mouse over section.characterEntry works.');
+    var $thisItem = $(this);
+
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    
+
+    // remove the transform to straighten them out
+    // expand the size/scale them
+    // move them into center position
+    TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,transform:"matrix(1,-0.5,0,1,0,0)"});
+
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+
+  })
+  .on('mouseout', function(e) {
+    // console.log('Mouse out of section.');
+    e.preventDefault();
+    var $thisItem = $(this);
+    
+    // ----------------------------------------
+    // ANIMATIONS  ------------------
+    // ----------------------------------------
+    // add back the transform
+    TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn});
+    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn,transform:"matrix(1,0,0,1,0,0)"});
+    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
+    // un-scale them
+    // move them back to their original position
+    // ----------------------------------------
+    // END ANIMATIONS  ------------------
+    // ----------------------------------------
+  });
+
 }
 
 marTron.comicEvents = function () {

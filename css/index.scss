@@ -26,6 +26,11 @@ nav.selectMenu {
 	// DISPLAY STATUS
 	// must come after the flexbox/display:flex
 	right: -25%;
+
+	@include tabletR {
+		width: 38%;
+		right: -38%;
+	}
 }
 
 // ----------------------------------------
@@ -54,6 +59,34 @@ nav.selectMenu .naviTab {
 	transform: rotate(-90deg);
 	// use the right bottom corner as the rotation point
 	transform-origin: right bottom 0;
+
+	@include desktopRHD1024t1280 {
+		left: -30%;
+		top: 12%;
+	}
+
+	@include desktopRHD940t1024 {
+		left: -34.5%;
+		top: 10%;
+	}
+
+	@include desktopR {
+		left: -36.5%;
+		top: 11%;
+	}
+
+	@include tabletR {
+		left: -31.5%;
+	}
+
+	@include phabletR {
+		left: -32.5%;
+	}
+
+	@include phoneR {
+		left: -45.5%;
+		top: 3%;
+	}
 }
 
 // ----------------------------------------
