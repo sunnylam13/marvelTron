@@ -751,9 +751,10 @@ marTron.getDigitalComics = function (idString) {
       marTron.showStatusMsg1("Comic retrieval complete.");
     }
   })
-  // .done(function() {
-  //   console.log("success");
-  // })
+  .done(function() {
+    // console.log("success");
+    marTron.showStatusMsg1("Comic retrieval complete.");
+  })
   // .fail(function() {
   //   console.log("error");
   // })
@@ -809,6 +810,9 @@ marTron.displayComicCovers = function (apiObj) {
 
   // if there is data to display do it
   if (apiObj) {
+
+    marTron.showStatusMsg1("Displaying comic covers now...");
+
     var item = apiObj;
     var targetResultsArray = apiObj.data.results;
     // console.log(targetResultsArray);
@@ -892,8 +896,10 @@ marTron.displayComicCovers = function (apiObj) {
       marTron.sliderParent.append($section);
     });
 
-    marTron.showStatusMsg1("Comics displayed below.");
+    // marTron.showStatusMsg1("Comics displayed below.");
   }
+
+  marTron.showStatusMsg1("Comics displayed below...");
 
   // if there is no data to display
   if (!apiObj) {
@@ -1036,6 +1042,8 @@ marTron.movieModeGet = function (searchString,typeString, paramObject,startSearc
         // });
         
       }  
+
+      marTron.showStatusMsg1("Movie data retrieval complete...");
   }
 }
 
@@ -1180,18 +1188,6 @@ marTron.tvModeGet = function (searchString,typeString, paramObject,startSearchYe
     // ----------------------------------------
     // END EPISODE  ------------------
     // ----------------------------------------
-
-    // // run the function that displays all the movie posters works best when put here in the .done() method...
-    // // because in this instance we're querying dozens of times to create the object, placing the function in .success() wouldn't work, it has to be activated after the object is finished
-
-    // if (marTron.omdbArray1) {
-    //   // empty the target location
-    //   // placing the emptying here works very well to clear out everything before placing new items
-    //   // marTron.spinner.empty();
-    //   // marTron.sliderParent.empty();
-
-    //   marTron.displayMovies(marTron.omdbArray1,"movie")
-    // }
 
   }
 }
