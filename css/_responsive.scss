@@ -107,6 +107,13 @@
 	}
 }
 
+@mixin desktopRHD1280Plus {
+	// large desktops
+	@media (min-width: 1280px) {
+		@content;
+	}
+}
+
 // custom media queries
 
 @mixin phoneMenuItemsR {

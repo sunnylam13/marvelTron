@@ -102,7 +102,7 @@ marTron.getCharacter = function (targetParent,userInputString) {
   // console.log('The target category is %s', targetType);
 
   var $targetParent = targetParent;
-  console.log($targetParent);
+  // console.log($targetParent);
 
   var baseURL = marTron.baseURL;
       baseURL += targetType;
@@ -138,11 +138,11 @@ marTron.getCharacter = function (targetParent,userInputString) {
       apikey: marTron.publicKey,
     },
     success: function (data, status) {
-      console.log('The getCharacterNames success callback was reached');
+      // console.log('The getCharacterNames success callback was reached');
       
       // the server returns the data in JSONP format, which must be converted to Javascript with JSON.parse(ARRAY)
       var convertData = JSON.parse(data);
-      console.log('The converted data is now an object', convertData);
+      // console.log('The converted data is now an object', convertData);
 
       // display character entry
       // don't forget to pass the targetParent as per the parameter design
@@ -151,7 +151,7 @@ marTron.getCharacter = function (targetParent,userInputString) {
       // I want the character's ID stored anyway as a data attribute for later access when calling comics upon click
       marTron.characterIDStored.push(marTron.getCharacterID(convertData));
       marTron.singleCharacterID = marTron.getCharacterID(convertData);
-      console.log('Character ID stored is ', marTron.characterIDStored);
+      // console.log('Character ID stored is ', marTron.characterIDStored);
 
       // give the article a data attribute matching the character's id by passing the data object
       // also give the article a data attribute for hero name for later movie and tv searches
@@ -187,15 +187,15 @@ marTron.displayCharacter = function (targetParent,apiObj) {
 
 	// store reference to retrieved API data object from server
 	var item = apiObj;
-	console.log(item);
+	// console.log(item);
 
 	// store reference to target destination
 	var $targetParent = targetParent;
-	console.log($targetParent);
+	// console.log($targetParent);
 
 	// this always selects the first character that matches
 	var targetResults = apiObj.data.results[0];
-	console.log(targetResults);
+	// console.log(targetResults);
 
 
 	// if the search returns no matches then don't do anything
@@ -210,17 +210,18 @@ marTron.displayCharacter = function (targetParent,apiObj) {
 
 			// data for the entry
 			var nameHero = targetResults.name;
-			console.log('Character name', nameHero);
+			// console.log('Character name', nameHero);
+       
 			// "http://i.annihil.us/u/prod/marvel/i/mg/5/a0/538615ca33ab0"
 			// https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9.jpg
 			// you have to concatenate the https://i.annihil.us/u/prod/marvel/i/mg/e/e0/537bafa34baa9/ + '.' + '.jpg'
 			if (targetResults.thumbnail != undefined || targetResults.thumbnail != null) {
         var thumbnail = targetResults.thumbnail.path + "." + targetResults.thumbnail.extension;
-        console.log('The image thumbnail is', thumbnail);
+        // console.log('The image thumbnail is', thumbnail);
       }
       
       var description = targetResults.description;
-      console.log('The character description is', description);
+      // console.log('The character description is', description);
       if (description == "") {
         description = "No data available at this time.  Please check back later.";
       }
@@ -291,18 +292,18 @@ marTron.characterEvents = function () {
     // create a reference to 'this' section...
     // aim for the parent
     var $targetParent = $(this).parents('section.characterEntry');
-    console.log($targetParent);
+    // console.log($targetParent);
 
     // grab the value from 'this' input field
     var inputString = $targetParent.find('input#hero').val();
-    console.log('User input before encoding is %s', inputString);
+    // console.log('User input before encoding is %s', inputString);
 
     // encode the user's input so that it's ready for a URI string
     // https://stackoverflow.com/questions/332872/encode-url-in-javascript
     // NOTE:  not using this seems to work better than using it
     // inputString = encodeURIComponent(inputString);
 
-    console.log('The user searches for: ',inputString);
+    // console.log('The user searches for: ',inputString);
 
     // use that input field value to get the character if any (it is the target destination)
     marTron.getCharacter($targetParent,inputString);
@@ -345,7 +346,7 @@ marTron.characterEvents = function () {
       // grab the data attribute with the character ID
       var $thisEntry = $(this);
       var heroID = $thisEntry.attr('data-martronheroid');
-      console.log('The hero/character ID is %s', heroID);
+      // console.log('The hero/character ID is %s', heroID);
 
       // use that data ID to find the correct comics
       // get digital comics for this named character
@@ -367,7 +368,7 @@ marTron.characterEvents = function () {
       // grab the data attribute with the hero's name
       var $thisEntry = $(this);
       var heroName = $thisEntry.attr('data-martronheroname');
-      console.log('The character name is %s', heroName);
+      // console.log('The character name is %s', heroName);
 
       // marTron.spinner.empty();
       marTron.getMovies(heroName,"series");
@@ -399,26 +400,10 @@ marTron.characterEvents = function () {
     }
 
     // display the tool tip
-    // $thisItem.find('aside.tooltip').css('display', 'flex');
-    // Tween option
     TweenMax.to($thisItem.find('aside.tooltip'),0.8,{display:'flex'});
     // ----------------------------------------
     // END TOOLTIP  ------------------
     // ----------------------------------------
-
-    // // ----------------------------------------
-    // // ANIMATIONS  ------------------
-    // // ----------------------------------------
-    
-
-    // // remove the transform to straighten them out
-    // // expand the size/scale them
-    // // move them into center position
-    // TweenMax.to($(this),1.5,{scaleX:1.2,scaleY:1.2,ease:Power2.easeIn});
-
-    // // ----------------------------------------
-    // // END ANIMATIONS  ------------------
-    // // ----------------------------------------
 
   })
   .on('mouseout', function(e) {
@@ -435,17 +420,6 @@ marTron.characterEvents = function () {
     // END TOOLTIP  ------------------
     // ----------------------------------------
     
-    // // ----------------------------------------
-    // // ANIMATIONS  ------------------
-    // // ----------------------------------------
-    // // add back the transform
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn});
-    // // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
-    // // un-scale them
-    // // move them back to their original position
-    // // ----------------------------------------
-    // // END ANIMATIONS  ------------------
-    // // ----------------------------------------
   });
 
   // LEFT SECTION ENTRY HOVER ANIMATIONS
@@ -478,10 +452,7 @@ marTron.characterEvents = function () {
     // ANIMATIONS  ------------------
     // ----------------------------------------
     // add back the transform
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:"matrix(1,-0.5,0,1,0,0)"}});
     TweenMax.to($(this),1.5,{css:{transform:"matrix(1,-0.5,0,1,0,0) scaleX(1) scaleY(1)"},ease:Power2.easeIn});
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,transform:"matrix(1,-0.5,0,1,0,0)"});
-    // TweenMax.to($(this),1.5,{scaleX:1,scaleY:1,ease:Power2.easeIn,css:{transform:'translateX(0) translateY(0) translateZ(15px)'}});
     // un-scale them
     // move them back to their original position
     // ----------------------------------------
@@ -707,8 +678,8 @@ marTron.getCharacterID = function (apiObj) {
   // var heroName = targetResults.name.toString();
   // var heroID = targetResults.id;
 
-  console.log('The name of the selected hero is ',targetResults.name);
-  console.log("The ID of the selected hero is ", targetResults.id);
+  // console.log('The name of the selected hero is ',targetResults.name);
+  // console.log("The ID of the selected hero is ", targetResults.id);
 
   // you create an object with 2 properties, one for name, one for id
   var heroIDObj = {};
@@ -754,20 +725,20 @@ marTron.getDigitalComics = function (idString) {
 
       // the server returns the data in JSONP format, which must be converted to Javascript with JSON.parse(ARRAY)
       var convertData = JSON.parse(res);
-      console.log('The converted data is now an object', convertData);
+      // console.log('The converted data is now an object', convertData);
 
       marTron.displayComicCovers(convertData);
     }
   })
-  .done(function() {
-    console.log("success");
-  })
-  .fail(function() {
-    console.log("error");
-  })
-  .always(function() {
-    console.log("complete");
-  });
+  // .done(function() {
+  //   console.log("success");
+  // })
+  // .fail(function() {
+  //   console.log("error");
+  // })
+  // .always(function() {
+  //   console.log("complete");
+  // });
 
 }
 // ----------------------------------------
@@ -815,21 +786,17 @@ marTron.displayComicCovers = function (apiObj) {
 
   var item = apiObj;
   var targetResultsArray = apiObj.data.results;
-  console.log(targetResultsArray);
+  // console.log(targetResultsArray);
 
   // empty the $('section.displayDisc')
   marTron.sliderParent.empty();
 
   // set the $('section.displayDisc') to have padding top and bottom of 10% each
-  // $('section.displayDisc').css({
-  // 	paddingTop: '10%',
-  // 	paddingBottom: '10%'
-  // });
-  // Tween option
   TweenMax.to(marTron.sliderParent,2,{ease:Power2.easeIn,paddingTop: '10%',paddingBottom: '10%'});
 
   $.each(targetResultsArray, function(index, objItem) {
-    // var $li = $('<li>');
+
+    // COMIC COVER  ------------------------------------------------
     var $section = $('<section>').addClass('exploreUnit');
     
     var $imgFrame = $('<div>').addClass('imgFrame');
@@ -842,7 +809,9 @@ marTron.displayComicCovers = function (apiObj) {
     }
 
     var $frame = $('<div>').addClass('frame');
-
+    // END COMIC COVER ------------------------------------------------
+    
+    // COMIC BUTTONS  ------------------------------------------------
     // the issue is whether the url array links increase or change
     // store a reference to the "reader" link
     if (marTron.retrieveURL(objItem.urls, "reader")) {
@@ -879,6 +848,7 @@ marTron.displayComicCovers = function (apiObj) {
       name: 'preview',
       href: readerLink
     }).text('Preview Comic');
+    // END COMIC BUTTONS ------------------------------------------------
 
     // join everything together
     $aPurchase.append($buttonPurchase);
@@ -933,7 +903,6 @@ marTron.comicEvents = function () {
 
     // WARNING:  you'll want a reverse and then a kill at this point... provided that your animation sequence starts with a base state, goes to your desired end state and then ends back at your base state... otherwise if you mouseout halfway through the animation, the outline/border remains midway which isn't what I want
     marTron.psB1.reverse();
-    // this.psB1.set($(this),{outline:'none'});
     marTron.psB1.kill();
 
   });
@@ -977,30 +946,20 @@ marTron.movieModeGet = function (searchString,typeString, paramObject,startSearc
           dataType: 'json',
           data: paramObj,
           success: function (res,status,jqXHR) {
-            // marTron.spinner.empty();
-            // marTron.sliderParent.empty();
-
-            
-
             // console.log(res);
             // Object {Response: "False", Error: "Movie not found!"}
             if (!res.Error || !res.Response || res.Response != "False" || res.Error != "Movie not found!") {
-              console.log('marTron.getMovies GET was successful.');
-              console.log(status);
-              console.log(res);
+              // console.log('marTron.getMovies GET was successful.');
+              // console.log(status);
+              // console.log(res);
 
               marTron.omdbArray1.push(res);
-              // marTron.omdbArray1.push(convertedObj);
-              console.log(marTron.omdbArray1);
-
-              // marTron.spinner.empty();
-              // marTron.sliderParent.empty();
-
+              // console.log(marTron.omdbArray1);
             }
           }
         })
         .done(function() {
-          console.log("success");
+          // console.log("success");
 
           // runn the function that displays all the movie posters works best when put here in the .done() method...
           // because in this instance we're querying dozens of times to create the object, placing the function in .success() wouldn't work, it has to be activated after the object is finished
@@ -1008,8 +967,8 @@ marTron.movieModeGet = function (searchString,typeString, paramObject,startSearc
           if (marTron.omdbArray1) {
             // empty the target location
             // placing the emptying here works very well to clear out everything before placing new items
-            marTron.spinner.empty();
-            marTron.sliderParent.empty();
+            // marTron.spinner.empty();
+            // marTron.sliderParent.empty();
 
             marTron.displayMovies(marTron.omdbArray1,"movie")
           }
@@ -1058,31 +1017,21 @@ marTron.tvModeGet = function (searchString,typeString, paramObject,startSearchYe
         dataType: 'json',
         data: paramObj,
         success: function (res,status,jqXHR) {
-          // marTron.spinner.empty();
-          // marTron.sliderParent.empty();
-
-          
-
           // console.log(res);
           // Object {Response: "False", Error: "Movie not found!"}
           if (!res.Error || !res.Response || res.Response != "False" || res.Error != "Movie not found!") {
-            console.log('marTron.getMovies GET was successful.');
-            console.log(status);
-            console.log(res);
+            // console.log('marTron.getMovies GET was successful.');
+            // console.log(status);
+            // console.log(res);
 
             marTron.omdbArray1.push(res);
-            // marTron.omdbArray1.push(convertedObj);
-            console.log(marTron.omdbArray1);
-
-            // marTron.spinner.empty();
-            // marTron.sliderParent.empty();
-
+            // console.log(marTron.omdbArray1);
           }
         }
       })
-      .done(function() {
-        console.log("success");
-      })
+      // .done(function() {
+      //   console.log("success");
+      // })
       // .fail(function() {
       //   console.log("error");
       // })
@@ -1230,8 +1179,6 @@ marTron.displayMovies = function (mediaArray,typeString) {
   // WARNING:  when testing in console, do not input a string for mediaArray, input the variable
 
   var arrayFile = mediaArray;
-  // counts are less useful, use objects
-  // var dataObjLocationCount = 0;
 
   // you will access an array of stored movie results
   // construct the html to insert into figure#spinner or the parent
@@ -1244,17 +1191,12 @@ marTron.displayMovies = function (mediaArray,typeString) {
   marTron.sliderParent.empty();
 
   // set the $('section.displayDisc') to have padding top and bottom of 10% each
-  // $('section.displayDisc').css({
-  //  paddingTop: '10%',
-  //  paddingBottom: '10%'
-  // });
-  // Tween option
   TweenMax.to(marTron.spinner,2,{ease:Power2.easeIn,paddingTop: '10%',paddingBottom: '10%'});
 
-  console.log(arrayFile);
-  console.log(arrayFile[0]);
-  console.log(arrayFile.length);
-  console.log('Display %s', typeString);
+  // console.log(arrayFile);
+  // console.log(arrayFile[0]);
+  // console.log(arrayFile.length);
+  // console.log('Display %s', typeString);
 
   $.each(mediaArray, function(index, objItem) {
     // if you weren't outputting specific data you would use Object.getOwnPropertyNames() or Object.keys() to construct arrays of all the property key names and match them to the values
@@ -1330,24 +1272,15 @@ marTron.displayMovies = function (mediaArray,typeString) {
           dataDetails.$boxOfficeEarn = rowEntry1("Box Office Earnings",objItem.BoxOffice);
         }
         
-        console.log('The movie whose data details were stored is %s',objItem.Title);
-        console.log(dataDetails);
+        // console.log('The movie whose data details were stored is %s',objItem.Title);
+        // console.log(dataDetails);
 
         // do we need to convert the object into JSON string to store it in the data attribute... if you don't you see only [object Object], which doesn't work
         // NOTE**:  JSON parse/string won't help with DOM element insertion, it won't convert... I've tried...
         // the data is lost
         // {"$h2":{"0":{},"length":1},"$year":{"0":{},"length":1},"$released":{"0":{},"length":1},"$runTime":{"0":{},"length":1},"$genre":{"0":{},"length":1},"$plot":{"0":{},"length":1},"$metaScore":{"0":{},"length":1},"$imdbRating":{"0":{},"length":1},"$rottenRating":{"0":{},"length":1},"$rottenConsensus":{"0":{},"length":1},"$boxOfficeEarn":{"0":{},"length":1}}
 
-        // store the dataDetails in an array
-        // marTron.movieArray1.push(dataDetails);
-
         // store this movie's name and number into an object or array for later retrieval
-        // incorrect... you set the movie tracker object to equal only one dataDetails
-        // marTron.movieTracker = objItem.Title;
-        // marTron.movieTracker = dataDetails;
-        // use object bracket notation here
-        // marTron.movieTracker[objItem.Title] = dataDetails;
-        // even object notation doesn't work, since you can't use the objItm.Title variable for it
         // switched to 2 arrays
         marTron.movieIndexArray.push(objItem.Title);
         marTron.movieObjArray.push(dataDetails);
@@ -1355,9 +1288,6 @@ marTron.displayMovies = function (mediaArray,typeString) {
         // attach the name of the movie to the section and use that to reference marTron.movieTracker and acquire the correct data
         $section.attr('data-movietrackerkey', objItem.Title);
 
-        // increment the dataObjLocationCount counter so that the next object gets the next position
-        // counts are less useful, use objects
-        // dataObjLocationCount++
         // ----------------------------------------
         // END MOVIE DETAILS  ------------------
         // ----------------------------------------
@@ -1439,24 +1369,15 @@ marTron.displayMovies = function (mediaArray,typeString) {
           dataDetails.$boxOfficeEarn = rowEntry1("Box Office Earnings",objItem.BoxOffice);
         }
         
-        console.log('The movie whose data details were stored is %s',objItem.Title);
-        console.log(dataDetails);
+        // console.log('The movie whose data details were stored is %s',objItem.Title);
+        // console.log(dataDetails);
 
         // do we need to convert the object into JSON string to store it in the data attribute... if you don't you see only [object Object], which doesn't work
         // NOTE**:  JSON parse/string won't help with DOM element insertion, it won't convert... I've tried...
         // the data is lost
         // {"$h2":{"0":{},"length":1},"$year":{"0":{},"length":1},"$released":{"0":{},"length":1},"$runTime":{"0":{},"length":1},"$genre":{"0":{},"length":1},"$plot":{"0":{},"length":1},"$metaScore":{"0":{},"length":1},"$imdbRating":{"0":{},"length":1},"$rottenRating":{"0":{},"length":1},"$rottenConsensus":{"0":{},"length":1},"$boxOfficeEarn":{"0":{},"length":1}}
 
-        // store the dataDetails in an array
-        // marTron.movieArray1.push(dataDetails);
-
         // store this movie's name and number into an object or array for later retrieval
-        // incorrect... you set the movie tracker object to equal only one dataDetails
-        // marTron.movieTracker = objItem.Title;
-        // marTron.movieTracker = dataDetails;
-        // use object bracket notation here
-        // marTron.movieTracker[objItem.Title] = dataDetails;
-        // even object notation doesn't work, since you can't use the objItm.Title variable for it
         // switched to 2 arrays
         marTron.tvIndexArray.push(objItem.Title);
         marTron.tvObjArray.push(dataDetails);
@@ -1464,9 +1385,6 @@ marTron.displayMovies = function (mediaArray,typeString) {
         // attach the name of the movie to the section and use that to reference marTron.movieTracker and acquire the correct data
         $section.attr('data-tvtrackerkey', objItem.Title);
 
-        // increment the dataObjLocationCount counter so that the next object gets the next position
-        // counts are less useful, use objects
-        // dataObjLocationCount++
         // ----------------------------------------
         // END MOVIE DETAILS  ------------------
         // ----------------------------------------
@@ -1503,14 +1421,14 @@ marTron.displayMovieDetails = function () {
 
     if (marTron.movieMode == true) {
       var dataItem = thisItem.parents("section.movieUnit").attr('data-movietrackerkey');
-      console.log(dataItem);
+      // console.log(dataItem);
       // use the acquired key to access the marTron.movieTracker object and acquire the correct data object
       // var detailsObj = marTron.movieTracker[dataItem];
       // console.log(detailsObj);
 
       // use the data to search for correct object in 2 arrays
       var detailsObj = getMediaObj1(dataItem, marTron.movieIndexArray, marTron.movieObjArray);
-      console.log(detailsObj);
+      // console.log(detailsObj);
 
       // store a reference to the array object
       // passing the dataItem with the object location in the array should mean we have the movie object in question
@@ -1527,14 +1445,14 @@ marTron.displayMovieDetails = function () {
 
     if (marTron.tvMode ==  true) {
       var dataItem = thisItem.parents("section.movieUnit").attr('data-tvtrackerkey');
-      console.log(dataItem);
+      // console.log(dataItem);
       // use the acquired key to access the marTron.movieTracker object and acquire the correct data object
       // var detailsObj = marTron.movieTracker[dataItem];
       // console.log(detailsObj);
 
       // use the data to search for correct object in 2 arrays
       var detailsObj = getMediaObj1(dataItem, marTron.tvIndexArray, marTron.tvObjArray);
-      console.log(detailsObj);
+      // console.log(detailsObj);
 
       // store a reference to the array object
       // passing the dataItem with the object location in the array should mean we have the movie object in question
@@ -1651,7 +1569,7 @@ function getRandom (num) {
 
 marTron.showStatusMsg1 = function (textString) {
 
-  console.log('marTron.showStatusMsg1 active');
+  // console.log('marTron.showStatusMsg1 active');
 
   // create new sequence
   marTron.sSM1 = new TimelineMax();

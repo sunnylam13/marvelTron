@@ -104,9 +104,6 @@ nav.selectMenu .naviTab {
 	//testing
 	background: $marvelRed;
 
-	@include iphone6Plus414R {
-		//
-	}
 }
 
 // ----------------------------------------
@@ -123,6 +120,11 @@ nav.selectMenu button {
 	padding: 1% 2% 1% 2%;
 	width: 95%;
 	font-size: $basefontsize;
+	@include sectionMargins041515(1px,1px);
+
+	@include desktopRHD1280Plus {
+		@include sectionMargins041515(1px,1px);
+	}
 
 	@include iphone6Plus736R {
 		@include sectionMargins041515(1px,1px);
