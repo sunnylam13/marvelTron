@@ -128,6 +128,9 @@ marTron.getCharacter = function (targetParent,userInputString) {
   // Responses returned by the Marvel Comics API are compliant with the W3C CORS specification, which allows any properly-authorized requests to be made from any origin domain. This means that you should not need to wrap calls in JSONP callbacks in order to make calls from browser-based applications. If you do prefer to use JSONP, however, all endpoints will accept a callback parameter to all endpoints that will wrap results in a JSONP wrapper.
   // using dataType: 'html' is easiest
 
+  // display a status message that you're getting character data
+  marTron.showStatusMsg1("Getting character data...");
+
   $.ajax({
     url: baseURL,
     type: 'GET',
@@ -140,6 +143,10 @@ marTron.getCharacter = function (targetParent,userInputString) {
     success: function (data, status) {
       // console.log('The getCharacterNames success callback was reached');
       
+      if (!data) {
+        marTron.showStatusMsg1("No character data available at this time.");
+      }
+
       // the server returns the data in JSONP format, which must be converted to Javascript with JSON.parse(ARRAY)
       var convertData = JSON.parse(data);
       // console.log('The converted data is now an object', convertData);
@@ -161,6 +168,7 @@ marTron.getCharacter = function (targetParent,userInputString) {
         'data-martronheroname': marTron.getCharacterID(convertData).name
       });
 
+      marTron.showStatusMsg1("Character retrieval complete.");
 
     }
   })
@@ -171,7 +179,8 @@ marTron.getCharacter = function (targetParent,userInputString) {
   //   console.log("error");
   // })
   // .always(function() {
-  //   console.log("complete");
+  //   // console.log("complete");
+  //   // marTron.showStatusMsg1("Character retrieval complete.");
   // });
   
 }
@@ -703,6 +712,8 @@ marTron.getDigitalComics = function (idString) {
 
   console.log('marTron.getDigitalComics is active.');
 
+  marTron.showStatusMsg1("Comic retrieval in progress.");
+
   // get the comics
   $.ajax({
     // don't forget to add + "comics" because the baseURL/endpoint doesn't include that
@@ -723,11 +734,17 @@ marTron.getDigitalComics = function (idString) {
       // console.log('The returned object for comics for this character is...');
       // console.log(res);
 
+      if (!res) {
+        marTron.showStatusMsg1("No comic data available.");
+      }
+
       // the server returns the data in JSONP format, which must be converted to Javascript with JSON.parse(ARRAY)
       var convertData = JSON.parse(res);
       // console.log('The converted data is now an object', convertData);
 
       marTron.displayComicCovers(convertData);
+
+      marTron.showStatusMsg1("Comic retrieval complete.");
     }
   })
   // .done(function() {
@@ -803,7 +820,12 @@ marTron.displayComicCovers = function (apiObj) {
 
     // the images of the comic are in an array and include the first image which is the cover...  that would be objItem.images[0]
     // the remaining images are previews... with text separated out
-    if (objItem.images != null || objItem.images != undefined) {
+    // if (objItem.images != null || objItem.images != undefined) {
+    //   var $img = $('<img>').attr('src', objItem.images[0].path + "." + objItem.images[0].extension);
+    //   $imgFrame.append($img);
+    // }
+
+    if (objItem != null || objItem != undefined) {
       var $img = $('<img>').attr('src', objItem.images[0].path + "." + objItem.images[0].extension);
       $imgFrame.append($img);
     }
@@ -861,6 +883,9 @@ marTron.displayComicCovers = function (apiObj) {
     // $li.append($section);
     marTron.sliderParent.append($section);
   });
+
+  marTron.showStatusMsg1("Comics displayed below.");
+  
 }
 
 // ----------------------------------------
@@ -927,6 +952,8 @@ marTron.movieModeGet = function (searchString,typeString, paramObject,startSearc
       // this has to be placed outside of the loop or you'll have nothing
       marTron.omdbArray1 = [];
 
+      marTron.showStatusMsg1("Getting movie data...");
+
       for (var i = startSearchYear; i < currentYear; i++) {
         // t will change based on the passed search query
         // i is the year
@@ -971,6 +998,12 @@ marTron.movieModeGet = function (searchString,typeString, paramObject,startSearc
             // marTron.sliderParent.empty();
 
             marTron.displayMovies(marTron.omdbArray1,"movie")
+
+            marTron.showStatusMsg1("Movie retrieval complete... see below.");
+          }
+
+          if (!marTron.omdbArray1) {
+            marTron.showStatusMsg1("No movie data available.");
           }
         })
         // .fail(function() {
@@ -993,6 +1026,8 @@ marTron.tvModeGet = function (searchString,typeString, paramObject,startSearchYe
     // we want to empty out the storage array every time we make a new request... because below we're pushing the objects into it... that means the entries build up and keep being displayed
     // this has to be placed outside of the loop or you'll have nothing
     marTron.omdbArray1 = [];
+
+    marTron.showStatusMsg1("Getting TV data right now...");
 
     // ----------------------------------------
     // SERIES  ------------------
@@ -1090,7 +1125,7 @@ marTron.tvModeGet = function (searchString,typeString, paramObject,startSearchYe
         }
       })
       .done(function() {
-        console.log("success");
+        // console.log("success");
 
         // NOTE:  The callback function is best placed here or within success and not outside
 
@@ -1103,7 +1138,13 @@ marTron.tvModeGet = function (searchString,typeString, paramObject,startSearchYe
           // marTron.spinner.empty();
           // marTron.sliderParent.empty();
 
-          marTron.displayMovies(marTron.omdbArray1,"series")
+          marTron.displayMovies(marTron.omdbArray1,"series");
+
+          marTron.showStatusMsg1("TV data retrieval complete... see below.");
+        }
+
+        if (!marTron.omdbArray1) {
+          marTron.showStatusMsg1("No TV data available.");
         }
       })
       // .fail(function() {
@@ -1118,7 +1159,7 @@ marTron.tvModeGet = function (searchString,typeString, paramObject,startSearchYe
     // END EPISODE  ------------------
     // ----------------------------------------
 
-    // // runn the function that displays all the movie posters works best when put here in the .done() method...
+    // // run the function that displays all the movie posters works best when put here in the .done() method...
     // // because in this instance we're querying dozens of times to create the object, placing the function in .success() wouldn't work, it has to be activated after the object is finished
 
     // if (marTron.omdbArray1) {
