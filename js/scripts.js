@@ -971,6 +971,14 @@
 //    MOVIES
 ////////////////////////////////////////////
 
+  /* 
+  * Monday, June 22, 2015 10:36 AM
+  * There is currently an error retrieving movie and TV posters when using any domain other than localhost.
+  * close though not quite:  https://stackoverflow.com/questions/16135965/image-getting-403-forbidden-when-deployed-to-server
+  * that answer was focused on server side
+  * 
+  */
+
   marTron.movieModeGet = function (searchString,typeString, paramObject,startSearchYear,currentYear) {
     if (marTron.movieMode == true) {
       // we want to empty out the storage array every time we make a new request... because below we're pushing the objects into it... that means the entries build up and keep being displayed

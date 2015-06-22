@@ -1,149 +1,149 @@
 ////////////////////////////////////////////
 // 		NAV SELECT MENU
 ////////////////////////////////////////////
-// used for controlling the current modes that are available
+	// used for controlling the current modes that are available
 
-// ----------------------------------------
-// PARENT  ------------------
-// ----------------------------------------
-nav.selectMenu {	
-	// positioning
-	position: fixed;
-	
-	top: 0;
-	right: 0;
-	z-index: 10;
+	// ----------------------------------------
+	// PARENT  ------------------
+	// ----------------------------------------
+		nav.selectMenu {	
+			// positioning
+			position: fixed;
+			
+			top: 0;
+			right: 0;
+			z-index: 10;
 
-	background: $marvelGrey;
-	padding: 2%;
-	width: 25%;
-	// if I set a fixed height then I don't always have to worry about Javascript moving it back to the wrong position when closing the menu
-	height: 27%;
-	border-radius: 10px;
+			background: $marvelGrey;
+			padding: 2%;
+			width: 25%;
+			// if I set a fixed height then I don't always have to worry about Javascript moving it back to the wrong position when closing the menu
+			height: 27%;
+			border-radius: 10px;
 
-	//flexbox parent
-	@include flexboxColumn1;
-	// align-items: flex-start;
+			//flexbox parent
+			@include flexboxColumn1;
+			// align-items: flex-start;
 
-	// DISPLAY STATUS
-	// must come after the flexbox/display:flex
-	top: -27%;
+			// DISPLAY STATUS
+			// must come after the flexbox/display:flex
+			top: -27%;
 
-	@include tabletR {
-		width: 38%;
-		width: 60%;
-	}
+			@include tabletR {
+				width: 38%;
+				width: 60%;
+			}
+		}
+	// ----------------------------------------
+	// END PARENT  ------------------
+	// ----------------------------------------
 
+	// ----------------------------------------
+	// NAVI TAB  ------------------
+	// ----------------------------------------
+		// this is the visible portion of the mode/nav menu
 
-}
+		nav.selectMenu .naviPlacer {
 
-// ----------------------------------------
-// END PARENT  ------------------
-// ----------------------------------------
+			position: absolute;
+			bottom: -18.5%;
+			left: 0;
+			
+			width: 100%; // to match the width of nav.selectMenu
+			height: 2em;
+			//testing
+			// background: blue;
 
-// ----------------------------------------
-// NAVI TAB  ------------------
-// ----------------------------------------
-// this is the visible portion of the mode/nav menu
+			//flexbox parent
+			@include flexboxRow1;
+			align-items: flex-start;
 
-nav.selectMenu .naviPlacer {
-	position: absolute;
-	bottom: -18.5%;
-	left: 0;
-	
-	width: 100%; // to match the width of nav.selectMenu
-	height: 2em;
-	//testing
-	// background: blue;
+			@include tabletR {
+				bottom: -17.5%;
+				bottom: -14%;
+				justify-content: flex-end;
+				align-content: flex-end;
+			}
 
-	//flexbox parent
-	@include flexboxRow1;
-	align-items: flex-start;
+			@include iphone6Plus736R {
+				bottom: -35%;
+			}
 
-	@include tabletR {
-		bottom: -17.5%;
-		bottom: -14%;
-		justify-content: flex-end;
-		align-content: flex-end;
-	}
+			@include iphone6Plus667R {
+				bottom: -39%;
+			}
 
-	@include iphone6Plus736R {
-		bottom: -35%;
-	}
+			@include phoneR {
+				justify-content: flex-end;
+				align-content: flex-end;
+				bottom: -46%;
+			}
 
-	@include iphone6Plus667R {
-		bottom: -39%;
-	}
+			@include iphone6Plus414R {
+				bottom: -20%;
+			}
 
-	@include phoneR {
-		justify-content: flex-end;
-		align-content: flex-end;
-		bottom: -46%;
-	}
+			@include iphone6Plus375R {
+				bottom: -22%;
+			}
+		}
 
-	@include iphone6Plus414R {
-		bottom: -20%;
-	}
+		nav.selectMenu .naviTab {
+			// position: absolute;
+			// left: -26.5%;
+			// top: 10%;
+			// left: -26.5%;
+			// top: 17%;
 
-	@include iphone6Plus375R {
-		bottom: -22%;
-	}
-}
+			font-family: $openSans;
+			padding: 1% 5% 1% 5%;
+			cursor: pointer;
 
-nav.selectMenu .naviTab {
-	// position: absolute;
-	// left: -26.5%;
-	// top: 10%;
-	// left: -26.5%;
-	// top: 17%;
+			//testing
+			background: $marvelRed;
 
-	font-family: $openSans;
-	padding: 1% 5% 1% 5%;
-	cursor: pointer;
+			// DEFAULT DISPLAY STATUS
+			// if 403 Forbidden can't be circumvented for IMDB, disable this
+			display: none;
 
-	//testing
-	background: $marvelRed;
+		}
+	// ----------------------------------------
+	// END NAVI TAB  ------------------
+	// ----------------------------------------
 
-}
+	// ----------------------------------------
+	// BUTTONS  ------------------
+	// ----------------------------------------
+		// remember to prevent any default activity
 
-// ----------------------------------------
-// END NAVI TAB  ------------------
-// ----------------------------------------
+		nav.selectMenu button {
+			@include sectionMargins041515(5%,5%);
+			padding: 1% 2% 1% 2%;
+			width: 95%;
+			font-size: $basefontsize;
+			@include sectionMargins041515(1px,1px);
 
-// ----------------------------------------
-// BUTTONS  ------------------
-// ----------------------------------------
-// remember to prevent any default activity
+			@include desktopRHD1280Plus {
+				@include sectionMargins041515(1px,1px);
+			}
 
-nav.selectMenu button {
-	@include sectionMargins041515(5%,5%);
-	padding: 1% 2% 1% 2%;
-	width: 95%;
-	font-size: $basefontsize;
-	@include sectionMargins041515(1px,1px);
+			@include iphone6Plus736R {
+				@include sectionMargins041515(1px,1px);
+				padding: 0;
+				border-radius: 0;
+				width: 100%;
+			}
 
-	@include desktopRHD1280Plus {
-		@include sectionMargins041515(1px,1px);
-	}
-
-	@include iphone6Plus736R {
-		@include sectionMargins041515(1px,1px);
-		padding: 0;
-		border-radius: 0;
-		width: 100%;
-	}
-
-	@include phoneR {
-		@include sectionMargins041515(0,0);
-		padding: 0;
-		border-radius: 0;
-		width: 100%;
-	}
-}
-
-// ----------------------------------------
-// END BUTTONS  ------------------
-// ----------------------------------------
+			@include phoneR {
+				@include sectionMargins041515(0,0);
+				padding: 0;
+				border-radius: 0;
+				width: 100%;
+			}
+		}
+	// ----------------------------------------
+	// END BUTTONS  ------------------
+	// ----------------------------------------
 
 ////////////////////////////////////////////
 // 		END NAV SELECT MENU
@@ -154,13 +154,13 @@ nav.selectMenu button {
 // 		MAIN
 ////////////////////////////////////////////
 
-main {
-	// flexbox parent
-	@include flexboxColumn1;
-	// justify-content: center;
-	// align-content: center;
-	// align-items: center;
-}
+	main {
+		// flexbox parent
+		@include flexboxColumn1;
+		// justify-content: center;
+		// align-content: center;
+		// align-items: center;
+	}
 
 ////////////////////////////////////////////
 // 		END MAIN
@@ -170,238 +170,238 @@ main {
 ////////////////////////////////////////////
 // 		SHOW CASE
 ////////////////////////////////////////////
-// this is the section that carries the 3 floating cards that will be filled with the character data
+	// this is the section that carries the 3 floating cards that will be filled with the character data
 
-section.showcase {
-	@include sectionPadding041515(2%,2%);
+	section.showcase {
+		@include sectionPadding041515(2%,2%);
 
-	// flexbox parent
-	@include flexboxRow1;
-	align-items: flex-start;
-	// align-items: flex-end;
+		// flexbox parent
+		@include flexboxRow1;
+		align-items: flex-start;
+		// align-items: flex-end;
 
-	position: relative;	
-}
-
-// ----------------------------------------
-// Character Entries  ------------------
-// ----------------------------------------
-
-// Parent  ------------------------------------------------
-
-// enable keyframe animation for section.characterEntry
-// @include animationHoverEntry1;
-
-section.characterEntry {
-	padding: 1%;
-	border-radius: 10px;
-	border: 3px solid $marvelDarkSky;
-
-	// flexbox child
-	flex: 1 33%;
-	flex: 1 29%;
-
-	// add margin, adjust flexbox child
-	margin: 2% 2% 2% 2%;
-
-	// 3D
-	transform-style: preserve-3d;
-	perspective: 1200px;
-
-	// to allow the tooltip to be positioned relative to this parent
-	position: relative;
-
-	@include desktopRHD940t1024 {
-		// flex: 1 75%;
-		// @include sectionMargins041515(15%,25%);
+		position: relative;	
 	}
 
-	@include tabletR {
-		// flex: 1 48%;
-		@include sectionMargins041515(15%,25%);
-	}
+	// ----------------------------------------
+	// Character Entries  ------------------
+	// ----------------------------------------
 
-	@include phoneR {
-		flex: 1 50%;
-		@include sectionMargins041515(15%,25%);
-	}
+		// Parent  ------------------------------------------------
 
-	@include iphone6Plus414R {
-		@include sectionMargins041515(20%,25%);
-	}
-}
+			// enable keyframe animation for section.characterEntry
+			// @include animationHoverEntry1;
 
-// section.showcase os nth-child(0)
-section.characterEntry:nth-child(1) {
-	background: $marvelNavyBlue;
-	// matrix still isn't understood, opted for the less complex version
-	transform: matrix(1,-0.5,0,1,0,0);
-	// transform: 	translateX(0.5625em) translateY(7.125em) translateZ(-50em) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(-39deg);
-}
-section.characterEntry:nth-child(2) {
-	background: $marvelShieldGreen;
-}
-section.characterEntry:nth-child(3) {
-	background: $marvelPurple;
-	transform: matrix(1,0.5,0,1,0,0);
-	// transform: 	translateX(-0.4375em) translateY(7.125em) translateZ(-50em) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(39deg);
-}
+			section.characterEntry {
+				padding: 1%;
+				border-radius: 10px;
+				border: 3px solid $marvelDarkSky;
 
-// END Parent ------------------------------------------------
+				// flexbox child
+				flex: 1 33%;
+				flex: 1 29%;
 
-// Form  ------------------------------------------------
-section.characterEntry form {
-	display: block;
-	width: 100%;
-	@include sectionMargins041515(0,10%);
+				// add margin, adjust flexbox child
+				margin: 2% 2% 2% 2%;
 
-	//flexbox parent
-	@include flexboxRow1;
+				// 3D
+				transform-style: preserve-3d;
+				perspective: 1200px;
 
-	label {
-		display: inline-block;
-		@include marginPaddingReset1;
-		text-align: center;
+				// to allow the tooltip to be positioned relative to this parent
+				position: relative;
 
-		//flexbox child
-		flex: 1 25%;
+				@include desktopRHD940t1024 {
+					// flex: 1 75%;
+					// @include sectionMargins041515(15%,25%);
+				}
 
-		@include desktopRHD940t1024 {
-			text-align: left;
-			flex: 1 30%;
-		}
+				@include tabletR {
+					// flex: 1 48%;
+					@include sectionMargins041515(15%,25%);
+				}
 
-		@include desktopR {
-			flex: 1 100%;
-			margin-bottom: 2%;
-		}
-	}
+				@include phoneR {
+					flex: 1 50%;
+					@include sectionMargins041515(15%,25%);
+				}
 
-	input {
-		display: inline-block;
-		@include marginPaddingReset1;
-		// remove default border
-		border: none;
-		border-radius: 5px;
+				@include iphone6Plus414R {
+					@include sectionMargins041515(20%,25%);
+				}
+			}
 
-		// text within field
-		padding: 2%;
-		text-align: center;
+			// section.showcase os nth-child(0)
+			section.characterEntry:nth-child(1) {
+				background: $marvelNavyBlue;
+				// matrix still isn't understood, opted for the less complex version
+				transform: matrix(1,-0.5,0,1,0,0);
+				// transform: 	translateX(0.5625em) translateY(7.125em) translateZ(-50em) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(-39deg);
+			}
+			section.characterEntry:nth-child(2) {
+				background: $marvelShieldGreen;
+			}
+			section.characterEntry:nth-child(3) {
+				background: $marvelPurple;
+				transform: matrix(1,0.5,0,1,0,0);
+				// transform: 	translateX(-0.4375em) translateY(7.125em) translateZ(-50em) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skewX(0deg) skewY(39deg);
+			}
 
-		//flexbox child
-		flex: 1 75%;
+		// END Parent ------------------------------------------------
 
-		@include desktopRHD940t1024 {
-			text-align: left;
-			flex: 1 60%;
-		}
-	}
-}
-// END Form ------------------------------------------------
+		// Form  ------------------------------------------------
+			section.characterEntry form {
+				display: block;
+				width: 100%;
+				@include sectionMargins041515(0,10%);
 
+				//flexbox parent
+				@include flexboxRow1;
 
-// TOOL TIP  ------------------------------------------------
-aside.tooltip {
-	position: absolute;
-	width: 10em;
-	height: 5em;
-	background: $marvelRedRGBA1;
-	right: 0;
-	top: 33%;
+				label {
+					display: inline-block;
+					@include marginPaddingReset1;
+					text-align: center;
 
-	padding: 2%;
+					//flexbox child
+					flex: 1 25%;
 
-	// flexbox parent
-	@include flexboxColumn1;
-	justify-content: center;
+					@include desktopRHD940t1024 {
+						text-align: left;
+						flex: 1 30%;
+					}
 
-	// DEFAULT DISPLAY STATUS
-	display: none;
+					@include desktopR {
+						flex: 1 100%;
+						margin-bottom: 2%;
+					}
+				}
 
-	@include desktopRHD940t1024 {
-		width: 8em;
-		top: 15%;
-	}
+				input {
+					display: inline-block;
+					@include marginPaddingReset1;
+					// remove default border
+					border: none;
+					border-radius: 5px;
 
-	@include tabletR {
-		width: 7em;
-		height: 6em;
-		top: 15%;
-	}
+					// text within field
+					padding: 2%;
+					text-align: center;
 
-	@include iphone6Plus736R {
-		top: 15%;
-	}
+					//flexbox child
+					flex: 1 75%;
 
-	@include phabletR {
-		top: 15%;
-	}
-
-	p {
-		display: inline-block;
-		@include marginPaddingReset1;
-		text-align: center;
-	}
-}
-// END TOOL TIP ------------------------------------------------
+					@include desktopRHD940t1024 {
+						text-align: left;
+						flex: 1 60%;
+					}
+				}
+			}
+		// END Form ------------------------------------------------
 
 
-// Article  ------------------------------------------------
+		// TOOL TIP  ------------------------------------------------
+			aside.tooltip {
+				position: absolute;
+				width: 10em;
+				height: 5em;
+				background: $marvelRedRGBA1;
+				right: 0;
+				top: 33%;
 
-section.characterEntry article {
-	width: 100%;
+				padding: 2%;
 
-	.imgFrame {
-		width: 100%;
-	}
+				// flexbox parent
+				@include flexboxColumn1;
+				justify-content: center;
 
-	.imgFrame img {
-		max-width: 100%;
-		border-radius: 5px;
-	}
+				// DEFAULT DISPLAY STATUS
+				display: none;
 
-	h2 {
-		font-size: $basefontsize*2;
-		font-weight: bold;
-		@include sectionMargins041515(8%,5%);
-	}
+				@include desktopRHD940t1024 {
+					width: 8em;
+					top: 15%;
+				}
 
-	p.description {
-		font-style: italic;
-		position: relative;
-		display: block;
-		&::before {
-			// position: absolute;
-			// @include blockquoteCodeGrey;
-			@include beforeAfterIconPlace042215a('\f10d');
-			font-size: $basefontsize*0.75;
-			color: $marvelRed;
-		}
-		&::after {
-			@include beforeAfterIconPlace042215a('\f10e');
-			font-size: $basefontsize*0.75;
-			margin:0px 0px 0px 10px;
-			color: $marvelRed;
-		}
-	}
+				@include tabletR {
+					width: 7em;
+					height: 6em;
+					top: 15%;
+				}
 
-	a.readMore {
-		font-weight: bold;
-		&::after {
-			@include beforeAfterIconPlace042215a('\f101');
-			font-size: $basefontsize*0.75;
-			margin:0px 0px 0px 10px;
-			color: $marvelRed;
-		}
-	}
-}
+				@include iphone6Plus736R {
+					top: 15%;
+				}
 
-// END Article ------------------------------------------------
+				@include phabletR {
+					top: 15%;
+				}
+
+				p {
+					display: inline-block;
+					@include marginPaddingReset1;
+					text-align: center;
+				}
+			}
+		// END TOOL TIP ------------------------------------------------
 
 
-// ----------------------------------------
-// END Character Entries  ------------------
-// ----------------------------------------
+		// Article  ------------------------------------------------
+
+			section.characterEntry article {
+				width: 100%;
+
+				.imgFrame {
+					width: 100%;
+				}
+
+				.imgFrame img {
+					max-width: 100%;
+					border-radius: 5px;
+				}
+
+				h2 {
+					font-size: $basefontsize*2;
+					font-weight: bold;
+					@include sectionMargins041515(8%,5%);
+				}
+
+				p.description {
+					font-style: italic;
+					position: relative;
+					display: block;
+					&::before {
+						// position: absolute;
+						// @include blockquoteCodeGrey;
+						@include beforeAfterIconPlace042215a('\f10d');
+						font-size: $basefontsize*0.75;
+						color: $marvelRed;
+					}
+					&::after {
+						@include beforeAfterIconPlace042215a('\f10e');
+						font-size: $basefontsize*0.75;
+						margin:0px 0px 0px 10px;
+						color: $marvelRed;
+					}
+				}
+
+				a.readMore {
+					font-weight: bold;
+					&::after {
+						@include beforeAfterIconPlace042215a('\f101');
+						font-size: $basefontsize*0.75;
+						margin:0px 0px 0px 10px;
+						color: $marvelRed;
+					}
+				}
+			}
+
+		// END Article ------------------------------------------------
+
+
+	// ----------------------------------------
+	// END Character Entries  ------------------
+	// ----------------------------------------
 
 ////////////////////////////////////////////
 // 		END SHOW CASE
@@ -411,197 +411,195 @@ section.characterEntry article {
 // 		DISPLAY DISC
 ////////////////////////////////////////////
 
-// ----------------------------------------
-// Parent  ------------------
-// ----------------------------------------
-section.displayDisc {
-	width: 100%;
-	
-	// if we want this area to vanish until the comics are displayed then you should set padding-top and padding-bottom using jQuery
-	// @include sectionPadding041515(10%,10%);
+	// ----------------------------------------
+	// Parent  ------------------
+	// ----------------------------------------
+		section.displayDisc {
+			width: 100%;
+			
+			// if we want this area to vanish until the comics are displayed then you should set padding-top and padding-bottom using jQuery
+			// @include sectionPadding041515(10%,10%);
 
-	// because I don't know how many exploreUnits will be added by a call we shouldn't set a specific width to anything
-	// flexbox may not be needed at all for the circling gallery effect
-	@include flexboxRow1;
-	justify-content: center;
-	align-content: center;
-	align-items: center;
+			// because I don't know how many exploreUnits will be added by a call we shouldn't set a specific width to anything
+			// flexbox may not be needed at all for the circling gallery effect
+			@include flexboxRow1;
+			justify-content: center;
+			align-content: center;
+			align-items: center;
 
-	// images seem skewed to the left
-	// NOTE:  you don't need this if you remove flex: 1 auto on .exploreUnit, .movieUnit
-	// margin-left: 1.5%;
+			// images seem skewed to the left
+			// NOTE:  you don't need this if you remove flex: 1 auto on .exploreUnit, .movieUnit
+			// margin-left: 1.5%;
 
-}
-// ----------------------------------------
-// END Parent  ------------------
-// ----------------------------------------
+		}
+	// ----------------------------------------
+	// END Parent  ------------------
+	// ----------------------------------------
 
-// ----------------------------------------
-// FIGURE SPINNER  ------------------
-// ----------------------------------------
-figure#spinner {	
-	width: 100%;
+	// ----------------------------------------
+	// FIGURE SPINNER  ------------------
+	// ----------------------------------------
+		figure#spinner {	
+			width: 100%;
 
-	// flexbox parent
-	// because I don't know how many exploreUnits will be added by a call we shouldn't set a specific width to anything
-	@include flexboxRow1;
-}
-// ----------------------------------------
-// END FIGURE SPINNER  ------------------
-// ----------------------------------------
+			// flexbox parent
+			// because I don't know how many exploreUnits will be added by a call we shouldn't set a specific width to anything
+			@include flexboxRow1;
+		}
+	// ----------------------------------------
+	// END FIGURE SPINNER  ------------------
+	// ----------------------------------------
 
-// ----------------------------------------
-// Explore Unit  ------------------
-// ----------------------------------------
-section.exploreUnit {
-	width: 172px;
+	// ----------------------------------------
+	// Explore Unit  ------------------
+	// ----------------------------------------
+		section.exploreUnit {
+			width: 172px;
 
-	// for the modal frame
-	position: relative;
+			// for the modal frame
+			position: relative;
 
-	// while using flexbox the tops and bottoms are right up against each other
-	// this may change during responsive CSS coding
-	@include sectionMargins041515(0,1.5%);
+			// while using flexbox the tops and bottoms are right up against each other
+			// this may change during responsive CSS coding
+			@include sectionMargins041515(0,1.5%);
 
-	@include transitionEffectAllEaseIn(0.5s);
+			@include transitionEffectAllEaseIn(0.5s);
 
-	.imgFrame {
-		width: auto;
-		height: auto;
-	}
+			.imgFrame {
+				width: auto;
+				height: auto;
+			}
 
-	.imgFrame img {
-		max-width: 100%;
-	}
-}
+			.imgFrame img {
+				max-width: 100%;
+			}
+		}
 
-// when you hover over exploreUnit, the .frame appears 
-section.exploreUnit:hover > .frame {
-	display: flex;
-}
+		// when you hover over exploreUnit, the .frame appears 
+		section.exploreUnit:hover > .frame {
+			display: flex;
+		}
 
-// ----------------------------------------
-// END Explore Unit  ------------------
-// ----------------------------------------
+	// ----------------------------------------
+	// END Explore Unit  ------------------
+	// ----------------------------------------
 
-// ----------------------------------------
-// Modal Frame - Explore Unit  ------------------
-// ----------------------------------------
-section.exploreUnit .frame {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
+	// ----------------------------------------
+	// Modal Frame - Explore Unit  ------------------
+	// ----------------------------------------
+		section.exploreUnit .frame {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
 
-	// to shift the buttons away from bottom
-	padding: 0 0 5% 0;
+			// to shift the buttons away from bottom
+			padding: 0 0 5% 0;
 
-	// modal background
-	// background: $marvelRedRGBA1;
-	@include exploreUnitFrameGradient1($marvelLightBlueRGBA1,$marvelRedRGBA1);
+			// modal background
+			// background: $marvelRedRGBA1;
+			@include exploreUnitFrameGradient1($marvelLightBlueRGBA1,$marvelRedRGBA1);
 
-	//flexbox parent
-	// display: flex
-	@include flexboxColumn1;
-	justify-content: flex-end;
-	align-content: flex-end;
+			//flexbox parent
+			// display: flex
+			@include flexboxColumn1;
+			justify-content: flex-end;
+			align-content: flex-end;
 
-	@include transitionEffectAllEaseIn(0.5s);
+			@include transitionEffectAllEaseIn(0.5s);
 
-	//default display
-	display: none;
+			//default display
+			display: none;
 
-	button {
-		@include sectionMargins041515(10%,2%);
-		font-size: $basefontsize*0.75;
-	}
-}
-// ----------------------------------------
-// END Modal Frame - Explore Unit  ------------------
-// ----------------------------------------
+			button {
+				@include sectionMargins041515(10%,2%);
+				font-size: $basefontsize*0.75;
+			}
+		}
+	// ----------------------------------------
+	// END Modal Frame - Explore Unit  ------------------
+	// ----------------------------------------
 
-// ----------------------------------------
-// MOVIE UNITS  ------------------
-// ----------------------------------------
+	// ----------------------------------------
+	// MOVIE UNITS  ------------------
+	// ----------------------------------------
 
-// PARENT  ------------------------------------------------
-section.movieUnit {
-	//flexbox child
-	// flex: 1 auto;
+		// PARENT  ------------------------------------------------
+			section.movieUnit {
+				//flexbox child
+				// flex: 1 auto;
 
-	// for the modal frame
-	// position: relative;
+				// for the modal frame
+				// position: relative;
 
-	// while using flexbox the tops and bottoms are right up against each other
-	// this may change during responsive CSS coding
-	@include sectionMargins041515(0,1.5%);
+				// while using flexbox the tops and bottoms are right up against each other
+				// this may change during responsive CSS coding
+				@include sectionMargins041515(0,1.5%);
 
-	@include transitionEffectAllEaseIn(0.5s);
-}
+				@include transitionEffectAllEaseIn(0.5s);
+			}
 
-// when you hover over movieUnit, the .frame appears 
-// section.movieUnit .imgFrame:hover > .frame {
-// 	display: flex;
-// }
-// END PARENT ------------------------------------------------
+			// when you hover over movieUnit, the .frame appears 
+			// section.movieUnit .imgFrame:hover > .frame {
+			// 	display: flex;
+			// }
+		// END PARENT ------------------------------------------------
 
-// THUMBNAIL  ------------------------------------------------
+		// THUMBNAIL  ------------------------------------------------
 
-section.movieUnit .imgFrame {
-	max-width: 172px;
-	position: relative;
-}
+			section.movieUnit .imgFrame {
+				max-width: 172px;
+				position: relative;
+			}
 
-section.movieUnit .imgFrame:hover > .frame {
-	display: flex;
-}
+			section.movieUnit .imgFrame:hover > .frame {
+				display: flex;
+			}
 
-section.movieUnit .imgFrame img {
-	max-width: 100%;
-}
+			section.movieUnit .imgFrame img {
+				max-width: 100%;
+			}
 
-// ................... modal...................
-section.movieUnit .frame {
-	position: absolute;
-	top:0;
-	bottom:0;
-	left:0;
-	right:0;
-	width: 172px;
+			// ................... modal...................
+			section.movieUnit .frame {
+				position: absolute;
+				top:0;
+				bottom:0;
+				left:0;
+				right:0;
+				width: 172px;
 
-	// to shift the buttons away from bottom
-	padding: 0 0 5% 0;
+				// to shift the buttons away from bottom
+				padding: 0 0 5% 0;
 
-	// modal background
-	// background: $marvelRedRGBA1;
-	@include exploreUnitFrameGradient1($marvelLightBlueRGBA1,$marvelRedRGBA1);
+				// modal background
+				// background: $marvelRedRGBA1;
+				@include exploreUnitFrameGradient1($marvelLightBlueRGBA1,$marvelRedRGBA1);
 
-	//flexbox parent
-	// display: flex
-	@include flexboxColumn1;
-	justify-content: flex-end;
-	align-content: flex-end;
+				//flexbox parent
+				// display: flex
+				@include flexboxColumn1;
+				justify-content: flex-end;
+				align-content: flex-end;
 
-	@include transitionEffectAllEaseIn(0.5s);
+				@include transitionEffectAllEaseIn(0.5s);
 
-	//default display
-	display: none;
+				//default display
+				display: none;
 
-	button {
-		@include sectionMargins041515(10%,2%);
-		font-size: $basefontsize*0.75;
-	}
-}
-// ...................END modal ...................
-
-
-// END THUMBNAIL ------------------------------------------------
-
-
-// ----------------------------------------
-// END MOVIE UNITS  ------------------
-// ----------------------------------------
+				button {
+					@include sectionMargins041515(10%,2%);
+					font-size: $basefontsize*0.75;
+				}
+			}
+			// ...................END modal ...................
+			
+		// END THUMBNAIL ------------------------------------------------
+		
+	// ----------------------------------------
+	// END MOVIE UNITS  ------------------
+	// ----------------------------------------
 
 ////////////////////////////////////////////
 // 		END DISPLAY DISC
@@ -610,74 +608,74 @@ section.movieUnit .frame {
 ////////////////////////////////////////////
 // 		MODAL DETAILS
 ////////////////////////////////////////////
-// for use with anything
-// not just movies
+	// for use with anything
+	// not just movies
 
-section.modalDetails {
+	section.modalDetails {
 
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 50;
-	opacity: 1;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 50;
+		opacity: 1;
 
-	// background gradient
-	@include exploreUnitFrameGradient1($marvelLightBlueRGBA2,$marvelPurple);
+		// background gradient
+		@include exploreUnitFrameGradient1($marvelLightBlueRGBA2,$marvelPurple);
 
-	// flexbox parent
-	@include flexboxColumn1;
-
-	// DEFAULT display status
-	display: none;
-	z-index: -5;
-	opacity: 0;
-
-}
-
-section.modalDetails .close {
-	position: absolute;
-	top: 2%;
-	right: 2%;
-	color: $marvelRed;
-}
-
-section.modalDetails .text {
-	// testing
-	background: transparent;
-	width: 940px;
-
-	h2 {
-		margin-bottom: 5%;
-	}
-
-	div.row {
 		// flexbox parent
-		@include flexboxRow1;
-		align-items: baseline;
+		@include flexboxColumn1;
 
-		div:nth-child(1) {
-			//flexbox child
-			flex: 1 20%;
-			flex: 1 17%;
-			margin-right: 3%;
+		// DEFAULT display status
+		display: none;
+		z-index: -5;
+		opacity: 0;
+
+	}
+
+	section.modalDetails .close {
+		position: absolute;
+		top: 2%;
+		right: 2%;
+		color: $marvelRed;
+	}
+
+	section.modalDetails .text {
+		// testing
+		background: transparent;
+		width: 940px;
+
+		h2 {
+			margin-bottom: 5%;
 		}
 
-		div:nth-child(2) {
-			//flexbox child
-			flex: 1 80%;
-		}
+		div.row {
+			// flexbox parent
+			@include flexboxRow1;
+			align-items: baseline;
 
-		div h4 {
-			margin-bottom: 2%;
-		}
+			div:nth-child(1) {
+				//flexbox child
+				flex: 1 20%;
+				flex: 1 17%;
+				margin-right: 3%;
+			}
 
-		div p {
-			text-align: left;
+			div:nth-child(2) {
+				//flexbox child
+				flex: 1 80%;
+			}
+
+			div h4 {
+				margin-bottom: 2%;
+			}
+
+			div p {
+				text-align: left;
+			}
 		}
 	}
-}
 
 ////////////////////////////////////////////
 // 		END MODAL DETAILS
@@ -686,37 +684,37 @@ section.modalDetails .text {
 ////////////////////////////////////////////
 // 		STATUS BOX
 ////////////////////////////////////////////
-// for displaying status messages
-// also for showing that marTron modes have changed
-// it should be displayed relative to the body
+	// for displaying status messages
+	// also for showing that marTron modes have changed
+	// it should be displayed relative to the body
 
-aside.statusBox {
-	position: fixed;
-	width: 16em;
-	height: 6.75em;
+	aside.statusBox {
+		position: fixed;
+		width: 16em;
+		height: 6.75em;
 
-	top: 2%;
-	left: 3%;
-	opacity: 1;
+		top: 2%;
+		left: 3%;
+		opacity: 1;
 
-	z-index: 15;
-	text-align: center;
+		z-index: 15;
+		text-align: center;
 
-	// background gradient
-	@include exploreUnitFrameGradient1($marvelRedRGBA1,$marvelLightBlueRGBA1);
+		// background gradient
+		@include exploreUnitFrameGradient1($marvelRedRGBA1,$marvelLightBlueRGBA1);
 
-	// flexbox parent
-	@include flexboxColumn1;
+		// flexbox parent
+		@include flexboxColumn1;
 
-	// DEFAULT DISPLAY STATUS
-	z-index: -5;
-	top: -999999%;
-	opacity: 0;
+		// DEFAULT DISPLAY STATUS
+		z-index: -5;
+		top: -999999%;
+		opacity: 0;
 
-	p {
-		margin-bottom: 0;
+		p {
+			margin-bottom: 0;
+		}
 	}
-}
 
 ////////////////////////////////////////////
 // 		END STATUS BOX
