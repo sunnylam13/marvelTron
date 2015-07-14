@@ -105,6 +105,8 @@
   // GET CHARACTER REQUEST  ------------------
   // ----------------------------------------
     marTron.getCharacter = function (targetParent,userInputString) {
+
+      // acquire the category type as shown in the Marvel API documentation
       var targetType = marTron.categoryURLAdd[marTron.categoryURLAdd.indexOf('characters')];
       // console.log('The target category is %s', targetType);
 
@@ -150,6 +152,7 @@
         success: function (data, status) {
           // console.log('The getCharacterNames success callback was reached');
           
+          // if there's no data available show a feedback message saying so
           if (!data) {
             marTron.showStatusMsg1("No character data available at this time.");
           }
