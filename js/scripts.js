@@ -1,3 +1,10 @@
+/* 
+* Tuesday, July 14, 2015 10:48 AM
+* next time setup multiple javascript files for broad categories of functions or aspects... like comics, tv shows, movies?  then again they sometimes access the same information...
+* 
+*/
+
+
 //////////////////////////////////////////////////
 // GLOBAL VARIABLES
 ////////////////////////////////////////////
@@ -1567,147 +1574,157 @@
 //    NAV MENU
 ////////////////////////////////////////////
 
-// ----------------------------------------
-// NAV MENU EVENTS  ------------------
-// ----------------------------------------
-  marTron.navMenuEvents = function () {
-    var $handle = $('.naviTab');
-    var $target = $('nav.selectMenu');
-    // toggleState... where true means menu is out, false means it's hidden
-    var toggleState = false;
-    marTron.comicModeButton = $('button.comics');
-    marTron.movieModeButton = $('button.movies');
-    marTron.tvModeButton = $('button.tvshows');
+  // ----------------------------------------
+  // NAV MENU EVENTS  ------------------
+  // ----------------------------------------
+    marTron.navMenuEvents = function () {
+      var $handle = $('.naviTab');
+      var $target = $('nav.selectMenu');
+      // toggleState... where true means menu is out, false means it's hidden
+      var toggleState = false;
+      marTron.comicModeButton = $('button.comics');
+      marTron.movieModeButton = $('button.movies');
+      marTron.tvModeButton = $('button.tvshows');
 
-    $handle.on('click', function(e) {
-      e.preventDefault();
+      $handle.on('click', function(e) {
+        e.preventDefault();
 
-      switch(toggleState) {
-        case false:
-          // $target.css('right', '0');
-          TweenMax.to($target,1,{top:0,ease:Power2.easeIn});
-          toggleState = true;
-          break;
-        case true:
-          // $target.css('right', '-25%');
-          TweenMax.to($target,1,{top:"-27%",ease:Power2.easeIn});
-          toggleState = false;
-          break;
-      }
-    });
+        switch(toggleState) {
+          case false:
+            // $target.css('right', '0');
+            TweenMax.to($target,1,{top:0,ease:Power2.easeIn});
+            toggleState = true;
+            break;
+          case true:
+            // $target.css('right', '-25%');
+            TweenMax.to($target,1,{top:"-27%",ease:Power2.easeIn});
+            toggleState = false;
+            break;
+        }
+      });
 
-    marTron.comicModeButton.on('click', function(e) {
-      e.preventDefault();
-      marTron.comicMode = true;
-      marTron.movieMode = false;
-      marTron.tvMode = false;
+      marTron.comicModeButton.on('click', function(e) {
+        e.preventDefault();
+        marTron.comicMode = true;
+        marTron.movieMode = false;
+        marTron.tvMode = false;
 
-      marTron.showStatusMsg1("Comic Search Mode Activated");
-    });
+        marTron.showStatusMsg1("Comic Search Mode Activated");
+      });
 
-    marTron.movieModeButton.on('click', function(e) {
-      e.preventDefault();
-      marTron.comicMode = false;
-      marTron.movieMode = true;
-      marTron.tvMode = false;
+      marTron.movieModeButton.on('click', function(e) {
+        e.preventDefault();
+        marTron.comicMode = false;
+        marTron.movieMode = true;
+        marTron.tvMode = false;
 
-      marTron.showStatusMsg1("Movie Search Mode Activated");
-    });
+        marTron.showStatusMsg1("Movie Search Mode Activated");
+      });
 
-    marTron.tvModeButton.on('click', function(e) {
-      e.preventDefault();
-      marTron.comicMode = false;
-      marTron.movieMode = false;
-      marTron.tvMode = true;
+      marTron.tvModeButton.on('click', function(e) {
+        e.preventDefault();
+        marTron.comicMode = false;
+        marTron.movieMode = false;
+        marTron.tvMode = true;
 
-      marTron.showStatusMsg1("TV Search Mode Activated");
-    });
+        marTron.showStatusMsg1("TV Search Mode Activated");
+      });
 
-  }
-// ----------------------------------------
-// END NAV MENU EVENTS  ------------------
-// ----------------------------------------
+    }
+  // ----------------------------------------
+  // END NAV MENU EVENTS  ------------------
+  // ----------------------------------------
 
 ////////////////////////////////////////////
 //    END NAV MENU
 ////////////////////////////////////////////
 
 
-//////////////////////////////////////////////////
-// FUNCTIONS
+////////////////////////////////////////////
+/////     HELPER FUNCTIONS
+///////////////////////////////////////////////
+  function getRandom (num) {
+    var my_num = Math.floor(Math.random()*num);
+    return my_num;
+  }
 
-function getRandom (num) {
-  var my_num = Math.floor(Math.random()*num);
-  return my_num;
-}
+  marTron.showStatusMsg1 = function (textString) {
 
-marTron.showStatusMsg1 = function (textString) {
+    // console.log('marTron.showStatusMsg1 active');
 
-  // console.log('marTron.showStatusMsg1 active');
+    // create new sequence
+    marTron.sSM1 = new TimelineMax();
 
-  // create new sequence
-  marTron.sSM1 = new TimelineMax();
+    // empty the status message box
+    marTron.statusMessageBox1.empty();
 
-  // empty the status message box
-  marTron.statusMessageBox1.empty();
+    // construct the new status
+    var $statusMessage = $("<p>").text(textString);
 
-  // construct the new status
-  var $statusMessage = $("<p>").text(textString);
+    // change the status text
+    marTron.statusMessageBox1.append($statusMessage);
 
-  // change the status text
-  marTron.statusMessageBox1.append($statusMessage);
+    // make the modal appear
+    // use yoyo so it returns to its previous state... yoyo doesn't work for once offs
+    this.sSM1.to(marTron.statusMessageBox1,0.6,{top:"2%",opacity:1, zIndex: "15",ease:Power2.easeIn});
+    // TweenMax.to(marTron.statusMessageBox1,0.6,{top:"2%",opacity:1, zIndex: "15",ease:Power2.easeIn});
+    
+    //make the modal disappear
+    this.sSM1.to(marTron.statusMessageBox1,5,{top:"-50em",opacity:0, zIndex: "-5",ease:Power2.easeIn});
+    
+    //execute the sequence
+    this.sSM1.play();
 
-  // make the modal appear
-  // use yoyo so it returns to its previous state... yoyo doesn't work for once offs
-  this.sSM1.to(marTron.statusMessageBox1,0.6,{top:"2%",opacity:1, zIndex: "15",ease:Power2.easeIn});
-  // TweenMax.to(marTron.statusMessageBox1,0.6,{top:"2%",opacity:1, zIndex: "15",ease:Power2.easeIn});
-  
-  //make the modal disappear
-  this.sSM1.to(marTron.statusMessageBox1,5,{top:"-50em",opacity:0, zIndex: "-5",ease:Power2.easeIn});
-  
-  //execute the sequence
-  this.sSM1.play();
+    // setTimeout(marTron.sSM1.reverse(), 3000);
 
-  // setTimeout(marTron.sSM1.reverse(), 3000);
+    // entire sequence should only happen once
+  }
 
-  // entire sequence should only happen once
-}
+  marTron.modalDetailsEvents = function () {
+    // if you click the big modal anywhere you close it
+    marTron.modalDetails.on('click', function(e) {
+      e.preventDefault();
+      TweenMax.to(marTron.modalDetails,1,{display:'none',zIndex: '-5', opacity: 0});
+    });
+  }
 
-marTron.modalDetailsEvents = function () {
-	// if you click the big modal anywhere you close it
-  marTron.modalDetails.on('click', function(e) {
-    e.preventDefault();
-    TweenMax.to(marTron.modalDetails,1,{display:'none',zIndex: '-5', opacity: 0});
-  });
-}
+  marTron.comicTooltips = function () {
+    // Friday, May 15, 2015 3:00 PM:  using jQuery UI is ugly
+    
+    var $targetParent = $('section.characterEntry');
 
-marTron.comicTooltips = function () {
-	// Friday, May 15, 2015 3:00 PM:  using jQuery UI is ugly
-	
-	var $targetParent = $('section.characterEntry');
+    // go to each section.characterEntry
+    $.each($targetParent, function(index, val) {
+      if (marTron.comicMode ==  true) {
+        // when comic mode is enabled
+        // set the title attribute to have text for the jQuery tooltip
+        $(this).attr('data-comictooltips1', 'Click to see comics');
+      } else {
+        $(this).attr('data-comictooltips1', '');
+      }
+    }); 
+  }
 
-	// go to each section.characterEntry
-	$.each($targetParent, function(index, val) {
-    if (marTron.comicMode ==  true) {
-      // when comic mode is enabled
-      // set the title attribute to have text for the jQuery tooltip
-      $(this).attr('data-comictooltips1', 'Click to see comics');
-    } else {
-      $(this).attr('data-comictooltips1', '');
-    }
-	});	
-}
+  marTron.pulsingBorder1 = function (targetE) {
+    /* 
+    * typically used for the comic covers when users hover over them...
+    * 
+    */
 
-marTron.pulsingBorder1 = function (targetE) {
-  // where targetE is the selector with quotes
-  var $target = $(targetE);
+    // where targetE is the selector with quotes
+    var $target = $(targetE);
 
-  this.psB1 = new TimelineMax({repeat:-1,yoyo:true});
-  this.hcR1.yoyo(true);
-  this.psB1.to($target,0.6,{outline:'none'});
-  this.psB1.to($target,0.6,{outline:'5px solid #f0141e'});
-  this.psB1.to($target,0.6,{outline:'none'});
-}
+    this.psB1 = new TimelineMax({repeat:-1,yoyo:true});
+    this.hcR1.yoyo(true);
+    this.psB1.to($target,0.6,{outline:'none'});
+    this.psB1.to($target,0.6,{outline:'5px solid #f0141e'});
+    this.psB1.to($target,0.6,{outline:'none'});
+  }
+///////////////////////////////////////////////
+/////     END HELPER FUNCTIONS
+///////////////////////////////////////////////
+
+
 
 ////////////////////////////////////////////
 //    EVENTS
