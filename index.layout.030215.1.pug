@@ -1,11 +1,11 @@
 html(lang="en")
 	head
 		block title
-		include ./includes/variables.global.041415.1.jade
-		include ./includes/mixins.universal.041415.1.jade
-		include ./includes/mixins.project.041415.1.jade
-		include ./includes/meta.jade
-		include ./includes/links.jade
+		include ./includes/variables.global.041415.1.pug
+		include ./includes/mixins.universal.041415.1.pug
+		include ./includes/mixins.project.041415.1.pug
+		include ./includes/meta.pug
+		include ./includes/links.pug
 	body
 
 		////////////////////////////////////////////
@@ -17,7 +17,7 @@ html(lang="en")
 		// 		END REFERENCE LINKS
 		////////////////////////////////////////////
 
-		include ./includes/googleCode.jade
+		include ./includes/googleCode.pug
 		
 		//- if needed apply a .wrapper either here or within the individual sections
 
@@ -31,4 +31,4 @@ html(lang="en")
 		block footer
 
 		//- currently best practice to include scripts just before end of body
-		include ./includes/scripts.jade
+		include ./includes/scripts.pug
