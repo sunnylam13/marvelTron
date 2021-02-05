@@ -12,7 +12,7 @@
   var marTron = {};
 
   marTron.baseURL = "http://gateway.marvel.com:80/v1/public/";
-  marTron.publicKey = "2c57ad00857c6163fa0417563cd31499";
+  marTron.publicKey = "${{ secrets.MARVEL_APIKEY }}";
   marTron.limit = 50;
 
   // ----------------------------------------
@@ -130,7 +130,7 @@
       // data parameter object
       // name=Spider%20Man
       // limit=50
-      // apikey=2c57ad00857c6163fa0417563cd31499
+      // apikey=${{ secrets.MARVEL_APIKEY }}
       
 
       // http://developer.marvel.com/documentation/generalinfo
